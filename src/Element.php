@@ -1,6 +1,6 @@
 <?php
 
-namespace Formulaic;
+namespace Monolyth\Formulaic;
 
 abstract class Element implements Labelable
 {

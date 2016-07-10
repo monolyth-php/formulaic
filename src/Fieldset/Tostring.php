@@ -1,6 +1,6 @@
 <?php
 
-namespace Formulaic\Fieldset;
+namespace Monolyth\Formulaic\Fieldset;
 
 trait Tostring
 {

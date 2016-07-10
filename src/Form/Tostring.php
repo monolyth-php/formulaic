@@ -1,9 +1,9 @@
 <?php
 
-namespace Formulaic\Form;
+namespace Monolyth\Formulaic\Form;
 
 use ArrayObject;
-use Formulaic\Select;
+use Monolyth\Formulaic\Select;
 
 trait Tostring
 {

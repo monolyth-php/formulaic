@@ -1,8 +1,8 @@
 <?php
 
-namespace Formulaic\Label;
+namespace Monolyth\Formulaic\Label;
 
-use Formulaic\Radio;
+use Monolyth\Formulaic\Radio;
 
 trait Tostring
 {

@@ -1,6 +1,6 @@
 <?php
 
-namespace Formulaic\Validate;
+namespace Monolyth\Formulaic\Validate;
 
 trait Element
 {

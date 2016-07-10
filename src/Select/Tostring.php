@@ -1,6 +1,6 @@
 <?php
 
-namespace Formulaic\Select;
+namespace Monolyth\Formulaic\Select;
 
 trait Tostring
 {

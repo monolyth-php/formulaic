@@ -1,15 +1,15 @@
 <?php
 
-namespace Formulaic\Radio;
+namespace Monolyth\Formulaic\Radio;
 
-use Formulaic\Attributes;
-use Formulaic\Validate;
-use Formulaic\Radio;
-use Formulaic\Checkbox;
-use Formulaic\Element;
-use Formulaic\Label;
-use Formulaic\Labelable;
-use Formulaic\Bindable;
+use Monolyth\Formulaic\Attributes;
+use Monolyth\Formulaic\Validate;
+use Monolyth\Formulaic\Radio;
+use Monolyth\Formulaic\Checkbox;
+use Monolyth\Formulaic\Element;
+use Monolyth\Formulaic\Label;
+use Monolyth\Formulaic\Labelable;
+use Monolyth\Formulaic\Bindable;
 
 class Group extends Element\Group implements Labelable
 {

@@ -1,10 +1,10 @@
 <?php
 
-namespace Formulaic\Element;
+namespace Monolyth\Formulaic\Element;
 
-use Formulaic\Validate;
+use Monolyth\Formulaic\Validate;
 use ArrayObject;
-use Formulaic\QueryHelper;
+use Monolyth\Formulaic\QueryHelper;
 
 class Group extends ArrayObject
 {

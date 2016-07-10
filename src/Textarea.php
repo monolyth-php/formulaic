@@ -1,6 +1,6 @@
 <?php
 
-namespace Formulaic;
+namespace Monolyth\Formulaic;
 
 class Textarea extends Element
 {
@@ -17,7 +17,13 @@ class Textarea extends Element
             .'</textarea>';
     }
 
-    /** The maximum length of the field. */                                                                                                                      public function maxLength($length)
+    /**
+     * The maximum length of the field.
+     *
+     * @param integer $length Max characters
+     * @return self
+     */
+    public function maxLength($length)
     {
         $this->attributes['maxlength'] = (int)$length;
         return $this->addTest('maxlength', function($value) use ($length) {

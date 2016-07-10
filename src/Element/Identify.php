@@ -1,6 +1,6 @@
 <?php
 
-namespace Formulaic\Element;
+namespace Monolyth\Formulaic\Element;
 
 trait Identify
 {

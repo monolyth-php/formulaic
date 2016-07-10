@@ -1,8 +1,8 @@
 <?php
 
-namespace Formulaic\Select;
+namespace Monolyth\Formulaic\Select;
 
-use Formulaic\Element;
+use Monolyth\Formulaic\Element;
 
 class Option extends Element
 {

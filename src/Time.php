@@ -1,6 +1,6 @@
 <?php
 
-namespace Formulaic;
+namespace Monolyth\Formulaic;
 
 class Time extends Datetime
 {

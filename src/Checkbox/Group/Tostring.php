@@ -1,8 +1,8 @@
 <?php
 
-namespace Formulaic\Checkbox\Group;
+namespace Monolyth\Formulaic\Checkbox\Group;
 
-use Formulaic\Radio\Group;
+use Monolyth\Formulaic\Radio\Group;
 
 trait Tostring
 {

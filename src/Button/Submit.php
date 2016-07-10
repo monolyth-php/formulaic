@@ -1,8 +1,8 @@
 <?php
 
-namespace Formulaic\Button;
+namespace Monolyth\Formulaic\Button;
 
-use Formulaic\Button;
+use Monolyth\Formulaic\Button;
 
 /**
  * A submit button (`type="submit"`).

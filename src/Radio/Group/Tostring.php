@@ -1,6 +1,6 @@
 <?php
 
-namespace Formulaic\Radio\Group;
+namespace Monolyth\Formulaic\Radio\Group;
 
 trait Tostring
 {

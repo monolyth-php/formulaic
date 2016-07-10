@@ -1,6 +1,6 @@
 <?php
 
-namespace Formulaic;
+namespace Monolyth\Formulaic;
 
 /**
  * Implements a GET-form. The method and source default to that. You could
@@ -13,7 +13,7 @@ abstract class Get extends Form
      * Returns the default string representation of this form.
      *
      * @return string The form as '<form>...</form>'.
-     * @see Formulaic\Form::__toString
+     * @see Monolyth\Formulaic\Form::__toString
      */
     public function __toString()
     {

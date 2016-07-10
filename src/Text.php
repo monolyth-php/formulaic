@@ -1,18 +1,29 @@
 <?php
 
-namespace Formulaic;
+namespace Monolyth\Formulaic;
 
 class Text extends Element
 {
     protected $attributes = ['type' => 'text'];
 
+    /**
+     * Set the size of the text input.
+     *
+     * @param int $size The size
+     * @return self
+     */
     public function size($size)
     {
         $this->attributes['size'] = $size;
         return $this;
     }
 
-    /** The field must match the pattern supplied. */
+    /**
+     * The field must match the pattern supplied.
+     *
+     * @param string $pattern Regex the field must match
+     * @return self
+     */
     public function matchPattern($pattern)
     {
         $this->attributes['pattern'] = $pattern;
@@ -21,7 +32,12 @@ class Text extends Element
         });
     }
     
-    /** The maximum length of the field. */
+    /**
+     * The maximum length of the field.
+     *
+     * @param int $lenger Max characters
+     * @return self
+     */
     public function maxLength($length)
     {
         $this->attributes['maxlength'] = (int)$length;

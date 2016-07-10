@@ -1,8 +1,8 @@
 <?php
 
-namespace Formulaic\Checkbox;
+namespace Monolyth\Formulaic\Checkbox;
 
-use Formulaic\Radio;
+use Monolyth\Formulaic\Radio;
 
 class Group extends Radio\Group
 {

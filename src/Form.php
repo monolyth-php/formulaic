@@ -1,6 +1,6 @@
 <?php
 
-namespace Formulaic;
+namespace Monolyth\Formulaic;
 
 use ArrayObject;
 use DomainException;
@@ -80,7 +80,7 @@ abstract class Form extends ArrayObject implements JsonSerializable
      * Binds a $model object to this form by proxying Bindable::bindGroup.
      *
      * @param object The model to bind.
-     * @see Formulaic\Bindable::bindGroup
+     * @see Monolyth\Formulaic\Bindable::bindGroup
      * @return static $this
      */
     public function bind($model)
