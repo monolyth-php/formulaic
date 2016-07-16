@@ -16,7 +16,7 @@ You can also use PHP's `class_alias` method to accomplish this:
 ```php
 <?php
 
-class_alias('My\Custom\Fieldset', 'Formulaic\Fieldset\Tostring');
+class_alias('My\Custom\Fieldset', 'Monolyth\Formulaic\Fieldset\Tostring');
 ```
 
 For more complicated projects with multiple default `__toString`

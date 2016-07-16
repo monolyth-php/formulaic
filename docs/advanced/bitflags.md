@@ -16,8 +16,8 @@ Let's look at a quick example:
 ```php
 <?php
 
-use Formulaic\Post;
-use Formulaic\Bitflag;
+use Monolyth\Formulaic\Post;
+use Monolyth\Formulaic\Bitflag;
 
 class MyForm extends Post
 {

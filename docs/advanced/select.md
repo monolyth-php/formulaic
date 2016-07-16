@@ -7,7 +7,7 @@ There are two ways to add select boxes to a Formulaic form.
 ```php
 <?php
 
-$this[] = new Formulaic\Select('selectname', [
+$this[] = new Monolyth\Formulaic\Select('selectname', [
     1 => 'option 1',
     2 => 'option 2',
 ]);
@@ -22,9 +22,9 @@ anything fancy with your `<option>`s anyway.
 ```
 <?php
 
-$this[] = new Formulaic\Select('selectname', function($select) {
-    $select[] = new Formulaic\Select\Option(1, 'option 1');
-    $select[] = new Formulaic\Select\Option(2, 'option 2');
+$this[] = new Monolyth\Formulaic\Select('selectname', function($select) {
+    $select[] = new Monolyth\Formulaic\Select\Option(1, 'option 1');
+    $select[] = new Monolyth\Formulaic\Select\Option(2, 'option 2');
 });
 
 ```

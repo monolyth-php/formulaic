@@ -38,9 +38,9 @@ Onwards, then:
 ```php
 <?php
 
-use Formulaic\Post;
-use Formulaic\Element;
-use Formulaic\Checkbox;
+use Monolyth\Formulaic\Post;
+use Monolyth\Formulaic\Element;
+use Monolyth\Formulaic\Checkbox;
 
 class MyForm extends Post
 {

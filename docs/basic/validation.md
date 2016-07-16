@@ -8,7 +8,7 @@ normally be a quite tedious process, but Formulaic makes it easy.
 <?php
 
 //...inside constructor...
-$this[] = (new Formulaic\Text('mytextfield'))->isRequired();
+$this[] = (new Monolyth\Formulaic\Text('mytextfield'))->isRequired();
 
 //...inside handling code, e.g. a Model of sorts:
 if ($form->valid()) {
@@ -29,7 +29,7 @@ Adding a test is simple:
 ```php
 <?php
 
-$this[] = (new Formulaic\Text('mycustomlogic'))->addTest(
+$this[] = (new Monolyth\Formulaic\Text('mycustomlogic'))->addTest(
     'notokay',
     function($value) {
         return isThisOkay();
@@ -45,11 +45,11 @@ of `isRequired` easily, for instance.
 
 ## Loading data
 But how does your form know what data it needs to validate? Remember how we've
-been extending the `Formulaic\Get` base class? It won't surprise you to learn
-there is also a `Formulaic\Post`. Depending on which of these two you extend,
-the user supplied values in `$_GET` or `$_POST` are automatically injected into
-the form's elements' values. It's also smart enough to look at `$_FILES` if a
-`Post` form includes a `File` element or one extending it.
+been extending the `Monolyth\Formulaic\Get` base class? It won't surprise you to
+learn there is also a `Monolyth\Formulaic\Post`. Depending on which of these two
+you extend, the user supplied values in `$_GET` or `$_POST` are automatically
+injected into the form's elements' values. It's also smart enough to look at
+`$_FILES` if a `Post` form includes a `File` element or one extending it.
 
 > Formulaic is smart, but not clairvoyant. It works on the assumption that the
 > "source" superglobals are filled prior to instantiation (or, to be more

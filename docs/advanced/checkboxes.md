@@ -6,8 +6,8 @@ in a form. Formulaic offers classes for these:
 ```php
 <?php
 
-use Formulaic\Checkbox;
-use Formulaic\Radio;
+use Monolyth\Formulaic\Checkbox;
+use Monolyth\Formulaic\Radio;
 
 $form[] = new Checkbox\Group('name', [1 => 'Option 1', 2 => 'Option 2']);
 $form[] = new Radio\Group('name', [1 => 'Option 1', 2 => 'Option 2']);
@@ -19,8 +19,8 @@ callback-style instantiation for fine-grained tuning:
 ```php
 <?php
 
-use Formulaic\Checkbox;
-use Formulaic\Label;
+use Monolyth\Formulaic\Checkbox;
+use Monolyth\Formulaic\Label;
 
 $form[] = new Checkbox\Group('name', function ($checkboxes) {
     $checkbox = new Checkbox;

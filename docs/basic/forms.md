@@ -1,12 +1,12 @@
 # Create forms
 
 Create a form by defining and instantiating a class extending one of the
-supplied template classes `Formulaic\Get` or `Formulaic\Post`:
+supplied template classes `Monolyth\Formulaic\Get` or `Monolyth\Formulaic\Post`:
 
 ```php
 <?php
 
-class MyForm extends Formulaic\Get
+class MyForm extends Monolyth\Formulaic\Get
 {
 }
 ```
@@ -26,13 +26,13 @@ public function __construct()
 {
     // We usually do this in the constructor, since normally forms have a
     // fixed amount of fields.
-    $this[] = new Formulaic\Text('mytextfield');
+    $this[] = new Monolyth\Formulaic\Text('mytextfield');
 }
 ```
 
 Have a browse through all the types supplied. Formulaic won't complain if you do
-something illegal (like adding a `Formulaic\Option` outside of a
-`Formulaic\Select`) so it's up to you to add sensible stuff.
+something illegal (like adding a `Monolyth\Formulaic\Option` outside of a
+`Monolyth\Formulaic\Select`) so it's up to you to add sensible stuff.
 
 At the most basic level, you can now do a `__toString` on your form instance:
 
@@ -53,7 +53,7 @@ taking a single parameter: your new fieldset. Hence:
 
 public function __construct()
 {
-    $this[] = new Formulaic\Fieldset('The legend', function($fieldset) {
+    $this[] = new Monolyth\Formulaic\Fieldset('The legend', function($fieldset) {
         $fieldset[] = new Formulaic\Text('mytextfield');
     });
 }
@@ -67,9 +67,9 @@ Formulaic makes this, of course, easy:
 <?php
 
 // ...in constructor...
-$this[] = new Formulaic\Label(
+$this[] = new Monolyth\Formulaic\Label(
     'Check out this field!',
-    new Formulaic\Text('mytextfield')
+    new Monolyth\Formulaic\Text('mytextfield')
 );
 ```
 

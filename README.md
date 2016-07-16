@@ -11,9 +11,9 @@ Define a form with some fields and other requirements:
 ```php
 <?php
 
-use Formulaic\Get;
-use Formulaic\Search;
-use Formulaic\Button\Submit;
+use Monolyth\Formulaic\Get;
+use Monolyth\Formulaic\Search;
+use Monolyth\Formulaic\Button\Submit;
 
 class MyForm extends Get
 {
@@ -77,10 +77,10 @@ Forms can contain fieldsets:
 ```php
 <?php
 
-use Formulaic\Get;
-use Formulaic\Fieldset;
-use Formulaic\Search;
-use Formulaic\Button\Submit;
+use Monolyth\Formulaic\Get;
+use Monolyth\Formulaic\Fieldset;
+use Monolyth\Formulaic\Search;
+use Monolyth\Formulaic\Button\Submit;
 
 class MyForm extends Get
 {
@@ -107,6 +107,6 @@ And in your output:
 </form>
 ```
 
-See the [full documentation](http://formulaic.monomelodies.nl/docs/) for all other
-options.
+See the [full documentation](http://monolyth.monomelodies.nl/formulaic/docs/)
+for all other options.
 
