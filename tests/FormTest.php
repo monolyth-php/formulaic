@@ -1,18 +1,18 @@
 <?php
 
-namespace Formulaic\Test;
+namespace Monolyth\Formulaic\Test;
 
-use Formulaic\Get;
-use Formulaic\Post;
-use Formulaic\Text;
-use Formulaic\Button\Submit;
-use Formulaic\Fieldset;
-use Formulaic\File;
-use Formulaic\Search;
-use Formulaic\Element\Group;
-use Formulaic\Label;
-use Formulaic\Checkbox;
-use Formulaic\Radio;
+use Monolyth\Formulaic\Get;
+use Monolyth\Formulaic\Post;
+use Monolyth\Formulaic\Text;
+use Monolyth\Formulaic\Button\Submit;
+use Monolyth\Formulaic\Fieldset;
+use Monolyth\Formulaic\File;
+use Monolyth\Formulaic\Search;
+use Monolyth\Formulaic\Element\Group;
+use Monolyth\Formulaic\Label;
+use Monolyth\Formulaic\Checkbox;
+use Monolyth\Formulaic\Radio;
 
 /**
  * Global form tests

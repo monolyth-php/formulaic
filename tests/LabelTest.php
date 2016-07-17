@@ -1,8 +1,8 @@
 <?php
 
-namespace Formulaic\Test;
+namespace Monolyth\Formulaic\Test;
 
-use Formulaic;
+use Monolyth\Formulaic;
 
 /**
  * Label tests
