@@ -52,13 +52,15 @@ Bindable::bindGroup must be called on object extending ArrayObject.
 EOT
             );
         }
-        foreach ($model as $name => $value) {
-            if ($field = $this[$name] and $element = $field->getElement()) {
+        foreach ($this as $field) {
+            $name = $field->getElement()->name();
+            if ($element = $field->getElement()
+                and property_exists($model, $name)
+            ) {
+                $value = $model->$name;
                 $curr = $element->getValue();
                 $userSupplied = $element->valueSuppliedByUser();
-                if ($value) {
-                    $element->setValue($value);
-                }
+                $element->setValue($value);
                 if ($userSupplied) {
                     $element->setValue($curr);
                     $model->$name = $element->getValue();
