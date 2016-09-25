@@ -21,11 +21,9 @@ trait Group
     {
         $errors = $this->privateErrors();
         foreach ((array)$this as $element) {
+            $name = $element->getElement()->name();
             if ($error = $element->getElement()->errors()) {
-                $errors = array_merge(
-                    $errors,
-                    [$element->getElement()->name() => $error]
-                );
+                $errors = array_merge($errors, [$name => $error]);
             }
         }
         return $errors;
