@@ -14,7 +14,6 @@ trait Tostring
         ) {
             $old = $this->attributes['name'];
             $parts = $this->prefix;
-            array_shift($parts);
             $parts[] = $old;
             $start = array_shift($parts);
             $this->attributes['name'] = $start;
