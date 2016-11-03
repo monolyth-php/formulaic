@@ -28,9 +28,7 @@ class Group extends ArrayObject
             $this->name = $name;
         }
         $callback($this);
-        foreach ((array)$this as $element) {
-            $element->prefix($name);
-        }
+        $this->prefix($name);
     }
 
     public function prefix($prefix)
@@ -39,6 +37,7 @@ class Group extends ArrayObject
         foreach ((array)$this as $element) {
             $element->prefix($prefix);
         }
+        return $this;
     }
 
     public function name()
@@ -125,7 +124,7 @@ class Group extends ArrayObject
      *
      * @param string $before HTML to prepend.
      * @param string $after HTML to append.
-     * @param boolean $group Bitflag stating what to wrap. Use any of the
+     * @param int $group Bitflag stating what to wrap. Use any of the
      *                       Element\Group::WRAP_* constants. Defaults to
      *                       WRAP_ELEMENT.
      * @return Element $this
