@@ -5,11 +5,13 @@ namespace Monolyth\Formulaic\Element;
 use Monolyth\Formulaic\Validate;
 use ArrayObject;
 use Monolyth\Formulaic\QueryHelper;
+use Monolyth\Formulaic\Bindable;
 
 class Group extends ArrayObject
 {
     use Validate\Group;
     use QueryHelper;
+    use Bindable;
 
     const WRAP_GROUP = 1;
     const WRAP_LABEL = 2;
@@ -47,7 +49,7 @@ class Group extends ArrayObject
 
     public function setValue($value)
     {
-        if (is_scalar($value)) {
+        if (is_scalar($value) or is_null($value)) {
             return;
         }
         foreach ($value as $name => $val) {
