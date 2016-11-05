@@ -16,6 +16,7 @@ abstract class Element implements Labelable
     private $tests = [];
     private $userInput = false;
     protected $prefix = [];
+    protected $idPrefix = null;
     protected $attributes = [];
     protected $value = null;
 
@@ -38,6 +39,17 @@ abstract class Element implements Labelable
         return isset($this->attributes['name']) ?
             $this->attributes['name'] :
             'UNNAMED';
+    }
+
+    /**
+     * Sets the prefix for the ID attribute (for named forms).
+     *
+     * @param string|null $prefix
+     * @return static $this
+     */
+    public function setIdPrefix($prefix = null)
+    {
+        $this->idPrefix = $prefix;
     }
 
     /**
