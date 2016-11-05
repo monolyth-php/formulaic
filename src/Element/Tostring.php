@@ -7,6 +7,9 @@ trait Tostring
     public function __toString()
     {
         if ($id = $this->id()) {
+            if (isset($this->idPrefix)) {
+                $id = "{$this->idPrefix}-$id";
+            }
             $this->attributes['id'] = $id;
         }
         if (isset($this->attributes['name'])
