@@ -42,6 +42,13 @@ class Group extends ArrayObject
         return $this;
     }
 
+    public function setIdPrefix($prefix = null)
+    {
+        foreach ((array)$this as $element) {
+            $element->setIdPrefix($prefix);
+        }
+    }
+
     public function name()
     {
         return isset($this->name) ? $this->name : null;
