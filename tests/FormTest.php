@@ -105,15 +105,14 @@ EOT;
     public function testNamedFormInherits()
     {
         $out = <<<EOT
-<form action="" id="test" method="get" name="test">
+<form action="" id="test" method="get">
 <div><input id="test-bla" name="bla" type="text"></div>
 </form>
 EOT;
         $form = new class extends Get {
-            protected $attributes = ['name' => 'test'];
+            protected $attributes = ['id' => 'test'];
         };
         $form[] = new Text('bla');
-        $form[0]->prefix('test');
         yield assert("$form" == $out);
     }
 
