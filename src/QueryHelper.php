@@ -34,7 +34,7 @@ trait QueryHelper
             $index = count((array)$this);
         }
         if (isset($this->attributes['id'])) {
-            $newvalue->prefix($this->attributes['id']);
+            $newvalue->setIdPrefix($this->attributes['id']);
         }
         parent::offsetSet($index, $newvalue);
     }
