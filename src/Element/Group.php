@@ -79,7 +79,7 @@ class Group extends ArrayObject
     {
         $this->value = [];
         foreach ((array)$this as $field) {
-            $this->value[] = $field->getElement()->getValue();
+            $this->value[$field->getName()] = $field->getElement()->getValue();
         }
         return $this->value;
     }
