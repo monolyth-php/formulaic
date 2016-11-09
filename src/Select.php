@@ -20,6 +20,7 @@ class Select extends ArrayObject implements Labelable
     protected $value;
     protected $name;
     protected $prefix = [];
+    protected $idPrefix;
 
     public function __construct($name, $options)
     {
@@ -42,6 +43,12 @@ class Select extends ArrayObject implements Labelable
             }
             return false;
         });
+    }
+
+    public function setIdPrefix($prefix)
+    {
+        $this->idPrefix = $prefix;
+        return $this;
     }
 
     public function getValue()
