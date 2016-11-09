@@ -42,7 +42,9 @@ class Group extends Radio\Group
         return $this->addTest('required', function ($value) use ($min, $max) {
             $checked = 0;
             foreach ($value as $option) {
-                if ($option->getElement()->checked()) {
+                if ($option->getElement() instanceof Radio
+                    && $option->getElement()->checked()
+                ) {
                     $checked++;
                 }
             }

@@ -95,7 +95,9 @@ class Group extends Element\Group implements Labelable
         }
         return $this->addTest('required', function ($value) {
             foreach ($value as $option) {
-                if ($option->getElement()->checked()) {
+                if ($option->getElement() instanceof Radio
+                    && $option->getElement()->checked()
+                ) {
                     return true;
                 }
             }
