@@ -28,7 +28,9 @@ class Group extends Radio\Group
     {
         $this->value = [];
         foreach ((array)$this as $element) {
-            if ($element->getElement()->checked()) {
+            if ($element->getElement() instanceof Radio
+                && $element->getElement()->checked()
+            ) {
                 $this->value[] = $element->getElement()->getValue();
             }
         }

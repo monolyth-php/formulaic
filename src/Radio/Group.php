@@ -76,7 +76,9 @@ class Group extends Element\Group implements Labelable
     public function & getValue()
     {
         foreach ((array)$this as $element) {
-            if ($element->getElement()->checked()) {
+            if ($element->getElement() instanceof Radio
+                && $element->getElement()->checked()
+            ) {
                 return $element->getElement()->getValue();
             }
         }
