@@ -12,9 +12,11 @@ class Textarea extends Element
 
     public function __toString()
     {
-        return '<textarea'.$this->attributes().'>'
+        return $this->htmlBefore
+            .'<textarea'.$this->attributes().'>'
             .htmlentities($this->value, ENT_COMPAT, 'UTF-8')
-            .'</textarea>';
+            .'</textarea>'
+            .$this->htmlAfter;
     }
 
     /**
