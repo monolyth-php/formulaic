@@ -42,6 +42,7 @@ class Group extends Element\Group implements Labelable
                 } else {
                     $option = new Radio($name);
                 }
+                $option->inGroup(true);
                 $option->setValue($value);
                 foreach ($this->prefix as $prefix) {
                     $option->prefix($prefix);
