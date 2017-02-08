@@ -61,8 +61,14 @@ EOT
                 $curr = $element->getValue();
                 $userSupplied = $element->valueSuppliedByUser();
                 $element->setValue($value);
+                if ($element instanceof Radio && $value) {
+                    $element->check();
+                }
                 if ($userSupplied) {
                     $element->setValue($curr);
+                    if ($element instanceof Radio && !$curr) {
+                        $element->check(false);
+                    }
                     $model->$name = $element->getValue();
                 }
                 $element->bind($model);
