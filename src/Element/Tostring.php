@@ -33,8 +33,8 @@ trait Tostring
             unset($this->attributes['name']);
         }
         $out = $this->htmlBefore;
-        if ($this->attributes['type'] == 'checkbox') {
-            $out .= '<input type="hidden" name="'.$this->attributes['name'].'" value="0">';
+        if ($this instanceof Checkbox && !$this->inGroup()) {
+            $out .= '<input type="hidden" name="'.$this->getName().'" value="0">';
         }
         $out .= '<input'.$this->attributes().'>';
         $out .= $this->htmlAfter;
