@@ -122,9 +122,12 @@ EOT;
     public function testPopulateGet()
     {
         $_GET['q'] = 'query';
+        $_GET['test'] = 1;
         $form = new class Extends Get {};
         $form[] = new Search('q');
+        $form[] = new Checkbox('test');
         yield assert('query' ==  $form['q']->getValue());
+        yield assert($form['test']->checked());
     }
 
     /**
@@ -133,9 +136,22 @@ EOT;
     public function testPopulatePost()
     {
         $_POST['q'] = 'query';
+        $_POST['test'] = 1;
         $form = new class extends Post {};
         $form[] = new Search('q');
+        $form[] = new Checkbox('test');
+        $test = new class { public $q = 'foo'; public $test = 0; };
+        $form->bind($test);
         yield assert('query' == $form['q']->getValue());
+        yield assert($form['test']->checked());
+        yield assert('query' == $test->q);
+        yield assert(1 == $test->test);
+        unset($_POST['test']);
+        $form = new class extends Post {};
+        $form[] = new Checkbox('test');
+        $test = new class { public $q = 'foo'; public $test = 0; };
+        $form->bind($test);
+        yield assert($form['test']->checked() == false);
     }
 
     /**
