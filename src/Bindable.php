@@ -58,18 +58,21 @@ EOT
                 and property_exists($model, $name)
             ) {
                 $value = $model->$name;
-                $curr = $element->getValue();
+                $curr = $element instanceof Radio ? $element->checked() : $element->getValue();
                 $userSupplied = $element->valueSuppliedByUser();
-                $element->setValue($value);
-                if ($element instanceof Radio && $value) {
-                    $element->check();
+                if ($element instanceof Radio) {
+                    $element->check((bool)$value);
+                } else {
+                    $element->setValue($value);
                 }
                 if ($userSupplied) {
-                    $element->setValue($curr);
-                    if ($element instanceof Radio && !$curr) {
-                        $element->check(false);
+                    if ($element instanceof Radio) {
+                        $element->check((bool)$curr);
+                        $model->$name = $element->checked();
+                    } else {
+                        $element->setValue($curr);
+                        $model->$name = $element->getValue();
                     }
-                    $model->$name = $element->getValue();
                 }
                 $element->bind($model);
             }
