@@ -33,6 +33,9 @@ trait Tostring
             unset($this->attributes['name']);
         }
         $out = $this->htmlBefore;
+        if ($this->attributes['type'] == 'checkbox') {
+            $out .= '<input type="hidden" name="'.$this->attributes['name'].'" value="0">';
+        }
         $out .= '<input'.$this->attributes().'>';
         $out .= $this->htmlAfter;
         if (isset($old)) {
