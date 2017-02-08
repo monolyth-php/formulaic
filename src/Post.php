@@ -62,7 +62,7 @@ abstract class Post extends Form
                         && in_array($element->getValue(), $_POST[$name])
                     )
                 ) {
-                   $element->check();
+                    $element->check();
                 } else {
                     $element->check(false);
                 }
@@ -70,6 +70,8 @@ abstract class Post extends Form
                 $element->setValue($_POST[$name]);
             }
             $element->valueSuppliedByUser(true);
+        } elseif ($element instanceof Radio) {
+            $element->check(false);
         }
     }
 }
