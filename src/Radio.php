@@ -6,6 +6,7 @@ class Radio extends Element
 {
     protected $attributes = ['type' => 'radio', 'name' => true];
     protected $value = 1;
+    protected $inGroup = false;
 
     public function id()
     {
@@ -41,6 +42,20 @@ class Radio extends Element
         return $this->addTest('required', function($value) {
             return $this->checked();
         });
+    }
+
+    /**
+     * Get or set whether this element is part of a group.
+     *
+     * @param bool $status
+     * @return bool
+     */
+    public function inGroup(bool $status = null) : bool
+    {
+        if (!is_null($status)) {
+            $this->inGroup = $status;
+        }
+        return $this->inGroup;
     }
 }
 
