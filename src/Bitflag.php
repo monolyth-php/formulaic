@@ -16,12 +16,13 @@ class Bitflag extends Checkbox\Group
         $default = new Hidden("{$label}[]");
         $default->setValue(0);
         $this[] = $default;
-        $this->class = new StdClass;
         if (isset($class)) {
             $this->class = $class;
-        }
-        foreach ($options as $key => $value) {
-            $this->class->$key = false;
+        } else {
+            $this->class = new StdClass;
+            foreach ($options as $key => $value) {
+                $this->class->$key = false;
+            }
         }
     }
 
