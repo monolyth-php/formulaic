@@ -4,6 +4,7 @@ namespace Monolyth\Formulaic;
 
 use StdClass;
 use JsonSerializable;
+use DomainException;
 
 class Bitflag extends Checkbox\Group
 {
@@ -17,6 +18,9 @@ class Bitflag extends Checkbox\Group
         $default->setValue(0);
         $this[] = $default;
         if (isset($class)) {
+            if (!is_object($class)) {
+                throw new DomainException("Third parameter to Bitflag::__construct must be a class.");
+            }
             $this->class = $class;
         } else {
             $this->class = new StdClass;
