@@ -58,7 +58,7 @@ EOT
                 continue;
             }
             $name = $field->getElement()->name();
-            if ($element = $field->getElement() and isset($model->$name)) {
+            if ($element = $field->getElement() and property_exists($model, $name)) {
                 $value = $model->$name;
                 $curr = $element instanceof Radio ? $element->checked() : $element->getValue();
                 $userSupplied = $element->valueSuppliedByUser();
