@@ -4,6 +4,7 @@ namespace Monolyth\Formulaic;
 
 use DomainException;
 use ArrayObject;
+use Throwable;
 
 /**
  * Trait to make something bindable.
@@ -58,8 +59,12 @@ EOT
                 continue;
             }
             $name = $field->getElement()->name();
-            if ($element = $field->getElement() and property_exists($model, $name) || isset($model->$name)) {
-                $value = $model->$name;
+            if ($element = $field->getElement()) {
+                try {
+                    $value = $model->$name;
+                } catch (Throwable $e) {
+                    continue;
+                }
                 $curr = $element instanceof Radio ? $element->checked() : $element->getValue();
                 $userSupplied = $element->valueSuppliedByUser();
                 if ($element instanceof Radio) {
