@@ -33,7 +33,7 @@ class Group extends ArrayObject
         $this->prefix($name);
     }
 
-    public function prefix($prefix)
+    public function prefix(string $prefix)
     {
         $this->prefix[] = $prefix;
         foreach ((array)$this as $element) {
