@@ -4,7 +4,12 @@ namespace Monolyth\Formulaic\Fieldset;
 
 trait Tostring
 {
-    public function __toString()
+    /**
+     * Returns a rendered version of the fieldset.
+     *
+     * @return string
+     */
+    public function __toString() : string
     {
         $out = '<fieldset'.$this->attributes().'>';
         if (isset($this->legend)) {
