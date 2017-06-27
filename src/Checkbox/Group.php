@@ -28,11 +28,11 @@ class Group extends Radio\Group
     }
     
     /**
-     * Gets all values as an array.
+     * Gets all checked values as an array.
      *
      * @return array
      */
-    public function & getValue()
+    public function & getValue() : array
     {
         $this->value = [];
         foreach ((array)$this as $element) {
@@ -50,7 +50,7 @@ class Group extends Radio\Group
      * @param int $max Optional maximum number of checked items.
      * @return self
      */
-    public function isRequired(int $min = 1, int $max = null)
+    public function isRequired(int $min = 1, int $max = null) : Radio\Group
     {
         return $this->addTest('required', function ($value) use ($min, $max) {
             $checked = 0;
