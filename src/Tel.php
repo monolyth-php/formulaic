@@ -24,7 +24,7 @@ class Tel extends Text
      *
      * @param string $value Optional value (null for "undefined").
      */
-    public function setValue(string $value = null)
+    public function setValue(string $value = null) : Element
     {
         if (!is_null($value)) {
             $tmp = preg_replace('/[^\d]/', '', $value);
