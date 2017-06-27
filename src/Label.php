@@ -34,5 +34,11 @@ class Label extends Element
     {
         return $this->txt;
     }
+
+    public function prefix(string $prefix)
+    {
+        parent::prefix($prefix);
+        return $this->element->prefix($prefix);
+    }
 }
 
