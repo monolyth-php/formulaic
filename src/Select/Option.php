@@ -18,7 +18,7 @@ class Option extends Element
     {
         $this->value = $value;
         $this->label = $label;
-        parent::__construct();
+        parent::__construct($value);
     }
 
     /**
