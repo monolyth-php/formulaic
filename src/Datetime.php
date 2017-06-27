@@ -24,7 +24,7 @@ class Datetime extends Text
      */
     public function setValue(string $timestamp = null) : Element
     {
-        return parent::setValue($this->format($timestamp));
+        return parent::setValue(date($this->format, (int)$timestamp));
     }
 
     /**
