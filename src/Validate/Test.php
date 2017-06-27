@@ -14,7 +14,7 @@ trait Test
      *  value as argument. Should return true if the test passes, else false.
      * @return self
      */
-    public function addTest($name, callable $fn) : Element
+    public function addTest(string $name, callable $fn) : Element
     {
         $this->tests[$name] = function ($value) use ($name, $fn) {
             if (is_string($value) && !strlen(trim($value))) {
