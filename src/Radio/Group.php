@@ -99,18 +99,20 @@ class Group extends Element\Group implements Labelable
     /**
      * Gets the checked value in the group.
      *
-     * @return mixed $value
+     * @return array Array with a single entry (for compatibility with
+     *  Element\Group, but obviously radio groups can only ever have one entry
+     *  checked at a time).
      */
-    public function & getValue()
+    public function & getValue() : array
     {
         foreach ((array)$this as $element) {
             if ($element->getElement() instanceof Radio
                 && $element->getElement()->checked()
             ) {
-                return $element->getElement()->getValue();
+                return [$element->getElement()->getValue()];
             }
         }
-        return $this->value;
+        return [$this->value];
     }
     
     /**
@@ -118,7 +120,7 @@ class Group extends Element\Group implements Labelable
      *
      * @return self
      */
-    public function isRequired() : Element
+    public function isRequired() : Group
     {
         foreach ((array)$this as $el) {
             if (!is_object($el)) {
