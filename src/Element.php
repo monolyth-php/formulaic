@@ -47,7 +47,7 @@ abstract class Element implements Labelable
      * @param mixed $value The new value.
      * @return self
      */
-    public function setValue(string $value) : Element
+    public function setValue(string $value = null) : Element
     {
         $this->value = $value;
         if (isset($this->model)) {
