@@ -15,7 +15,7 @@ abstract class Post extends Form
      * @return string The form as '<form>...</form>'.
      * @see Monolyth\Formulaic\Form::__toString
      */
-    public function __toString()
+    public function __toString() : string
     {
         foreach ((array)$this as $field) {
             if ($field->getElement() instanceof File) {
@@ -46,6 +46,11 @@ abstract class Post extends Form
         parent::offsetSet($index, $item);
     }
 
+    /**
+     * Internal helper method to set the value of whatever we are dealing with.
+     *
+     * @param mixed $item
+     */
     private function setValue($item)
     {
         $element = $item->getElement();
