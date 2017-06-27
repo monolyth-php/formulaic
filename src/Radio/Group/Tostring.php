@@ -4,7 +4,12 @@ namespace Monolyth\Formulaic\Radio\Group;
 
 trait Tostring
 {
-    public function __toString()
+    /**
+     * Returns a rendered version of this radio group.
+     *
+     * @return string
+     */
+    public function __toString() : string
     {
         $out = '<div>';
         if ($this->htmlGroup & self::WRAP_GROUP) {
