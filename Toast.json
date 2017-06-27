@@ -1,7 +1,7 @@
 {
     "src": "src",
-    "tests": "tests/toast",
+    "tests": "tests",
     "includePath": [],
-    "bootstrap": ["src/dependencies.php"],
+    "bootstrap": [],
     "ignore": ".*?Controller$"
 }
