@@ -4,23 +4,33 @@ namespace Monolyth\Formulaic\Element;
 
 trait Identify
 {
+    /**
+     * Add a prefix to this element.
+     *
+     * @param string $prefix
+     */
     public function prefix(string $prefix)
     {
         array_unshift($this->prefix, $prefix);
     }
     
-    public function name()
+    /**
+     * Returns the name of the current element.
+     *
+     * @return string
+     */
+    public function name() : string
     {
-        return isset($this->attributes['name']) ?
-            $this->attributes['name'] :
-            null;
+        return $this->attributes['name'];
     }
     
-    public function id()
+    /**
+     * Returns the ID generated for the element.
+     *
+     * @return string
+     */
+    public function id() : string
     {
-        if (!($name = $this->name())) {
-            return null;
-        }
         $id = $name;
         if ($this->prefix) {
             $id = implode('-', $this->prefix)."-$id";
