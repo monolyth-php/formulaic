@@ -10,8 +10,9 @@ use Monolyth\Formulaic\Element;
 use Monolyth\Formulaic\Label;
 use Monolyth\Formulaic\Labelable;
 use Monolyth\Formulaic\Bindable;
+use Monolyth\Formulaic\Testable;
 
-class Group extends Element\Group implements Labelable
+class Group extends Element\Group implements Labelable, Testable
 {
     use Attributes;
     use Validate\Group;
