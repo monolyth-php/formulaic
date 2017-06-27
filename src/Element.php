@@ -21,33 +21,22 @@ abstract class Element implements Labelable
     protected $value = null;
 
     /**
-     * Constructor. The element's name is optional, but is usually something
-     * you'll want to provide.
+     * Constructor.
      *
      * @param string $name The element's name.
      */
-    public function __construct($name = null)
+    public function __construct(string $name)
     {
-        if (isset($name)) {
-            $this->attributes['name'] = $name;
-        }
+        $this->attributes['name'] = $name;
         $this->attributes['value'] =& $this->value;
-    }
-
-    public function getName()
-    {
-        return isset($this->attributes['name']) ?
-            $this->attributes['name'] :
-            'UNNAMED';
     }
 
     /**
      * Sets the prefix for the ID attribute (for named forms).
      *
      * @param string|null $prefix
-     * @return static $this
      */
-    public function setIdPrefix($prefix = null)
+    public function setIdPrefix(string $prefix = null)
     {
         $this->idPrefix = $prefix;
     }
@@ -56,9 +45,9 @@ abstract class Element implements Labelable
      * Sets the current value of this element.
      *
      * @param mixed $value The new value.
-     * @return Element $this
+     * @return self
      */
-    public function setValue($value)
+    public function setValue($value) : Element
     {
         $this->value = $value;
         if (isset($this->model)) {
@@ -71,7 +60,7 @@ abstract class Element implements Labelable
      * Sets the current value of this element, but only if not yet supplied.
      *
      * @param mixed $value The new (default) value.
-     * @return Element $this
+     * @return self
      */
     public function setDefaultValue($value)
     {
@@ -86,11 +75,12 @@ abstract class Element implements Labelable
      * Normally, you won't need to call this directly since Formulaic handles
      * data binding transparently.
      *
-     * @param mixed $status null to get, true or false to set.
-     * @return boolean The current status (true for user input, false for
-     *                 undefined or bound from a model object).
+     * @param bool $status Mark whether or not this value was supplied from an
+     *  external source. Omit to just query the current status.
+     * @return bool The current status (true for user input, false for
+     *              undefined or bound from a model object).
      */
-    public function valueSuppliedByUser($status = null)
+    public function valueSuppliedByUser(bool $status = null) : bool
     {
         if (isset($status)) {
             $this->userInput = (bool)$status;
@@ -111,9 +101,9 @@ abstract class Element implements Labelable
     /**
      * This is here to avoid the need to check instanceof Label.
      *
-     * @return Element $this
+     * @return self
      */
-    public function getElement()
+    public function getElement() : Element
     {
         return $this;
     }
@@ -123,9 +113,9 @@ abstract class Element implements Labelable
      * make sense for all elements, always (e.g. type="hidden").
      *
      * @param boolean $state True for disabled, false for enabled.
-     * @return Element $this
+     * @return self
      */
-    public function disabled($state = true)
+    public function disabled(bool $state = true) : Element
     {
         $this->attributes['disabled'] = $state;
         return $this;
@@ -136,9 +126,9 @@ abstract class Element implements Labelable
      * for all elements (e.g. type="radio").
      *
      * @param string $text The placeholder text.
-     * @return Element $this
+     * @return self
      */
-    public function placeholder($text)
+    public function placeholder(string $text) : Element
     {
         $this->attributes['placeholder'] = $text;
         return $this;
@@ -149,24 +139,34 @@ abstract class Element implements Labelable
      * makes sense (e.g. is unique in the form), that's up to you.
      *
      * @param int $tabindex The tabindex to use.
-     * @return Element $this
+     * @return self
      */
-    public function tabindex($tabindex)
+    public function tabindex(int $tabindex) : Element
     {
         $this->attributes['tabindex'] = (int)$tabindex;
         return $this;
     }
 
-    /** The field must equal the value supplied. */
-    public function isEqualTo($test)
+    /**
+     * The field must equal the value supplied.
+     *
+     * @param mixed $test
+     * @return self
+     */
+    public function isEqualTo($test) : Element
     {
         return $this->addTest('equals', function ($value) use ($test) {
             return $value == $test;
         });
     }
 
-    /** The field must NOT equal the value supplied. */
-    public function isNotEqualTo($test)
+    /**
+    * The field must NOT equal the value supplied.
+    *
+    * @param mixed $test
+    * @return self
+    */
+    public function isNotEqualTo($test) : Element
     {
         return $this->addTest('differs', function ($value) use ($test) {
             return $value != $test;
