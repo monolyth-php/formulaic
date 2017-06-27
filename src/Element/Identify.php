@@ -31,7 +31,7 @@ trait Identify
      */
     public function id() : string
     {
-        $id = $name;
+        $id = $this->name();
         if ($this->prefix) {
             $id = implode('-', $this->prefix)."-$id";
         }
