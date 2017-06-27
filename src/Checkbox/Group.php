@@ -10,6 +10,9 @@ class Group extends Radio\Group
 
     private $value;
 
+    /**
+     * @param mixed $value New value or array of key/value pairs.
+     */
     public function setValue($value)
     {
         if (is_scalar($value)) {
@@ -24,6 +27,11 @@ class Group extends Radio\Group
         }
     }
     
+    /**
+     * Gets all values as an array.
+     *
+     * @return array
+     */
     public function & getValue()
     {
         $this->value = [];
@@ -37,7 +45,12 @@ class Group extends Radio\Group
         return $this->value;
     }
 
-    public function isRequired($min = 1, $max = null)
+    /**
+     * @param int $min Minimum number of checked items.
+     * @param int $max Optional maximum number of checked items.
+     * @return self
+     */
+    public function isRequired(int $min = 1, int $max = null)
     {
         return $this->addTest('required', function ($value) use ($min, $max) {
             $checked = 0;
