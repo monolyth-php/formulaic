@@ -15,7 +15,7 @@ abstract class Get extends Form
      * @return string The form as '<form>...</form>'.
      * @see Monolyth\Formulaic\Form::__toString
      */
-    public function __toString()
+    public function __toString() : string
     {
         $this->attributes['method'] = 'get';
         return parent::__toString();
