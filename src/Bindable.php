@@ -57,8 +57,11 @@ EOT
                 $field->bindGroup($model->{$field->name()});
                 continue;
             }
+            if ($field instanceof Button) {
+                continue;
+            }
             $name = $field->getElement()->name();
-            if ($element = $field->getElement() and property_exists($model, $name) || isset($model->$name)) {
+            if ($element = $field->getElement()) {
                 $value = $model->$name;
                 $curr = $element instanceof Radio ? $element->checked() : $element->getValue();
                 $userSupplied = $element->valueSuppliedByUser();
