@@ -12,7 +12,7 @@ class Text extends Element
      * @param int $size The size
      * @return self
      */
-    public function size($size)
+    public function size(int $size) : Element
     {
         $this->attributes['size'] = $size;
         return $this;
@@ -24,7 +24,7 @@ class Text extends Element
      * @param string $pattern Regex the field must match
      * @return self
      */
-    public function matchPattern($pattern)
+    public function matchPattern(string $pattern) : Element
     {
         $this->attributes['pattern'] = $pattern;
         return $this->addTest('pattern', function ($value) use ($pattern) {
@@ -35,10 +35,10 @@ class Text extends Element
     /**
      * The maximum length of the field.
      *
-     * @param int $lenger Max characters
+     * @param int $length Max characters
      * @return self
      */
-    public function maxLength($length)
+    public function maxLength(int $length) : Element
     {
         $this->attributes['maxlength'] = (int)$length;
         return $this->addTest('maxlength', function($value) use ($length) {
