@@ -13,18 +13,37 @@ class Fieldset extends Element\Group
     private $legend;
     private $prefix = [];
 
-    public function __construct($legend = null, callable $callback)
+    /**
+     * Constructor. Pass null for $legend to omit the `<legend>` tag.
+     * `$callback` is called with the newly created fieldset as its argument
+     * for further processing.
+     *
+     * @param string $legend Optional legend to display.
+     * @param callable $callback
+     */
+    public function __construct(string $legend = null, callable $callback)
     {
         $this->legend = $legend;
         $callback($this);
     }
 
-    public function name()
+    /**
+     * Returns the value of the legend, or an empty string if not set.
+     *
+     * @return string
+     */
+    public function name() : string
     {
-        return isset($this->legend) ? $this->legend : null;
+        return isset($this->legend) ? $this->legend : '';
     }
 
-    public function bind($model)
+    /**
+     * Binds the model to this fieldset.
+     *
+     * @param object $model
+     * @return self
+     */
+    public function bind($model) : Fieldset
     {
         return $this->bindGroup($model);
     }
