@@ -20,8 +20,11 @@ class Group extends ArrayObject
     private $prefix = [];
     private $name;
     private $value = [];
-    protected $htmlBefore = null;
-    protected $htmlAfter = null;
+    /** @var string */
+    protected $htmlBefore = '';
+    /** @var string */
+    protected $htmlAfter = '';
+    /** @var int */
     protected $htmlGroup = 4;
 
     /**
