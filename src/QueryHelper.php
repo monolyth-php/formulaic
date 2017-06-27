@@ -7,9 +7,9 @@ trait QueryHelper
     /**
      * Get the element at the specified `$index`.
      *
-     * @param string $index
+     * @param mixed $index
      */
-    public function offsetGet(string $index)
+    public function offsetGet($index)
     {
         foreach ((array)$this as $i => $element) {
             $i = (string)$i;
@@ -35,10 +35,10 @@ trait QueryHelper
     /**
      * Set an element or group or whatever at the specific `$index`.
      *
-     * @param string $index Optional index. Normal use is to either assign
+     * @param mixed $index Optional index. Normal use is to either assign
      *  elements to `$this[]` or `$this['someElementName']`.
      */
-    public function offsetSet(string $index = null, $newvalue)
+    public function offsetSet($index = null, $newvalue)
     {
         if (!isset($index)) {
             $index = count((array)$this);
