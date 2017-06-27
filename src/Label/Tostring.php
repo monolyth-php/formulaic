@@ -6,7 +6,12 @@ use Monolyth\Formulaic\Radio;
 
 trait Tostring
 {
-    public function __toString()
+    /**
+     * Returns the label and its associated element, as a string.
+     *
+     * @return string
+     */
+    public function __toString() : string
     {
         if ($id = $this->element->id()) {
             $this->attributes['for'] = $id;
