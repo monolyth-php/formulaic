@@ -8,12 +8,14 @@ class Radio extends Element
     protected $value = 1;
     protected $inGroup = false;
 
-    public function id()
+    /**
+     * Returns the ID of the element.
+     *
+     * @return string
+     */
+    public function id() : string
     {
         $name = $this->name();
-        if (is_bool($name)) {
-            return null;
-        }
         $name = preg_replace("@\[\]$@", '', $name);
         if ($name) {
             return $name.'-'.$this->value;
@@ -21,22 +23,36 @@ class Radio extends Element
         return $name;
     }
 
-    public function check($value = null)
+    /**
+     * Check (or uncheck) the radio button.
+     *
+     * @param bool $value True or false. Defaults to true.
+     */
+    public function check(bool $value = true)
     {
-        if ($value === false) {
+        if ($value == false) {
             unset($this->attributes['checked']);
         } else {
             $this->attributes['checked'] = $value;
         }
     }
 
-    public function checked()
+    /**
+     * Check if the element is currently checked.
+     *
+     * @return bool
+     */
+    public function checked() : bool
     {
         return array_key_exists('checked', $this->attributes);
     }
 
-    /** This is a required field. */
-    public function isRequired()
+    /**
+     * Mark the field as required.
+     *
+     * @return self
+     */
+    public function isRequired() : Element
     {
         $this->attributes['required'] = true;
         return $this->addTest('required', function($value) {
