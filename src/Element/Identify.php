@@ -21,7 +21,7 @@ trait Identify
      */
     public function name() : string
     {
-        return $this->attributes['name'];
+        return $this->attributes['name'] ?? '';
     }
     
     /**
