@@ -6,7 +6,12 @@ class Password extends Text
 {
     protected $attributes = ['type' => 'password'];
 
-    public function __toString()
+    /**
+     * Returns string representation of the element.
+     *
+     * @return string
+     */
+    public function __toString() : string
     {
         $old = $this->value;
         $this->value = null;
