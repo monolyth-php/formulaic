@@ -31,7 +31,7 @@ trait Attributes
         return $return ? ' '.implode(' ', $return) : '';
     }
 
-    public function attribute($name, $value = null)
+    public function attribute(string $name, string $value = null)
     {
         if ($value === false) {
             unset($this->attributes[$name]);
