@@ -40,7 +40,7 @@ class FormTest
 </form>
 EOT;
         $form = new class extends Get {};
-        $form[] = new Text;
+        $form[] = new Text('dummy');
         $form[] = new Submit;
         yield assert("$form" == $out);
     }
@@ -60,7 +60,7 @@ EOT;
 EOT;
         $form = new class extends Get {};
         $form[] = new Fieldset('Hello world!', function($fieldset) {
-            $fieldset[] = new Text;
+            $fieldset[] = new Text('test');
         });
         yield assert("$form" == $out);
     }
