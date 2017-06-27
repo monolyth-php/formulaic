@@ -6,7 +6,12 @@ class File extends Element
 {
     protected $attributes = ['type' => 'file'];
 
-    public function __toString()
+    /**
+     * A rendered version of this element.
+     *
+     * @return string
+     */
+    public function __toString() : string
     {
         $old = $this->value;
         $this->value = null;
