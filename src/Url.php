@@ -25,7 +25,7 @@ class Url extends Text
      *
      * @param string $value Optional URL, pass `null` for "undefined".
      */
-    public function setValue(string $value = null)
+    public function setValue(string $value = null) : Element
     {
         if ($value && !preg_match("@^(https?|ftp)://@", $value)) {
             $value = "http://$value";
