@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "bd52ff819477955e9e51f64c9f398c66",
-    "content-hash": "c91451bfb8a75440f5573d4ad0d06eb0",
+    "hash": "dfc1acdc135c16bb9e7f9903ac06ee4b",
+    "content-hash": "3a4ad9d93aa151b1d3dd52796a2faa40",
     "packages": [],
     "packages-dev": [
         {
@@ -200,6 +200,47 @@
             "description": "Symfony Yaml Component",
             "homepage": "https://symfony.com",
             "time": "2017-06-02 22:05:06"
+        },
+        {
+            "name": "toast/unit",
+            "version": "1.1.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/toast-php/unit.git",
+                "reference": "901641e801da4fbec12e4d0e15eb8844e1c5f438"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/toast-php/unit/zipball/901641e801da4fbec12e4d0e15eb8844e1c5f438",
+                "reference": "901641e801da4fbec12e4d0e15eb8844e1c5f438",
+                "shasum": ""
+            },
+            "require": {
+                "monomelodies/kingconf": "^1.1.0",
+                "php": ">=7",
+                "simoneast/simple-ansi-colors": "^1.0"
+            },
+            "bin": [
+                "bin/toast"
+            ],
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Toast\\Unit\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Marijn Ophorst",
+                    "email": "marijn@monomelodies.nl"
+                }
+            ],
+            "description": "Super-simple unit testing for PHP7",
+            "time": "2017-05-02 13:37:09"
         },
         {
             "name": "zeptech/annotations",
