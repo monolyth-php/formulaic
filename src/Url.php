@@ -6,7 +6,12 @@ class Url extends Text
 {
     protected $attributes = ['type' => 'url'];
 
-    public function __construct($name = null)
+    /**
+     * Constructor.
+     *
+     * @param string $name
+     */
+    public function __construct(string $name)
     {
         parent::__construct($name);
         $this->attributes['placeholder'] = 'http://';
@@ -15,7 +20,12 @@ class Url extends Text
         });
     }
 
-    public function setValue($value)
+    /**
+     * Set the value.
+     *
+     * @param string $value Optional URL, pass `null` for "undefined".
+     */
+    public function setValue(string $value = null)
     {
         if ($value && !preg_match("@^(https?|ftp)://@", $value)) {
             $value = "http://$value";
