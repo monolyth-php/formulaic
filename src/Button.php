@@ -36,7 +36,7 @@ class Button extends Element
      *
      * @return string Printable string of HTML.
      */
-    public function __toString()
+    public function __toString() : string
     {
         return '<button'.$this->attributes().'>'.$this->text.'</button>';
     }
