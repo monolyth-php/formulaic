@@ -14,8 +14,8 @@ return function () : Generator {
                 $group[] = new Formulaic\Text('baz');
             });
         });
-        yield assert('fizzbuz' == $form['foo']['bar']['baz']->getValue());
-        yield assert("$form" == <<<EOT
+        assert('fizzbuz' == $form['foo']['bar']['baz']->getValue());
+        assert("$form" == <<<EOT
 <form action="" id="test" method="post">
 <input id="test-foo-bar-baz" name="foo[bar][baz]" type="text" value="fizzbuz">
 </form>
@@ -30,15 +30,15 @@ EOT
             'test',
             [1 => 'foo', 2 => 'bar']
         ))->isRequired();
-        yield assert($form->valid() != true);
+        assert($form->valid() != true);
         $_POST['test'] = [1];
         $form = new class extends Formulaic\Post {};
         $form[] = (new Formulaic\Checkbox\Group(
             'test',
             [1 => 'foo', 2 => 'bar']
         ))->isRequired();
-        yield assert($form->valid());
-        yield assert("$form" == <<<EOT
+        assert($form->valid());
+        assert("$form" == <<<EOT
 <form action="" method="post">
 <div>
 <label for="test-1"><input checked id="test-1" name="test[]" type="checkbox" value="1"> foo</label>
@@ -56,15 +56,15 @@ EOT
             'test',
             [1 => 'foo', 2 => 'bar']
         ))->isRequired();
-        yield assert($form->valid() != true);
+        assert($form->valid() != true);
         $_POST['test'] = 1;
         $form = new class extends Formulaic\Post {};
         $form[] = (new Formulaic\Radio\Group(
             'test',
             [1 => 'foo', 2 => 'bar']
         ))->isRequired();
-        yield assert($form->valid());
-        yield assert("$form" == <<<EOT
+        assert($form->valid());
+        assert("$form" == <<<EOT
 <form action="" method="post">
 <div>
 <label for="test-1"><input checked id="test-1" name="test" required="1" type="radio" value="1"> foo</label>
@@ -85,11 +85,11 @@ EOT
             16 => 'Daredevil',
         ]);
         $bit->setValue([1, 2, 4]);
-        yield assert($bit['Batman']->getElement()->checked());
-        yield assert($bit[1]->getElement()->checked());
-        yield assert($bit[2]->getElement()->checked());
-        yield assert(!$bit[3]->getElement()->checked());
-        yield assert(!$bit[4]->getElement()->checked());
+        assert($bit['Batman']->getElement()->checked());
+        assert($bit[1]->getElement()->checked());
+        assert($bit[2]->getElement()->checked());
+        assert(!$bit[3]->getElement()->checked());
+        assert(!$bit[4]->getElement()->checked());
     };
 
     /** Non-supplied bitflags are left alone */
@@ -101,8 +101,8 @@ EOT
         ]);
         $bit->setDefaultValue(['superman']);
         $bit->setValue(['hulk']);
-        yield assert($bit->getValue()->hulk);
-        yield assert(!isset($bit->getValue()->superman));
+        assert($bit->getValue()->hulk);
+        assert(!isset($bit->getValue()->superman));
     };
 };
 
