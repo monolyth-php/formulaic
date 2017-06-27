@@ -24,16 +24,29 @@ class Group extends ArrayObject
     protected $htmlAfter = null;
     protected $htmlGroup = 4;
 
-    public function __construct($name = null, callable $callback)
+    /**
+     * Constructor.
+     *
+     * @param string $name Name of the group. Note that form elements are also
+     *  prefixed with this name (if you don't want that, don't group them!).
+     * @param callable $callback Will be called with the new group as argument,
+     *  so you can populate it.
+     */
+    public function __construct(string $name, callable $callback)
     {
-        if ($name) {
-            $this->name = $name;
-        }
+        $this->name = $name;
         $callback($this);
         $this->prefix($name);
     }
 
-    public function prefix(string $prefix)
+    /**
+     * Sets the prefix for this group (a.k.a. the name). Useful if your group
+     * requires multiple prefixes.
+     *
+     * @param string $prefix
+     * @return self
+     */
+    public function prefix(string $prefix) : Group
     {
         $this->prefix[] = $prefix;
         foreach ((array)$this as $element) {
@@ -42,19 +55,38 @@ class Group extends ArrayObject
         return $this;
     }
 
-    public function setIdPrefix($prefix = null)
+    /**
+     * Sets the ID prefix for this group. The ID prefix is optionally prefixed
+     * to all generate IDs to resolve ambiguity.
+     *
+     * @param string $prefix The prefix. Set to `null` to remove.
+     */
+    public function setIdPrefix(string $prefix = null)
     {
         foreach ((array)$this as $element) {
             $element->setIdPrefix($prefix);
         }
     }
 
-    public function name()
+    /**
+     * Returns the name of the group. For groups with multiple prefixes, all
+     * additional prefixes are ignored.
+     *
+     * @return string
+     */
+    public function name() : string
     {
-        return isset($this->name) ? $this->name : null;
+        return $this->name;
     }
 
-    public function setValue($value)
+    /**
+     * Set a group of values on elements in this group. Call with a hash or
+     * object key/value pairs, where the keys must match element names.
+     *
+     * @param iterable $value
+     * @return self
+     */
+    public function setValue($value) : Group
     {
         if (is_scalar($value) or is_null($value)) {
             return;
@@ -67,6 +99,14 @@ class Group extends ArrayObject
         return $this;
     }
 
+    /**
+     * Set a group of values on elements in this group as defaults. Call with a
+     * hash or object key/value pairs, where the keys must match element names.
+     * If any element is supplied by the user, it is ignored.
+     *
+     * @param iterable $value
+     * @return self
+     */
     public function setDefaultValue($value)
     {
         if (!$this->valueSuppliedByUser()) {
@@ -75,7 +115,12 @@ class Group extends ArrayObject
         return $this;
     }
 
-    public function & getValue()
+    /**
+     * Returns a hash of key/value pairs for all elements in this group.
+     *
+     * @return array
+     */
+    public function & getValue() : array
     {
         $this->value = [];
         foreach ((array)$this as $field) {
@@ -86,13 +131,20 @@ class Group extends ArrayObject
 
     /**
      * Convenience method to keep our interface consistent.
+     *
+     * @return self
      */
-    public function getElement()
+    public function getElement() : Group
     {
         return $this;
     }
 
-    public function __toString()
+    /**
+     * `__toString` this group.
+     *
+     * @return string
+     */
+    public function __toString() : string
     {
         $out = '';
         if ($this->htmlGroup & self::WRAP_GROUP) {
@@ -113,7 +165,14 @@ class Group extends ArrayObject
         return $out;
     }
 
-    public function valueSuppliedByUser($status = null)
+    /**
+     * Mark the entire group as set by the user.
+     *
+     * @param bool $status Optional setter. Omit if you just want to query the
+     *  current status.
+     * @return bool
+     */
+    public function valueSuppliedByUser(bool $status = null) : bool
     {
         $is = false;
         foreach ((array)$this as $field) {
@@ -136,10 +195,10 @@ class Group extends ArrayObject
      * @param int $group Bitflag stating what to wrap. Use any of the
      *                       Element\Group::WRAP_* constants. Defaults to
      *                       WRAP_ELEMENT.
-     * @return Element $this
+     * @return self
      * @see Element::wrap
      */
-    public function wrap($before, $after, $group = null)
+    public function wrap(string $before, string $after, int $group = null) : Group
     {
         if (!isset($group)) {
             $group = self::WRAP_ELEMENT;
