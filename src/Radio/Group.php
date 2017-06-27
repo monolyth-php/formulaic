@@ -25,7 +25,14 @@ class Group extends Element\Group implements Labelable
     private $prefix = [];
     private $value = null;
     
-    public function __construct($name, $options)
+    /**
+     * Constructor.
+     *
+     * @param string $name
+     * @param callable|array $options Either a callback (called with new group
+     *  as first parameter) or an array of value/label pairs.
+     */
+    public function __construct(string $name, $options)
     {
         if (is_callable($options)) {
             $options($this);
@@ -53,16 +60,31 @@ class Group extends Element\Group implements Labelable
         $this->prefix[] = $name;
     }
 
-    public function name()
+    /**
+     * Returns the base name of the group.
+     *
+     * @return string
+     */
+    public function name() : string
     {
         return $this->id();
     }
     
-    public function id()
+    /**
+     * Returns the ID (base name) of the group.
+     *
+     * @return string
+     */
+    public function id() : string
     {
         return $this->prefix[0];
     }
     
+    /**
+     * Sets the element where the value matches to `checked`.
+     *
+     * @param mixed $value
+     */
     public function setValue($value)
     {
         foreach ((array)$this as $element) {
@@ -74,6 +96,11 @@ class Group extends Element\Group implements Labelable
         }
     }
 
+    /**
+     * Gets the checked value in the group.
+     *
+     * @return mixed $value
+     */
     public function & getValue()
     {
         foreach ((array)$this as $element) {
@@ -86,7 +113,12 @@ class Group extends Element\Group implements Labelable
         return $this->value;
     }
     
-    public function isRequired()
+    /**
+     * Marks the group as required.
+     *
+     * @return self
+     */
+    public function isRequired() : Element
     {
         foreach ((array)$this as $el) {
             if (!is_object($el)) {
