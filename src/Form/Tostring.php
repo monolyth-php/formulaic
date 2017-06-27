@@ -7,7 +7,12 @@ use Monolyth\Formulaic\Select;
 
 trait Tostring
 {
-    public function __toString()
+    /**
+     * Returns a rendered version of the form.
+     *
+     * @return string
+     */
+    public function __toString() : string
     {
         if ($name = $this->name()) {
             $this->attributes['id'] = $name;
