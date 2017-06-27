@@ -95,7 +95,7 @@ EOT;
 </form>
 EOT;
         $form = new class extends Post {};
-        $form[] = new File;
+        $form[] = new File('test');
         yield assert("$form" == $out);
     }
 
