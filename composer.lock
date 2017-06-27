@@ -4,22 +4,22 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "2071b2a3144fea7618ae89eb8812c03c",
-    "content-hash": "a685686026a3d0a722e681bd49877a7a",
+    "hash": "bd52ff819477955e9e51f64c9f398c66",
+    "content-hash": "c91451bfb8a75440f5573d4ad0d06eb0",
     "packages": [],
     "packages-dev": [
         {
             "name": "gentry/gentry",
-            "version": "0.10.2",
+            "version": "0.10.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/gentry-php/gentry.git",
-                "reference": "096849915d0e7957f61470829df6961709afc2d3"
+                "reference": "4e97d4d754b3d6624a3a3d24c63d5c80ad9d0726"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/gentry-php/gentry/zipball/096849915d0e7957f61470829df6961709afc2d3",
-                "reference": "096849915d0e7957f61470829df6961709afc2d3",
+                "url": "https://api.github.com/repos/gentry-php/gentry/zipball/4e97d4d754b3d6624a3a3d24c63d5c80ad9d0726",
+                "reference": "4e97d4d754b3d6624a3a3d24c63d5c80ad9d0726",
                 "shasum": ""
             },
             "require": {
@@ -48,7 +48,7 @@
                 }
             ],
             "description": "PHP unit test generation tools",
-            "time": "2016-07-15 06:45:41"
+            "time": "2016-10-09 14:45:24"
         },
         {
             "name": "monomelodies/kingconf",
@@ -148,25 +148,31 @@
         },
         {
             "name": "symfony/yaml",
-            "version": "v3.1.2",
+            "version": "v3.3.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/yaml.git",
-                "reference": "2884c26ce4c1d61aebf423a8b912950fe7c764de"
+                "reference": "9752a30000a8ca9f4b34b5227d15d0101b96b063"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/yaml/zipball/2884c26ce4c1d61aebf423a8b912950fe7c764de",
-                "reference": "2884c26ce4c1d61aebf423a8b912950fe7c764de",
+                "url": "https://api.github.com/repos/symfony/yaml/zipball/9752a30000a8ca9f4b34b5227d15d0101b96b063",
+                "reference": "9752a30000a8ca9f4b34b5227d15d0101b96b063",
                 "shasum": ""
             },
             "require": {
                 "php": ">=5.5.9"
             },
+            "require-dev": {
+                "symfony/console": "~2.8|~3.0"
+            },
+            "suggest": {
+                "symfony/console": "For validating YAML files using the lint command"
+            },
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "3.1-dev"
+                    "dev-master": "3.3-dev"
                 }
             },
             "autoload": {
@@ -193,7 +199,7 @@
             ],
             "description": "Symfony Yaml Component",
             "homepage": "https://symfony.com",
-            "time": "2016-06-29 05:41:56"
+            "time": "2017-06-02 22:05:06"
         },
         {
             "name": "zeptech/annotations",
@@ -242,7 +248,7 @@
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {
-        "php": ">=5.4"
+        "php": ">=7.0"
     },
     "platform-dev": {
         "php": ">=7.0"
