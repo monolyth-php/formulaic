@@ -59,7 +59,7 @@ class ElementTest
     public function testCheckbox()
     {
         $input = new Formulaic\Checkbox('test');
-        yield assert("$input" == '<input type="checkbox" value="1">');
+        yield assert("$input" == '<input id="test-1" name="test" type="checkbox" value="1">');
     }
 
     /**
@@ -89,7 +89,7 @@ EOT;
     public function testDate()
     {
         $input = new Formulaic\Date('test');
-        yield assert("$input" == '<input type="date">');
+        yield assert("$input" == '<input id="test" name="test" type="date">');
         $input->setMin('2010-01-01')->setMax('2012-01-01');
         $input->setValue('2009-01-01');
         yield assert($input->valid() != true);
@@ -107,7 +107,7 @@ EOT;
     public function testDatetime()
     {
         $input = new Formulaic\Datetime('test');
-        yield assert("$input" == '<input type="datetime">');
+        yield assert("$input" == '<input id="test" name="test" type="datetime">');
         $input->setMin('2009-01-01 12:00:00')->setMax('2009-01-02 12:00:00');
         $input->setValue('2009-01-01');
         yield assert($input->valid() != true);
@@ -125,7 +125,7 @@ EOT;
     public function testEmail()
     {
         $input = new Formulaic\Email('test');
-        yield assert("$input" == '<input type="email">');
+        yield assert("$input" == '<input id="test" name="test" type="email">');
         $input->setValue('not an email');
         yield assert($input->valid() != true);
         $input->setValue('foo@bar.com');
@@ -138,7 +138,7 @@ EOT;
     public function testFile()
     {
         $input = new Formulaic\File('test');
-        yield assert("$input" == '<input type="file">');
+        yield assert("$input" == '<input id="test" name="test" type="file">');
     }
 
     /**
@@ -147,7 +147,7 @@ EOT;
     public function testHidden()
     {
         $input = new Formulaic\Hidden('test');
-        yield assert("$input" == '<input type="hidden">');
+        yield assert("$input" == '<input id="test" name="test" type="hidden">');
     }
 
     /**
@@ -157,7 +157,7 @@ EOT;
     {
         $input = new Formulaic\Number('test');
         $input->setValue('42');
-        yield assert("$input" == '<input step="1" type="number" value="42">');
+        yield assert("$input" == '<input id="test" name="test" step="1" type="number" value="42">');
         $input->setValue('foo');
         yield assert($input->valid() != true);
         $input->setMin(9);
@@ -187,7 +187,7 @@ EOT;
     {
         $input = new Formulaic\Password('test');
         $input->setValue('secret');
-        yield assert("$input" == '<input type="password">');
+        yield assert("$input" == '<input id="test" name="test" type="password">');
     }
 
     /**
@@ -196,7 +196,7 @@ EOT;
     public function testRadio()
     {
         $input = new Formulaic\Radio('test');
-        yield assert("$input" == '<input type="radio" value="1">');
+        yield assert("$input" == '<input id="test" name="test" type="radio" value="1">');
     }
 
     /**
@@ -205,7 +205,7 @@ EOT;
     public function testSearch()
     {
         $input = new Formulaic\Search('test');
-        yield assert("$input" == '<input type="search">');
+        yield assert("$input" == '<input id="test" name="test" type="search">');
     }
 
     /**
@@ -215,7 +215,7 @@ EOT;
     {
         $input = new Formulaic\Select('test', [1 => 'foo', 2 => 'bar']);
         yield assert("$input" == <<<EOT
-<select>
+<select id="test" name="test">
 <option value="1">foo</option>
 <option value="2">bar</option>
 </select>
@@ -233,7 +233,7 @@ EOT
             $select[] = new Formulaic\Select\Option(2, 'bar');
         });
         yield assert("$input" == <<<EOT
-<select>
+<select id="test" name="test">
 <option value="1">foo</option>
 <option value="2">bar</option>
 </select>
@@ -242,27 +242,13 @@ EOT
     }
     
     /**
-     * Select boxes with a name.
-     */
-    public function testSelectWithName()
-    {
-        $input = new Formulaic\Select('test', [1 => 'foo']);
-        yield assert("$input" == <<<EOT
-<select id="test" name="test">
-<option value="1">foo</option>
-</select>
-EOT
-        );
-    }
-
-    /**
      * Telephone numbers.
      */
     public function testTel()
     {
         $input = new Formulaic\Tel('test');
         $input->setValue('612345678');
-        yield assert("$input" == '<input type="tel" value="0612345678">');
+        yield assert("$input" == '<input id="test" name="test" type="tel" value="0612345678">');
         $input->setValue('foo');
         yield assert($input->valid() != true);
     }
@@ -274,7 +260,7 @@ EOT
     {
         $input = new Formulaic\Text('test');
         $input->setValue('"');
-        yield assert("$input" == '<input type="text" value="&quot;">');
+        yield assert("$input" == '<input id="test" name="test" type="text" value="&quot;">');
     }
 
     /**
@@ -284,7 +270,7 @@ EOT
     {
         $input = new Formulaic\Textarea('test');
         $input->setValue('"');
-        yield assert("$input" == '<textarea>&quot;</textarea>');
+        yield assert("$input" == '<textarea id="test" name="test">&quot;</textarea>');
     }
 
     /**
@@ -297,7 +283,7 @@ EOT
         yield assert($input->valid() != true);
         $input->setValue('12:00:00');
         yield assert($input->valid());
-        yield assert("$input" == '<input type="time" value="12:00:00">');
+        yield assert("$input" == '<input id="test" name="test" type="time" value="12:00:00">');
 
         // Test require past time
         $input = new Formulaic\Time('test');
@@ -328,8 +314,8 @@ EOT
         $input2->setValue('http://google.com');
         yield assert($input2->valid());
         yield assert("$input\n$input2" == <<<EOT
-<input placeholder="http://" type="url" value="http://not an url">
-<input placeholder="http://" type="url" value="http://google.com">
+<input id="test" name="test" placeholder="http://" type="url" value="http://not an url">
+<input id="test" name="test" placeholder="http://" type="url" value="http://google.com">
 EOT
         );
     }
