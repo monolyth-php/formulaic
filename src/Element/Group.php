@@ -44,9 +44,8 @@ class Group extends ArrayObject
      * requires multiple prefixes.
      *
      * @param string $prefix
-     * @return self
      */
-    public function prefix(string $prefix) : Group
+    public function prefix(string $prefix)
     {
         $this->prefix[] = $prefix;
         foreach ((array)$this as $element) {
@@ -84,9 +83,8 @@ class Group extends ArrayObject
      * object key/value pairs, where the keys must match element names.
      *
      * @param iterable $value
-     * @return self
      */
-    public function setValue($value) : Group
+    public function setValue($value)
     {
         if (is_scalar($value) or is_null($value)) {
             return;
@@ -96,7 +94,6 @@ class Group extends ArrayObject
                 $field->getElement()->setValue($val);
             }
         }
-        return $this;
     }
 
     /**
