@@ -4,7 +4,7 @@ namespace Monolyth\Formulaic\Element;
 
 trait Identify
 {
-    public function prefix($prefix)
+    public function prefix(string $prefix)
     {
         array_unshift($this->prefix, $prefix);
     }
