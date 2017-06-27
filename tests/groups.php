@@ -1,19 +1,11 @@
 <?php
 
-namespace Monolyth\Formulaic\Test;
-
 use Monolyth\Formulaic;
 
-/**
- * Test element groups
- */
-class GroupTest
-{
-    /**
-     * Groups can contain groups
-     */
-    public function testGroupInGroup()
-    {
+/** Test element groups */
+return function () : Generator {
+    /** Groups can contain groups */
+    yield function () {
         $_POST['foo'] = ['bar' => ['baz' => 'fizzbuz']];
         $form = new class extends Formulaic\Post {};
         $form->attribute('id', 'test');
@@ -29,13 +21,10 @@ class GroupTest
 </form>
 EOT
         );
-    }
+    };
 
-    /**
-     * Groups of checkboxes.
-     */
-    public function testCheckboxGroup()
-    {
+    /** Groups of checkboxes */
+    yield function () {
         $form = new class extends Formulaic\Post {};
         $form[] = (new Formulaic\Checkbox\Group(
             'test',
@@ -58,13 +47,10 @@ EOT
 </form>
 EOT
         );
-    }
+    };
 
-    /**
-     * Groups of radio buttons.
-     */
-    public function testRadioGroup()
-    {
+    /** Groups of radio buttons */
+    yield function () {
         $form = new class extends Formulaic\Post {};
         $form[] = (new Formulaic\Radio\Group(
             'test',
@@ -87,13 +73,10 @@ EOT
 </form>
 EOT
         );
-    }
+    };
 
-    /**
-     * Bitflags.
-     */
-    public function testBitflag()
-    {
+    /** Bitflags */
+    yield function () {
         $bit = new Formulaic\Bitflag('superhero', [
             1 => 'Batman',
             2 => 'Superman',
@@ -107,13 +90,10 @@ EOT
         yield assert($bit[2]->getElement()->checked());
         yield assert(!$bit[3]->getElement()->checked());
         yield assert(!$bit[4]->getElement()->checked());
-    }
+    };
 
-    /**
-     * Non-supplied bitflags are left alone.
-     */
-    public function testNonsuppliedBitflagsAreLeftAlone()
-    {
+    /** Non-supplied bitflags are left alone */
+    yield function () {
         $bit = new Formulaic\Bitflag('superhero', [
             'spidey' => 'Spiderman',
             'hulk' => 'The Hulk',
@@ -123,6 +103,6 @@ EOT
         $bit->setValue(['hulk']);
         yield assert($bit->getValue()->hulk);
         yield assert(!isset($bit->getValue()->superman));
-    }
-}
+    };
+};
 
