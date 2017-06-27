@@ -23,15 +23,15 @@ abstract class Form extends ArrayObject implements JsonSerializable
     protected $attributes = [];
 
     /**
-     * Return the form name if set, or null.
+     * Returns name of the form.
      *
-     * @return string|null The name, or null.
+     * @return string
      */
-    public function name()
+    public function name() : string
     {
-        return isset($this->attributes['name']) ?
-            $this->attributes['name'] :
-            null;
+        return isset($this->attributes['name'])
+            ? $this->attributes['name']
+            : '';
     }
 
     /**
@@ -81,9 +81,9 @@ abstract class Form extends ArrayObject implements JsonSerializable
      *
      * @param object The model to bind.
      * @see Monolyth\Formulaic\Bindable::bindGroup
-     * @return static $this
+     * @return self
      */
-    public function bind($model)
+    public function bind($model) : Form
     {
         return $this->bindGroup($model);
     }
