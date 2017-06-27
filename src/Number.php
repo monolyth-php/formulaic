@@ -6,14 +6,25 @@ class Number extends Text
 {
     protected $attributes = ['type' => 'number', 'step' => 1];
 
-    public function __construct($name = null)
+    /**
+     * Constructor.
+     *
+     * @param string $name
+     */
+    public function __construct(string $name)
     {
         parent::__construct($name);
         $this->addTest('numeric', 'is_numeric');
         $this->setStep(1);
     }
 
-    public function setMin($min)
+    /**
+     * Set the minimum value.
+     *
+     * @param float $min
+     * @return self
+     */
+    public function setMin(float $min) : Number
     {
         $this->attributes['min'] = $min;
         return $this->addTest('min', function ($value) use ($min) {
@@ -21,7 +32,13 @@ class Number extends Text
         });
     }
 
-    public function setMax($max)
+    /**
+     * Set the maximum value.
+     *
+     * @param float $max
+     * @return self
+     */
+    public function setMax(float $max) : Number
     {
         $this->attributes['max'] = $max;
         return $this->addTest('max', function ($value) use ($max) {
@@ -29,7 +46,13 @@ class Number extends Text
         });
     }
 
-    public function setStep($step)
+    /**
+     * Set the allowed step interval.
+     *
+     * @param float $step
+     * @return self
+     */
+    public function setStep(float $step) : Number
     {
         $this->attributes['step'] = $step;
         $offset = isset($this->attributes['min']) ?
@@ -40,14 +63,22 @@ class Number extends Text
         });
     }
 
-    /** The field must contain an integer. */
-    public function isInteger()
+    /**
+     * The field must contain an integer.
+     *
+     * @return self
+     */
+    public function isInteger() : Number
     {
         return $this->addTest('integer', 'is_int');
     }
     
-    /** The field must contain a number greater than zero. */
-    public function isGreaterThanZero()
+    /**
+     * The field must contain a number greater than zero.
+     *
+     * @return self
+     */
+    public function isGreaterThanZero() : Number
     {
         return $this->addTest('positive', function ($value) {
             return (float)$value > 0;
