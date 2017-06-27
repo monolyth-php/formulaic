@@ -2,7 +2,7 @@
 
 namespace Monolyth\Formulaic;
 
-abstract class Element implements Labelable
+abstract class Element implements Labelable, Testable
 {
     use Element\Tostring;
     use Element\Identify;
