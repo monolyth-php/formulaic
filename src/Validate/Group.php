@@ -4,7 +4,12 @@ namespace Monolyth\Formulaic\Validate;
 
 trait Group
 {
-    public function valid()
+    /**
+     * Check whether the group is valid.
+     *
+     * @return bool
+     */
+    public function valid() : bool
     {
         if ($this->privateErrors()) {
             return false;
@@ -16,8 +21,13 @@ trait Group
         }
         return true;
     }
-    
-    public function errors()
+
+    /**
+     * Returns all errors for this group.
+     *
+     * @return array
+     */
+    public function errors() : array
     {
         $errors = $this->privateErrors();
         foreach ((array)$this as $element) {
@@ -29,7 +39,12 @@ trait Group
         return $errors;
     }
 
-    private function privateErrors()
+    /**
+     * Helper function for internal use.
+     *
+     * @return array
+     */
+    private function privateErrors() : array
     {
         $errors = [];
         if (isset($this->tests)) {
