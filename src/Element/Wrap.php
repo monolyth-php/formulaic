@@ -2,6 +2,8 @@
 
 namespace Monolyth\Formulaic\Element;
 
+use Monolyth\Formulaic\Element;
+
 trait Wrap
 {
     protected $htmlBefore = null;
@@ -13,9 +15,9 @@ trait Wrap
      *
      * @param string $before HTML to prepend.
      * @param string $after HTML to append.
-     * @return Element $this
+     * @return self
      */
-    public function wrap($before, $after)
+    public function wrap(string $before, string $after) : Element
     {
         $this->htmlBefore = $before;
         $this->htmlAfter = $after;
