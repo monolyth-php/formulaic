@@ -11,7 +11,15 @@ class Bitflag extends Checkbox\Group
     protected $value = null;
     protected $class = null;
 
-    public function __construct($label, $options, $class = null)
+    /**
+     * Constructor.
+     *
+     * @param string $label Label for the bitflag.
+     * @param array $options Hash of key/value options.
+     * @param mixed $class Optional name of class or object to store bitflag
+     *  state on.
+     */
+    public function __construct(string $label, array $options, $class = null)
     {
         parent::__construct($label, $options);
         $default = new Hidden("{$label}[]");
@@ -30,6 +38,11 @@ class Bitflag extends Checkbox\Group
         }
     }
 
+    /**
+     * Set the current value.
+     *
+     * @param mixed $value Object or array containing new state.
+     */
     public function setValue($value)
     {
         if (is_object($value)) {
@@ -78,12 +91,23 @@ class Bitflag extends Checkbox\Group
         }
     }
 
+    /**
+     * Get the current value.
+     *
+     * @return object
+     */
     public function & getValue()
     {
         return $this->value;
     }
 
-    public function hasBit($name)
+    /**
+     * Check if the bit identified by %name is on.
+     *
+     * @param string $name
+     * @return bool True if on, else false.
+     */
+    public function hasBit(string $name) : bool
     {
         foreach ((array)$this as $element) {
             if ($element->getElement()->getValue() == $name) {
