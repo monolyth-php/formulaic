@@ -15,7 +15,7 @@ class ElementTest
      */
     public function testDefaultTests()
     {
-        $input = new Formulaic\Text;
+        $input = new Formulaic\Text('test');
         yield assert($input->valid());
 
         // Required:
@@ -58,7 +58,7 @@ class ElementTest
      */
     public function testCheckbox()
     {
-        $input = new Formulaic\Checkbox;
+        $input = new Formulaic\Checkbox('test');
         yield assert("$input" == '<input type="checkbox" value="1">');
     }
 
@@ -88,7 +88,7 @@ EOT;
      */
     public function testDate()
     {
-        $input = new Formulaic\Date;
+        $input = new Formulaic\Date('test');
         yield assert("$input" == '<input type="date">');
         $input->setMin('2010-01-01')->setMax('2012-01-01');
         $input->setValue('2009-01-01');
@@ -106,7 +106,7 @@ EOT;
      */
     public function testDatetime()
     {
-        $input = new Formulaic\Datetime;
+        $input = new Formulaic\Datetime('test');
         yield assert("$input" == '<input type="datetime">');
         $input->setMin('2009-01-01 12:00:00')->setMax('2009-01-02 12:00:00');
         $input->setValue('2009-01-01');
@@ -124,7 +124,7 @@ EOT;
      */
     public function testEmail()
     {
-        $input = new Formulaic\Email;
+        $input = new Formulaic\Email('test');
         yield assert("$input" == '<input type="email">');
         $input->setValue('not an email');
         yield assert($input->valid() != true);
@@ -137,7 +137,7 @@ EOT;
      */
     public function testFile()
     {
-        $input = new Formulaic\File;
+        $input = new Formulaic\File('test');
         yield assert("$input" == '<input type="file">');
     }
 
@@ -146,7 +146,7 @@ EOT;
      */
     public function testHidden()
     {
-        $input = new Formulaic\Hidden;
+        $input = new Formulaic\Hidden('test');
         yield assert("$input" == '<input type="hidden">');
     }
 
@@ -155,7 +155,7 @@ EOT;
      */
     public function testNumber()
     {
-        $input = new Formulaic\Number;
+        $input = new Formulaic\Number('test');
         $input->setValue('42');
         yield assert("$input" == '<input step="1" type="number" value="42">');
         $input->setValue('foo');
@@ -185,7 +185,7 @@ EOT;
      */
     public function testPassword()
     {
-        $input = new Formulaic\Password;
+        $input = new Formulaic\Password('test');
         $input->setValue('secret');
         yield assert("$input" == '<input type="password">');
     }
@@ -195,7 +195,7 @@ EOT;
      */
     public function testRadio()
     {
-        $input = new Formulaic\Radio;
+        $input = new Formulaic\Radio('test');
         yield assert("$input" == '<input type="radio" value="1">');
     }
 
@@ -204,7 +204,7 @@ EOT;
      */
     public function testSearch()
     {
-        $input = new Formulaic\Search;
+        $input = new Formulaic\Search('test');
         yield assert("$input" == '<input type="search">');
     }
 
@@ -213,7 +213,7 @@ EOT;
      */
     public function testSelectSimple()
     {
-        $input = new Formulaic\Select(null, [1 => 'foo', 2 => 'bar']);
+        $input = new Formulaic\Select('test', [1 => 'foo', 2 => 'bar']);
         yield assert("$input" == <<<EOT
 <select>
 <option value="1">foo</option>
@@ -228,7 +228,7 @@ EOT
      */
     public function testSelectManual()
     {
-        $input = new Formulaic\Select(null, function ($select) {
+        $input = new Formulaic\Select('test', function ($select) {
             $select[] = new Formulaic\Select\Option(1, 'foo');
             $select[] = new Formulaic\Select\Option(2, 'bar');
         });
@@ -260,7 +260,7 @@ EOT
      */
     public function testTel()
     {
-        $input = new Formulaic\Tel;
+        $input = new Formulaic\Tel('test');
         $input->setValue('612345678');
         yield assert("$input" == '<input type="tel" value="0612345678">');
         $input->setValue('foo');
@@ -272,7 +272,7 @@ EOT
      */
     public function testText()
     {
-        $input = new Formulaic\Text;
+        $input = new Formulaic\Text('test');
         $input->setValue('"');
         yield assert("$input" == '<input type="text" value="&quot;">');
     }
@@ -282,7 +282,7 @@ EOT
      */
     public function testTextarea()
     {
-        $input = new Formulaic\Textarea;
+        $input = new Formulaic\Textarea('test');
         $input->setValue('"');
         yield assert("$input" == '<textarea>&quot;</textarea>');
     }
@@ -292,7 +292,7 @@ EOT
      */
     public function testTime()
     {
-        $input = new Formulaic\Time;
+        $input = new Formulaic\Time('test');
         $input->setValue('bla');
         yield assert($input->valid() != true);
         $input->setValue('12:00:00');
@@ -300,7 +300,7 @@ EOT
         yield assert("$input" == '<input type="time" value="12:00:00">');
 
         // Test require past time
-        $input = new Formulaic\Time;
+        $input = new Formulaic\Time('test');
         $input->isInPast();
         $input->setValue(time() + 100);
         yield assert($input->valid() != true);
@@ -308,7 +308,7 @@ EOT
         yield assert($input->valid());
 
         // Test require future time
-        $input = new Formulaic\Time;
+        $input = new Formulaic\Time('test');
         $input->isInFuture();
         $input->setValue(time() - 100);
         yield assert($input->valid() != true);
@@ -321,10 +321,10 @@ EOT
      */
     public function testUrl()
     {
-        $input = new Formulaic\Url;
+        $input = new Formulaic\Url('test');
         $input->setValue('not an url');
         yield assert($input->valid() != true);
-        $input2 = new Formulaic\Url;
+        $input2 = new Formulaic\Url('test');
         $input2->setValue('http://google.com');
         yield assert($input2->valid());
         yield assert("$input\n$input2" == <<<EOT
