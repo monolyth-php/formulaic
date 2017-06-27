@@ -4,7 +4,7 @@ namespace Monolyth\Formulaic;
 
 use ArrayObject;
 
-class Select extends ArrayObject implements Labelable
+class Select extends ArrayObject implements Labelable, Testable
 {
     use Attributes;
     use Element\Identify;
