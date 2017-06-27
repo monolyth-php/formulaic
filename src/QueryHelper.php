@@ -4,9 +4,13 @@ namespace Monolyth\Formulaic;
 
 trait QueryHelper
 {
-    public function offsetGet($index)
+    /**
+     * Get the element at the specified `$index`.
+     *
+     * @param string $index
+     */
+    public function offsetGet(string $index)
     {
-        $index = (string)$index;
         foreach ((array)$this as $i => $element) {
             $i = (string)$i;
             if ($element instanceof Label
@@ -28,7 +32,13 @@ trait QueryHelper
         return null;
     }
 
-    public function offsetSet($index, $newvalue)
+    /**
+     * Set an element or group or whatever at the specific `$index`.
+     *
+     * @param string $index Optional index. Normal use is to either assign
+     *  elements to `$this[]` or `$this['someElementName']`.
+     */
+    public function offsetSet(string $index = null, $newvalue)
     {
         if (!isset($index)) {
             $index = count((array)$this);
@@ -39,6 +49,11 @@ trait QueryHelper
         parent::offsetSet($index, $newvalue);
     }
     
+    /**
+     * Append any item to the form.
+     *
+     * @param mixed $newvalue
+     */
     public function append($newvalue)
     {
         $index = count((array)$this);
