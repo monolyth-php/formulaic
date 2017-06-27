@@ -8,29 +8,51 @@ class Option extends Element
 {
     private $label;
 
-    public function __construct($value, $label)
+    /**
+     * Constrcutor.
+     *
+     * @param string $value
+     * @param string $label
+     */
+    public function __construct(string $value, string $label)
     {
         $this->value = $value;
         $this->label = $label;
         parent::__construct();
     }
 
-    public function getName()
+    /**
+     * Returns the label of the element.
+     *
+     * @return string
+     */
+    public function getName() : string
     {
         return $this->label;
     }
 
+    /**
+     * Mark the option as selected.
+     */
     public function selected()
     {
         $this->attributes['selected'] = null;
     }
 
+    /**
+     * Mark the option as unselected.
+     */
     public function unselected()
     {
         unset($this->attributes['selected']);
     }
 
-    public function __toString()
+    /**
+     * Returns the option rendered as string.
+     *
+     * @return string
+     */
+    public function __toString() : string
     {
         return '<option'.$this->attributes().'>'.$this->label.'</option>';
     }
