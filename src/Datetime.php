@@ -22,7 +22,7 @@ class Datetime extends Text
      * @param int $timestamp Timestamp for the new datetime value.
      * @return self
      */
-    public function setValue(string $timestamp) : Element
+    public function setValue(string $timestamp = null) : Element
     {
         return parent::setValue($this->format($timestamp));
     }
