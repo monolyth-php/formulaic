@@ -9,36 +9,64 @@ class Label extends Element
     protected $label;
     protected $element;
 
+    /**
+     * Constructor.
+     *
+     * @param string $label The text of the label.
+     * @param Monolyth\Formulaic\Labelable $element Any labelable element.
+     */
     public function __construct($label, Labelable $element)
     {
         $this->label = $label;
         $this->element = $element;
     }
 
-    public function name()
+    /**
+     * Get the text of the label.
+     *
+     * @return string
+     */
+    public function name() : string
     {
         return $this->label;
     }
 
-    public function getElement()
+    /**
+     * Get the associated element.
+     *
+     * @return Monolyth\Formulaic\Labelable
+     */
+    public function getElement() : Labelable
     {
         return $this->element;
     }
 
+    /**
+     * Get the associated element's value.
+     *
+     * @return mixed
+     */
     public function & getValue()
     {
         return $this->element->getValue();
     }
 
+    /*
     public function raw()
     {
         return $this->txt;
     }
+    */
 
+    /**
+     * Prefix label _and_ element with $prefix.
+     *
+     * @param string $prefix
+     */
     public function prefix(string $prefix)
     {
         parent::prefix($prefix);
-        return $this->element->prefix($prefix);
+        $this->element->prefix($prefix);
     }
 }
 
