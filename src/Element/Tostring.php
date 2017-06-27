@@ -4,7 +4,12 @@ namespace Monolyth\Formulaic\Element;
 
 trait Tostring
 {
-    public function __toString()
+    /**
+     * Returns a rendered string representation of the element.
+     *
+     * @return string
+     */
+    public function __toString() : string
     {
         if ($id = $this->id()) {
             if (isset($this->idPrefix)) {
