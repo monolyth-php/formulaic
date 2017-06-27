@@ -4,12 +4,22 @@ namespace Monolyth\Formulaic\Validate;
 
 trait Element
 {
-    public function valid()
+    /**
+     * Check whether the element is valid.
+     *
+     * @return bool
+     */
+    public function valid() : bool
     {
         return $this->errors() ? false : true;
     }
 
-    public function errors()
+    /**
+     * Get array of errors for element.
+     *
+     * @return array
+     */
+    public function errors() : array
     {
         $errors = [];
         foreach ($this->tests as $error => $test) {
@@ -17,7 +27,7 @@ trait Element
                 $errors[] = $error;
             }
         }
-        return $errors ? $errors : null;
+        return $errors;
     }
 }
 
