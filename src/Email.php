@@ -6,7 +6,12 @@ class Email extends Text
 {
     protected $attributes = ['type' => 'email'];
 
-    public function __construct($name = null)
+    /**
+     * Constructor.
+     *
+     * @param string $name Name of the element.
+     */
+    public function __construct(string $name)
     {
         parent::__construct($name);
         $this->addTest('valid', function ($value) {
