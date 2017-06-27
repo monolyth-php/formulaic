@@ -6,7 +6,12 @@ class Tel extends Text
 {
     protected $attributes = ['type' => 'tel'];
 
-    public function __construct($name = null)
+    /**
+     * Constructor.
+     *
+     * @param string $name
+     */
+    public function __construct(string $name)
     {
         parent::__construct($name);
         $this->addTest('numeric', function ($value) {
@@ -14,7 +19,12 @@ class Tel extends Text
         });
     }
 
-    public function setValue($value)
+    /**
+     * Set the value of the element.
+     *
+     * @param string $value Optional value (null for "undefined").
+     */
+    public function setValue(string $value = null)
     {
         if (!is_null($value)) {
             $tmp = preg_replace('/[^\d]/', '', $value);
