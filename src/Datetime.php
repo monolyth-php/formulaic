@@ -8,9 +8,9 @@ class Datetime extends Text
     protected $format = 'Y-m-d H:i:s';
 
     /**
-     * @param string $name Optional name of the element.
+     * @param string $name Name of the element.
      */
-    public function __construct(string $name = null)
+    public function __construct(string $name)
     {
         parent::__construct($name);
         $this->addTest('valid', function ($value) {
@@ -22,7 +22,7 @@ class Datetime extends Text
      * @param int $timestamp Timestamp for the new datetime value.
      * @return self
      */
-    public function setValue(int $timestamp) : Element
+    public function setValue(string $timestamp) : Element
     {
         return parent::setValue($this->format($timestamp));
     }
