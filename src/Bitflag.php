@@ -94,11 +94,17 @@ class Bitflag extends Checkbox\Group
     /**
      * Get the current value.
      *
-     * @return object
+     * @return array
      */
-    public function & getValue()
+    public function & getValue() : array
     {
-        return $this->value;
+        $array = [];
+        foreach ($this->value as $key => $value) {
+            if ($this->hasBit($key)) {
+                $array[] = $key;
+            }
+        }
+        return $array;
     }
 
     /**
