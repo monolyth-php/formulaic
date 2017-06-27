@@ -7,7 +7,10 @@ class Datetime extends Text
     protected $attributes = ['type' => 'datetime'];
     protected $format = 'Y-m-d H:i:s';
 
-    public function __construct($name = null)
+    /**
+     * @param string $name Optional name of the element.
+     */
+    public function __construct(string $name = null)
     {
         parent::__construct($name);
         $this->addTest('valid', function ($value) {
@@ -15,50 +18,63 @@ class Datetime extends Text
         });
     }
 
-    public function setValue($value)
+    /**
+     * @param int $timestamp Timestamp for the new datetime value.
+     * @return self
+     */
+    public function setValue(int $timestamp) : Element
     {
-        if (is_int($value)) {
-            $value = date($this->format, $value);
-        } elseif ($time = strtotime($value)) {
-            $value = date($this->format, $time);
-        }
-        return parent::setValue($value);
+        return parent::setValue($this->format($timestamp));
     }
 
-    public function isInPast()
+    /**
+     * Requires the datetime to be in the past.
+     *
+     * @return self
+     */
+    public function isInPast() : Element
     {
         return $this->addTest('inpast', function ($value) {
             return strtotime($value) < time();
         });
     }
 
-    public function isInFuture()
+    /**
+     * Requires the datetime to be in the future.
+     *
+     * @return self
+     */
+    public function isInFuture() : Element
     {
         return $this->addTest('infuture', function ($value) {
             return strtotime($value) > time();
         });
     }
 
-    public function setMin($min)
+    /**
+     * Set the minimum datetime.
+     *
+     * @param int $min Minimum timestamp.
+     * @return self
+     */
+    public function setMin(int $min) : Element
     {
-        if (is_int($min)) {
-            $min = date($this->format, $min);
-        } elseif ($time = strtotime($min)) {
-            $min = date($this->format, $time);
-        }
+        $min = date($this->format, $min);
         $this->attributes['min'] = $min;
         return $this->addTest('min', function ($value) use ($min) {
             return $value >= $min;
         });
     }
 
-    public function setMax($max)
+    /**
+     * Set the maximum datetime.
+     *
+     * @param int $max Maximum timestamp.
+     * @return self
+     */
+    public function setMax(int $max) : Element
     {
-        if (is_int($max)) {
-            $max = date($this->format, $max);
-        } elseif ($time = strtotime($max)) {
-            $max = date($this->format, $time);
-        }
+        $max = date($this->format, $max);
         $this->attributes['max'] = $max;
         return $this->addTest('max', function ($value) use ($max) {
             return $value <= $max;
