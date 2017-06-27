@@ -35,12 +35,12 @@ class FormTest
     {
         $out = <<<EOT
 <form action="" method="get">
-<div><input type="text"></div>
+<div><input id="test" name="test" type="text"></div>
 <div><button type="submit"></button></div>
 </form>
 EOT;
         $form = new class extends Get {};
-        $form[] = new Text('dummy');
+        $form[] = new Text('test');
         $form[] = new Submit;
         yield assert("$form" == $out);
     }
@@ -54,7 +54,7 @@ EOT;
 <form action="" method="get">
 <fieldset>
 <legend>Hello world!</legend>
-<div><input type="text"></div>
+<div><input id="test" name="test" type="text"></div>
 </fieldset>
 </form>
 EOT;
@@ -91,7 +91,7 @@ EOT;
     {
         $out = <<<EOT
 <form action="" enctype="multipart/form-data" method="post">
-<div><input type="file"></div>
+<div><input id="test" name="test" type="file"></div>
 </form>
 EOT;
         $form = new class extends Post {};
