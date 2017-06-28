@@ -9,7 +9,7 @@ trait Attributes
         $return = [];
         ksort($this->attributes);
         foreach ($this->attributes as $name => $value) {
-            if (is_null($value)) {
+            if (is_null($value) || $value === true) {
                 if ($name == 'value') {
                     continue;
                 }
