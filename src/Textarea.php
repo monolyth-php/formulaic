@@ -22,6 +22,12 @@ class Textarea extends Element
      */
     public function __toString() : string
     {
+        if ($id = $this->id()) {
+            if (isset($this->idPrefix)) {
+                $id = "{$this->idPrefix}-$id";
+            }
+            $this->attributes['id'] = $id;
+        }
         return $this->htmlBefore
             .'<textarea'.$this->attributes().'>'
             .htmlentities($this->value, ENT_COMPAT, 'UTF-8')
