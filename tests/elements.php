@@ -153,7 +153,7 @@ EOT;
     /** Radio buttons */
     yield function () {
         $input = new Formulaic\Radio('test');
-        assert("$input" == '<input id="test" name="test" type="radio" value="1">');
+        assert("$input" == '<input id="test-1" name="test" type="radio" value="1">');
     };
 
     /** Search boxes */
