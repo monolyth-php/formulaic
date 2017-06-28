@@ -213,44 +213,79 @@ EOT
     };
 
     /** Time elements */
-    yield function () {
+    yield function () : Generator {
         $input = new Formulaic\Time('test');
-        $input->setValue('bla');
-        assert($input->valid() != true);
-        $input->setValue('12:00:00');
-        assert($input->valid());
-        assert("$input" == '<input id="test" name="test" type="time" value="12:00:00">');
 
-        // Test require past time
-        $input = new Formulaic\Time('test');
-        $input->isInPast();
-        $input->setValue(time() + 100);
-        assert($input->valid() != true);
-        $input->setValue(time() - 100);
-        assert($input->valid());
+        /** A non-valid value gets rejected */
+        yield function () use ($input) {
+            $input->setValue('bla');
+            assert($input->valid() != true);
+        };
+        /** A valid value gets accepted */
+        yield function () use ($input) {
+            $input->setValue('12:00:00');
+            assert($input->valid());
+        };
+        /** We can `__toString` the element */
+        yield function () use ($input) {
+            assert("$input" == '<input id="test" name="test" type="time" value="12:00:00">');
+        };
 
-        // Test require future time
         $input = new Formulaic\Time('test');
-        $input->isInFuture();
-        $input->setValue(time() - 100);
-        assert($input->valid() != true);
-        $input->setValue(time() + 100);
-        assert($input->valid());
+        /** We can require a time to be in the past */
+        yield function () use ($input) : Generator {
+            $input->isInPast();
+            /** One in the future is rejected */
+            yield function () use ($input) {
+                $input->setValue('+100 seconds');
+                assert($input->valid() != true);
+            };
+            /** One in the past is accepted */
+            yield function () use ($input) {
+                $input->setValue('-100 seconds');
+                assert($input->valid());
+            };
+        };
+
+        $input = new Formulaic\Time('test');
+        /** We can require a time to be in the future */
+        yield function () use ($input) : Generator {
+            $input->isInFuture();
+            /** One in the past is rejected */
+            yield function () use ($input) {
+                $input->setValue('-100 seconds');
+                assert($input->valid() != true);
+            };
+            /** One in the future is accepted */
+            yield function () use ($input) {
+                $input->setValue('+100 seconds');
+                assert($input->valid());
+            };
+        };
     };
 
     /** URLs */
-    yield function () {
+    yield function () : Generator {
         $input = new Formulaic\Url('test');
-        $input->setValue('not an url');
-        assert($input->valid() != true);
+        /** A non-valid URL gets rejected */
+        yield function () use ($input) {
+            $input->setValue('not an url');
+            assert($input->valid() != true);
+        };
         $input2 = new Formulaic\Url('test');
-        $input2->setValue('http://google.com');
-        assert($input2->valid());
-        assert("$input\n$input2" == <<<EOT
+        /** A valid URL gets accepted */
+        yield function () use ($input2) {
+            $input2->setValue('http://google.com');
+            assert($input2->valid());
+        };
+        /** We can `__toString` the element */
+        yield function () use ($input, $input2) {
+            assert("$input\n$input2" == <<<EOT
 <input id="test" name="test" placeholder="http://" type="url" value="http://not an url">
 <input id="test" name="test" placeholder="http://" type="url" value="http://google.com">
 EOT
-        );
+            );
+        };
     };
 };
 
