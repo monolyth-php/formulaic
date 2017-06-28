@@ -6,38 +6,46 @@ use Monolyth\Formulaic;
  * Element-specific tests
  */
 return function () : Generator {
-    /**
-     * Elements without conditions are always valid, whilst required
-     * elements must have a value or validation will fail
-     */
-    yield function () {
+    /** Basic elements */
+    yield function () : Generator {
         $input = new Formulaic\Text('test');
-        assert($input->valid());
+        /** Elements without conditions are always valid */
+        yield function () use ($input) {
+            assert($input->valid());
+        };
 
-        // Required:
         $input->isRequired();
-        $input->setValue('foo');
-        assert($input->valid());
-        $input->setValue(null);
-        assert($input->valid() != true);
+        /** Required elements without a value are rejected */
+        yield function () use ($input) {
+            $input->setValue(null);
+            assert($input->valid() != true);
+        };
+        /** Required elements with a value are accepted */
+        yield function () use ($input) {
+            $input->setValue('foo');
+            assert($input->valid());
+        };
     };
 
-    /** Generic buttons */
-    yield function () {
-        $button = new Formulaic\Button('B');
-        assert("$button" == '<button type="button">B</button>');
-    };
+    /** Buttons */
+    yield function () : Generator {
+        /** Generic buttons render */
+        yield function () {
+            $button = new Formulaic\Button('B');
+            assert("$button" == '<button type="button">B</button>');
+        };
 
-    /** Reset buttons */
-    yield function () {
-        $button = new Formulaic\Button\Reset('B');
-        assert("$button" == '<button type="reset">B</button>');
-    };
+        /** Reset buttons render */
+        yield function () {
+            $button = new Formulaic\Button\Reset('B');
+            assert("$button" == '<button type="reset">B</button>');
+        };
 
-    /** Submit buttons */
-    yield function () {
-        $button = new Formulaic\Button\Submit('B');
-        assert("$button" == '<button type="submit">B</button>');
+        /** Submit buttons render */
+        yield function () {
+            $button = new Formulaic\Button\Submit('B');
+            assert("$button" == '<button type="submit">B</button>');
+        };
     };
 
     /** Checkboxes */
