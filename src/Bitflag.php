@@ -108,6 +108,16 @@ class Bitflag extends Checkbox\Group
     }
 
     /**
+     * Get the internal object containing the current status.
+     *
+     * @return object
+     */
+    public function getInternalStatus()
+    {
+        return $this->value;
+    }
+
+    /**
      * Check if the bit identified by %name is on.
      *
      * @param string $name
