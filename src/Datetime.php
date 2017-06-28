@@ -19,12 +19,16 @@ class Datetime extends Text
     }
 
     /**
-     * @param int $timestamp Timestamp for the new datetime value.
+     * @param int $timestamp Timestamp for the new datetime value. This can be
+     *  any string parsable by PHP's `strtotime`.
      * @return self
      */
     public function setValue(string $timestamp = null) : Element
     {
-        return parent::setValue(date($this->format, (int)$timestamp));
+        if ($time = strtotime($timestamp)) {
+            $timestamp = date($this->format, $time);
+        }
+        return parent::setValue($timestamp);
     }
 
     /**
@@ -54,12 +58,13 @@ class Datetime extends Text
     /**
      * Set the minimum datetime.
      *
-     * @param int $min Minimum timestamp.
+     * @param string $min Minimum timestamp. This can be any string parsable by
+     *  PHP's `strtotime`.
      * @return self
      */
-    public function setMin(int $min) : Element
+    public function setMin(string $min) : Element
     {
-        $min = date($this->format, $min);
+        $min = date($this->format, strtotime($min));
         $this->attributes['min'] = $min;
         return $this->addTest('min', function ($value) use ($min) {
             return $value >= $min;
@@ -69,12 +74,13 @@ class Datetime extends Text
     /**
      * Set the maximum datetime.
      *
-     * @param int $max Maximum timestamp.
+     * @param string $max Maximum timestamp. This can be any string parsable by
+     *  PHP's `strtotime`.
      * @return self
      */
-    public function setMax(int $max) : Element
+    public function setMax(string $max) : Element
     {
-        $max = date($this->format, $max);
+        $max = date($this->format, strtotime($max));
         $this->attributes['max'] = $max;
         return $this->addTest('max', function ($value) use ($max) {
             return $value <= $max;
