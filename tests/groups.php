@@ -101,8 +101,8 @@ EOT
         ]);
         $bit->setDefaultValue(['superman']);
         $bit->setValue(['hulk']);
-        assert($bit->getValue()->hulk);
-        assert(!isset($bit->getValue()->superman));
+        assert(in_array('hulk', $bit->getValue()));
+        assert(!in_array('superman', $bit->getValue()));
     };
 };
 
