@@ -59,6 +59,9 @@ class Number extends Text
             $this->attributes['min'] :
             0;
         return $this->addTest('step', function ($value) use ($step, $offset) {
+            if (!is_numeric($value)) {
+                return false;
+            }
             return !fmod($value - $offset, $step);
         });
     }
