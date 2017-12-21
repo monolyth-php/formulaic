@@ -23,6 +23,22 @@ EOT
         );
     };
 
+    /** Labels in groups cascade the group name to their elements */
+    yield function () {
+        $form = new class extends Formulaic\Post {};
+        $form[] = new Formulaic\Element\Group('test', function ($group) {
+            $group[] = new Formulaic\Label('dummy', (new Formulaic\Text('foo'))->isRequired());
+        });
+        echo "$form";
+        assert("$form" == <<<EOT
+<form action="" method="post">
+<label for="test-foo">dummy</label>
+<input id="test-foo" name="test[foo]" required type="text">
+</form>
+EOT
+        );
+    };
+
     /** Groups of checkboxes */
     yield function () {
         $form = new class extends Formulaic\Post {};
