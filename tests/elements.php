@@ -129,6 +129,7 @@ EOT;
         $input = new Formulaic\Number('test');
         $input->setValue('42');
         assert("$input" == '<input id="test" name="test" step="1" type="number" value="42">');
+        assert($input->valid());
         $input->setValue('foo');
         assert($input->valid() != true);
         $input->setMin(9);
