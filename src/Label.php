@@ -51,13 +51,6 @@ class Label extends Element
         return $this->element->getValue();
     }
 
-    /*
-    public function raw()
-    {
-        return $this->txt;
-    }
-    */
-
     /**
      * Prefix label _and_ element with $prefix.
      *
