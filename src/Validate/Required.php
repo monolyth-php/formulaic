@@ -2,7 +2,7 @@
 
 namespace Monolyth\Formulaic\Validate;
 
-use Monolyth\Formulaic\Element;
+use Monolyth\Formulaic\Testable;
 
 trait Required
 {
@@ -11,7 +11,7 @@ trait Required
      *
      * @return self
      */
-    public function isRequired() : Element
+    public function isRequired() : Testable
     {
         $this->attributes['required'] = true;
         return $this->addTest('required', function ($value) {
