@@ -2,7 +2,7 @@
 
 namespace Monolyth\Formulaic\Element;
 
-use Monolyth\Formulaic\Element;
+use Monolyth\Formulaic\Testable;
 
 trait Wrap
 {
@@ -17,7 +17,7 @@ trait Wrap
      * @param string $after HTML to append.
      * @return self
      */
-    public function wrap(string $before, string $after) : Element
+    public function wrap(string $before, string $after) : Testable
     {
         $this->htmlBefore = $before;
         $this->htmlAfter = $after;
