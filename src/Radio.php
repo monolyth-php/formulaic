@@ -52,7 +52,7 @@ class Radio extends Element
      *
      * @return self
      */
-    public function isRequired() : Element
+    public function isRequired() : Testable
     {
         $this->attributes['required'] = true;
         return $this->addTest('required', function($value) {
