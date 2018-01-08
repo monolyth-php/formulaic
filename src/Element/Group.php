@@ -59,7 +59,7 @@ class Group extends ArrayObject
 
     /**
      * Sets the ID prefix for this group. The ID prefix is optionally prefixed
-     * to all generate IDs to resolve ambiguity.
+     * to all generated IDs to resolve ambiguity.
      *
      * @param string $prefix The prefix. Set to `null` to remove.
      */
