@@ -54,6 +54,9 @@ EOT
             );
         }
         foreach ($this as $field) {
+            if (is_string($field)) {
+                continue;
+            }
             if ($field instanceof Element\Group) {
                 $field->bindGroup($model->{$field->name()});
                 continue;
