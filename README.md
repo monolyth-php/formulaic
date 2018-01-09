@@ -110,3 +110,20 @@ And in your output:
 See the [full documentation](http://monolyth.monomelodies.nl/formulaic/docs/)
 for all other options.
 
+## Custom elements in forms
+Simply add strings to the form; they will be outputted verbatim:
+
+```php
+<?php
+
+// ...
+class Form extends Get
+{
+    public function __construct()
+    {
+        $this[] = new Radio('foo');
+        $this[] = '<h1>custom HTML element!</h1>';
+    }
+}
+```
+
