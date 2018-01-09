@@ -18,6 +18,9 @@ abstract class Post extends Form
     public function __toString() : string
     {
         foreach ((array)$this as $field) {
+            if (is_string($field)) {
+                continue;
+            }
             if ($field->getElement() instanceof File) {
                 $this->attributes['enctype'] = 'multipart/form-data';
             }
@@ -53,6 +56,9 @@ abstract class Post extends Form
      */
     private function setValue($item)
     {
+        if (is_string($item)) {
+            return;
+        }
         $element = $item->getElement();
         $name = $element->name();
         if ($element instanceof File) {
