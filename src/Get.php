@@ -43,6 +43,9 @@ abstract class Get extends Form
 
     private function setValue($item)
     {
+        if (is_string($item)) {
+            return;
+        }
         $element = $item->getElement();
         $name = $element->name();
         if (array_key_exists($name, $_GET)) {
