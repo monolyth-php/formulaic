@@ -52,7 +52,9 @@ class Group extends ArrayObject
     {
         $this->prefix[] = $prefix;
         foreach ((array)$this as $element) {
-            $element->prefix($prefix);
+            if (is_object($element)) {
+                $element->prefix($prefix);
+            }
         }
         return $this;
     }
@@ -66,7 +68,9 @@ class Group extends ArrayObject
     public function setIdPrefix(string $prefix = null)
     {
         foreach ((array)$this as $element) {
-            $element->setIdPrefix($prefix);
+            if (is_object($element)) {
+                $element->setIdPrefix($prefix);
+            }
         }
     }
 
@@ -151,6 +155,10 @@ class Group extends ArrayObject
             $out .= $this->htmlBefore;
         }
         foreach ((array)$this as $field) {
+            if (is_string($field)) {
+                $out .= $field;
+                continue;
+            }
             if ($this->htmlGroup & self::WRAP_LABEL) {
                 $field->wrap($this->htmlBefore, $this->htmlAfter);
             }
