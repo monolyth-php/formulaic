@@ -37,7 +37,7 @@ abstract class Post extends Form
      * @param mixed $item An element or a label containing one.
      * @return void
      */
-    public function offsetSet($index, $item)
+    public function offsetSet($index, $item) : void
     {
         if ($item instanceof Fieldset) {
             foreach ($item as $subitem) {
