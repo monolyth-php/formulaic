@@ -64,7 +64,7 @@ trait QueryHelper
     public function append($newvalue) : void
     {
         $index = count((array)$this);
-        return $this->offsetSet($index, $newvalue);
+        $this->offsetSet($index, $newvalue);
     }
 }
 
