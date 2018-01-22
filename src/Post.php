@@ -53,8 +53,9 @@ abstract class Post extends Form
      * Internal helper method to set the value of whatever we are dealing with.
      *
      * @param mixed $item
+     * @return void
      */
-    private function setValue($item)
+    private function setValue($item) : void
     {
         if (is_string($item)) {
             return;
