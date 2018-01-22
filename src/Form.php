@@ -43,6 +43,9 @@ abstract class Form extends ArrayObject implements JsonSerializable
     {
         $copy = [];
         foreach ((array)$this as $key => $value) {
+            if (is_string($value)) {
+                continue;
+            }
             $element = $value->getElement();
             if (is_object($element)
                 and method_exists($element, 'name')
