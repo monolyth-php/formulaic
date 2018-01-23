@@ -6,12 +6,14 @@ use Monolyth\Formulaic\Validate;
 use ArrayObject;
 use Monolyth\Formulaic\QueryHelper;
 use Monolyth\Formulaic\Bindable;
+use Monolyth\Formulaic\JsonSerialize;
 
 class Group extends ArrayObject
 {
     use Validate\Group;
     use QueryHelper;
     use Bindable;
+    use JsonSerialize;
 
     const WRAP_GROUP = 1;
     const WRAP_LABEL = 2;
