@@ -16,6 +16,7 @@ abstract class Form extends ArrayObject implements JsonSerializable
     use Validate\Group;
     use QueryHelper;
     use Bindable;
+    use JsonSerialize;
 
     /**
      * Hash of key/value pairs for HTML attributes.
@@ -54,30 +55,6 @@ abstract class Form extends ArrayObject implements JsonSerializable
             ) {
                 $copy[$name] = $element->getValue();
             }
-        }
-        return $copy;
-    }
-
-    /**
-     * Returns a `json_encode`able hash.
-     *
-     * @return array
-     */
-    public function jsonSerialize()
-    {
-        $copy = [];
-        foreach ((array)$this as $key => $value) {
-            if (is_string($value)) {
-                continue;
-            }
-            $element = $value->getElement();
-            if (is_object($element)
-                and method_exists($element, 'name')
-                and $name = $element->name()
-            ) {
-                $copy[$name] = $value;
-            }
-            $copy[$key] = $value;
         }
         return $copy;
     }
