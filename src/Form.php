@@ -64,12 +64,14 @@ abstract class Form extends ArrayObject implements JsonSerializable
     {
         $copy = [];
         foreach ((array)$this as $key => $value) {
-            $element = $value->getElement();
-            if (is_object($element)
-                and method_exists($element, 'name')
-                and $name = $element->name()
-            ) {
-                $copy[$name] = $value;
+            if (!is_string($value)) {
+                $element = $value->getElement();
+                if (is_object($element)
+                    and method_exists($element, 'name')
+                    and $name = $element->name()
+                ) {
+                    $copy[$name] = $value;
+                }
             }
             $copy[$key] = $value;
         }
