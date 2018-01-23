@@ -2,6 +2,8 @@
 
 namespace Monolyth\Formulaic;
 
+use JsonSerializable;
+
 trait JsonSerialize
 {
     /**
