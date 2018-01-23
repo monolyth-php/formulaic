@@ -29,7 +29,7 @@ abstract class Get extends Form
      * @param mixed $item An element or a label containing one.
      * @return void
      */
-    public function offsetSet($index, $item)
+    public function offsetSet($index, $item) : void
     {
         if ($item instanceof Fieldset) {
             foreach ($item as $subitem) {
@@ -41,7 +41,7 @@ abstract class Get extends Form
         parent::offsetSet($index, $item);
     }
 
-    private function setValue($item)
+    private function setValue($item) : void
     {
         if (is_string($item)) {
             return;

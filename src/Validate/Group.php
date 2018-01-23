@@ -15,6 +15,9 @@ trait Group
             return false;
         }
         foreach ((array)$this as $element) {
+            if (is_string($element)) {
+                continue;
+            }
             if (!$element->getElement()->valid()) {
                 return false;
             }
@@ -31,6 +34,9 @@ trait Group
     {
         $errors = $this->privateErrors();
         foreach ((array)$this as $element) {
+            if (is_string($element)) {
+                continue;
+            }
             $name = $element->getElement()->name();
             if ($error = $element->getElement()->errors()) {
                 $errors = array_merge($errors, [$name => $error]);

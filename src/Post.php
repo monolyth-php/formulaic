@@ -37,7 +37,7 @@ abstract class Post extends Form
      * @param mixed $item An element or a label containing one.
      * @return void
      */
-    public function offsetSet($index, $item)
+    public function offsetSet($index, $item) : void
     {
         if ($item instanceof Fieldset) {
             foreach ($item as $subitem) {
@@ -53,8 +53,9 @@ abstract class Post extends Form
      * Internal helper method to set the value of whatever we are dealing with.
      *
      * @param mixed $item
+     * @return void
      */
-    private function setValue($item)
+    private function setValue($item) : void
     {
         if (is_string($item)) {
             return;

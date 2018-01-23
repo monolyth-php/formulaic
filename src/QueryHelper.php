@@ -8,11 +8,15 @@ trait QueryHelper
      * Get the element at the specified `$index`.
      *
      * @param mixed $index
+     * @return mixed The found index, or null
      */
     public function offsetGet($index)
     {
         foreach ((array)$this as $i => $element) {
             $i = (string)$i;
+            if (is_string($element)) {
+                return $element;
+            }
             if ($element instanceof Label
                 && ($element->getElement()->name() == $index
                     || $i == $index
@@ -37,8 +41,10 @@ trait QueryHelper
      *
      * @param mixed $index Optional index. Normal use is to either assign
      *  elements to `$this[]` or `$this['someElementName']`.
+     * @param mixed $newvalue
+     * @return void
      */
-    public function offsetSet($index = null, $newvalue)
+    public function offsetSet($index = null, $newvalue) : void
     {
         if (!isset($index)) {
             $index = count((array)$this);
@@ -53,11 +59,12 @@ trait QueryHelper
      * Append any item to the form.
      *
      * @param mixed $newvalue
+     * @return void
      */
-    public function append($newvalue)
+    public function append($newvalue) : void
     {
         $index = count((array)$this);
-        return $this->offsetSet($index, $newvalue);
+        $this->offsetSet($index, $newvalue);
     }
 }
 
