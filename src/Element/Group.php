@@ -7,8 +7,9 @@ use ArrayObject;
 use Monolyth\Formulaic\QueryHelper;
 use Monolyth\Formulaic\Bindable;
 use Monolyth\Formulaic\JsonSerialize;
+use JsonSerializable;
 
-class Group extends ArrayObject
+class Group extends ArrayObject implements JsonSerializable
 {
     use Validate\Group;
     use QueryHelper;
