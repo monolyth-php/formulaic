@@ -93,7 +93,7 @@ abstract class Element implements Labelable, Testable
      *
      * @return mixed The value.
      */
-    public function & getValue()
+    public function getValue()
     {
         return $this->value;
     }
