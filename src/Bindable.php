@@ -49,7 +49,7 @@ EOT
         if (!($this instanceof ArrayObject)) {
             throw new DomainException(
                 <<<EOT
-Bindable::bindGroup must be called on object extending ArrayObject.
+Bindable::bindGroup must be called on an object extending ArrayObject.
 EOT
             );
         }
