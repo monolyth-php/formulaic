@@ -96,14 +96,15 @@ class Bitflag extends Checkbox\Group
      *
      * @return array
      */
-    public function & getValue() : array
+    public function getValue() : array
     {
         $array = [];
-        if ($this->value) {
-            foreach ($this->value as $key => $value) {
-                if ($this->hasBit($key)) {
-                    $array[] = $key;
-                }
+        foreach ($this as $value) {
+            if ($value instanceof Hidden) {
+                continue;
+            }
+            if ($value->getElement()->checked()) {
+                $array[] = $value->getElement()->getValue();
             }
         }
         return $array;
@@ -120,11 +121,11 @@ class Bitflag extends Checkbox\Group
     }
 
     /**
-     * Check if the bit identified by %name is on.
+     * Check if the bit identified by `$name` is on.
      *
      * @param string $name
      * @return bool True if on, else false.
-     */
+    ` */
     public function hasBit(string $name) : bool
     {
         foreach ((array)$this as $element) {
