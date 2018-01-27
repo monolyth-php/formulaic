@@ -99,9 +99,11 @@ class Bitflag extends Checkbox\Group
     public function & getValue() : array
     {
         $array = [];
-        foreach ($this->value as $key => $value) {
-            if ($this->hasBit($key)) {
-                $array[] = $key;
+        if ($this->value) {
+            foreach ($this->value as $key => $value) {
+                if ($this->hasBit($key)) {
+                    $array[] = $key;
+                }
             }
         }
         return $array;
