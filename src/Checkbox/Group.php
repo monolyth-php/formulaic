@@ -32,7 +32,7 @@ class Group extends Radio\Group
      *
      * @return array
      */
-    public function & getValue() : array
+    public function getValue() : array
     {
         $this->value = [];
         foreach ((array)$this as $element) {
