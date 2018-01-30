@@ -46,7 +46,7 @@ class Label extends Element
      *
      * @return mixed
      */
-    public function & getValue()
+    public function getValue()
     {
         return $this->element->getValue();
     }
