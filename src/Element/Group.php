@@ -187,6 +187,9 @@ class Group extends ArrayObject implements JsonSerializable
     {
         $is = false;
         foreach ((array)$this as $field) {
+            if (is_string($field)) {
+                continue;
+            }
             if (isset($status)) {
                 $field->getElement()->valueSuppliedByUser($status);
             }
