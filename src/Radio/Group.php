@@ -112,13 +112,19 @@ class Group extends Element\Group implements Labelable, Testable
                 && $element->getElement()->checked()
             ) {
                 return new class([$element->getElement()->getValue()]) extends ArrayObject {
-                    public function __toString() {
-                        return $this[0];
+                    public function __toString() : string
+                    {
+                        return "{$this[0]}";
                     }
                 };
             }
         }
-        return [$this->value];
+        return new class([$this->value]) extends ArrayObject {
+            public function __toString() : string
+            {
+                return "{$this[0]}";
+            }
+        };
     }
     
     /**
