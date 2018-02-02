@@ -22,17 +22,16 @@ class Textarea extends Element
      */
     public function __toString() : string
     {
-        if ($id = $this->id()) {
-            if (isset($this->idPrefix)) {
-                $id = "{$this->idPrefix}-$id";
-            }
-            $this->attributes['id'] = $id;
-        }
-        return $this->htmlBefore
+        $old = $this->prepareToString();
+        $out = $this->htmlBefore
             .'<textarea'.$this->attributes().'>'
             .htmlentities($this->value, ENT_COMPAT, 'UTF-8')
             .'</textarea>'
             .$this->htmlAfter;
+        if (isset($old)) {
+            $this->attributes['name'] = $old;
+        }
+        return $out;
     }
 
     /**
