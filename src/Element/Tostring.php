@@ -11,6 +11,22 @@ trait Tostring
      */
     public function __toString() : string
     {
+        $old = $this->prepareToString();
+        $out = $this->htmlBefore;
+        if ($this instanceof Checkbox && !$this->inGroup()) {
+            $out .= '<input type="hidden" name="'.$this->getName().'" value="0">';
+        }
+        $out .= '<input'.$this->attributes().'>';
+        $out .= $this->htmlAfter;
+        if (isset($old)) {
+            $this->attributes['name'] = $old;
+        }
+        return $out;
+    }
+
+    protected function prepareToString() :? string
+    {
+        $old = null;
         if ($id = $this->id()) {
             if (isset($this->idPrefix)) {
                 $id = "{$this->idPrefix}-$id";
@@ -37,16 +53,7 @@ trait Tostring
             $old = $this->attributes['name'];
             unset($this->attributes['name']);
         }
-        $out = $this->htmlBefore;
-        if ($this instanceof Checkbox && !$this->inGroup()) {
-            $out .= '<input type="hidden" name="'.$this->getName().'" value="0">';
-        }
-        $out .= '<input'.$this->attributes().'>';
-        $out .= $this->htmlAfter;
-        if (isset($old)) {
-            $this->attributes['name'] = $old;
-        }
-        return $out;
+        return $old;
     }
 }
 
