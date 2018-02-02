@@ -3,6 +3,7 @@
 namespace Monolyth\Formulaic\Checkbox;
 
 use Monolyth\Formulaic\Radio;
+use ArrayObject;
 
 class Group extends Radio\Group
 {
@@ -32,7 +33,7 @@ class Group extends Radio\Group
      *
      * @return array
      */
-    public function getValue() : array
+    public function getValue() : ArrayObject
     {
         $this->value = [];
         foreach ((array)$this as $element) {
@@ -42,7 +43,7 @@ class Group extends Radio\Group
                 $this->value[] = $element->getElement()->getValue();
             }
         }
-        return $this->value;
+        return new ArrayObject($this->value);
     }
 
     /**
