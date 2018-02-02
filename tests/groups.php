@@ -29,7 +29,6 @@ EOT
         $form[] = new Formulaic\Element\Group('test', function ($group) {
             $group[] = new Formulaic\Label('dummy', (new Formulaic\Text('foo'))->isRequired());
         });
-        echo "$form";
         assert("$form" == <<<EOT
 <form action="" method="post">
 <label for="test-foo">dummy</label>
@@ -80,6 +79,7 @@ EOT
             [1 => 'foo', 2 => 'bar']
         ))->isRequired();
         assert($form->valid());
+        assert($form['test']->getValue()->__toString() === "1");
         assert("$form" == <<<EOT
 <form action="" method="post">
 <div>
@@ -117,8 +117,8 @@ EOT
         ]);
         $bit->setDefaultValue(['superman']);
         $bit->setValue(['hulk']);
-        assert(in_array('hulk', $bit->getValue()));
-        assert(!in_array('superman', $bit->getValue()));
+        assert(in_array('hulk', (array)$bit->getValue()));
+        assert(!in_array('superman', (array)$bit->getValue()));
     };
 };
 
