@@ -11,6 +11,7 @@ use Monolyth\Formulaic\Label;
 use Monolyth\Formulaic\Labelable;
 use Monolyth\Formulaic\Bindable;
 use Monolyth\Formulaic\Testable;
+use ArrayObject;
 
 class Group extends Element\Group implements Labelable, Testable
 {
@@ -104,13 +105,17 @@ class Group extends Element\Group implements Labelable, Testable
      *  Element\Group, but obviously radio groups can only ever have one entry
      *  checked at a time).
      */
-    public function getValue() : array
+    public function getValue() : ArrayObject
     {
         foreach ((array)$this as $element) {
             if ($element->getElement() instanceof Radio
                 && $element->getElement()->checked()
             ) {
-                return [$element->getElement()->getValue()];
+                return new class([$element->getElement()->getValue()]) extends ArrayObject {
+                    public function __toString() {
+                        return $this[0];
+                    }
+                };
             }
         }
         return [$this->value];
