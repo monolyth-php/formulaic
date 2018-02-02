@@ -46,7 +46,7 @@ class Bitflag extends Checkbox\Group
      */
     public function setValue($value)
     {
-        if (is_object($value)) {
+        if (is_object($value) && !($value instanceof ArrayObject)) {
             $this->class = $value;
             if (isset($this->value)) {
                 $old = clone $this->value;
@@ -63,7 +63,7 @@ class Bitflag extends Checkbox\Group
         if (!isset($this->value)) {
             $this->value = clone $this->class;
         }
-        if (is_array($value)) {
+        if (is_array($value) || $value instanceof ArrayObject) {
             $work = clone $this->value;
             if ($work instanceof JsonSerializable) {
                 $work = $work->jsonSerialize();
