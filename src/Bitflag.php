@@ -5,6 +5,7 @@ namespace Monolyth\Formulaic;
 use StdClass;
 use JsonSerializable;
 use DomainException;
+use ArrayObject;
 
 class Bitflag extends Checkbox\Group
 {
@@ -96,7 +97,7 @@ class Bitflag extends Checkbox\Group
      *
      * @return array
      */
-    public function getValue() : array
+    public function getValue() : ArrayObject
     {
         $array = [];
         foreach ($this as $value) {
@@ -107,7 +108,7 @@ class Bitflag extends Checkbox\Group
                 $array[] = $value->getElement()->getValue();
             }
         }
-        return $array;
+        return new ArrayObject($array);
     }
 
     /**
