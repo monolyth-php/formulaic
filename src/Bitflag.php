@@ -136,5 +136,20 @@ class Bitflag extends Checkbox\Group
         }
         return false;
     }
+
+    /**
+     * Return the value of the element as a byte.
+     *
+     * @return int
+     */
+    public function getByteValue() : int
+    {
+        $byte = 0;
+        $bits = (array)$this->getValue();
+        return array_reduce($bits, function ($carry, $item) {
+            return $carry | (int)$item;
+        }, 0);
+
+    }
 }
 
