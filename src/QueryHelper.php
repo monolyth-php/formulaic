@@ -15,7 +15,7 @@ trait QueryHelper
         foreach ((array)$this as $i => $element) {
             $i = (string)$i;
             if (is_string($element)) {
-                return $element;
+                continue;
             }
             if ($element instanceof Label
                 && ($element->getElement()->name() == $index
