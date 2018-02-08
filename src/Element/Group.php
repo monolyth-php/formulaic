@@ -159,7 +159,6 @@ class Group extends ArrayObject implements JsonSerializable
         }
         foreach ((array)$this as $field) {
             if (is_string($field)) {
-                $out .= $field;
                 continue;
             }
             if ($this->htmlGroup & self::WRAP_LABEL) {
