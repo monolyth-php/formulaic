@@ -18,7 +18,7 @@ trait Bindable
      *
      * @param object $model The model to bind to.
      */
-    public function bind($model)
+    public function bind(object $model)
     {
         $this->model = $model;
     }
@@ -36,7 +36,7 @@ trait Bindable
      * @param object The model to bind.
      * @return static $this
      */
-    public function bindGroup($model)
+    public function bindGroup(object $model)
     {
         if (!is_object($model)) {
             throw new DomainException(
