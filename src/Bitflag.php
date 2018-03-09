@@ -144,7 +144,6 @@ class Bitflag extends Checkbox\Group
      */
     public function getByteValue() : int
     {
-        $byte = 0;
         $bits = (array)$this->getValue();
         return array_reduce($bits, function ($carry, $item) {
             return $carry | (int)$item;
