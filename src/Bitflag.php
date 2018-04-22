@@ -170,5 +170,11 @@ class Bitflag extends Checkbox\Group
         }
         return parent::offsetGet($index);
     }
+
+    public function bindGroup($model)
+    {
+        parent::bindGroup($model);
+        $this->setValue($model);
+    }
 }
 
