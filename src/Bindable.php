@@ -57,14 +57,18 @@ EOT
             if (is_string($field)) {
                 continue;
             }
+            if ($field instanceof Fieldset) {
+                $field->bind($model);
+                continue;
+            }
             if ($field instanceof Element\Group) {
-                $field->bindGroup($model->{$field->name()});
+                $field->bindGroup($model->{self::normalize($field->getElement()->name())});
                 continue;
             }
             if ($field instanceof Button) {
                 continue;
             }
-            $name = $field->getElement()->name();
+            $name = self::normalize($field->getElement()->name());
             if ($element = $field->getElement()) {
                 try {
                     $value = $model->$name;
@@ -91,6 +95,18 @@ EOT
             }
         }
         return $this;
+    }
+
+    /**
+     * "Normalize" a name string, i.e. only the first part without stuff in
+     * square brackets (since that's invalid on models).
+     *
+     * @param string $name
+     * @return string
+     */
+    protected static function normalize(string $name) : string
+    {
+        return explode('[', $name)[0];
     }
 }
 
