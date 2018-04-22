@@ -72,7 +72,7 @@ class Bitflag extends Checkbox\Group
                 $this->value->$prop = false;
             }
             foreach ($value as $prop) {
-                if ($this->hasBit($prop) && isset($this->value->$prop)) {
+                if (is_string($prop) && $this->hasBit($prop) && isset($this->value->$prop)) {
                     $this->value->$prop = true;
                 }
             }
@@ -149,6 +149,26 @@ class Bitflag extends Checkbox\Group
             return $carry | (int)$item;
         }, 0);
 
+    }
+
+    /**
+     * Get the element at the specified `$index`.
+     *
+     * @param mixed $index
+     * @return mixed The found index, or null
+     */
+    public function offsetGet($index)
+    {
+        foreach ((array)$this as $i => $element) {
+            $i = (string)$i;
+            if (is_string($element)) {
+                continue;
+            }
+            if ($element->getElement()->getValue() == $index) {
+                return $element;
+            }
+        }
+        return parent::offsetGet($index);
     }
 }
 
