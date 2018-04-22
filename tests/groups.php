@@ -94,18 +94,18 @@ EOT
     /** Bitflags */
     yield function () {
         $bit = new Formulaic\Bitflag('superhero', [
-            1 => 'Batman',
-            2 => 'Superman',
-            4 => 'Spiderman',
-            8 => 'The Hulk',
-            16 => 'Daredevil',
+            'batman' => 'Batman',
+            'superman' => 'Superman',
+            'spiderman' => 'Spiderman',
+            'hulk' => 'The Hulk',
+            'daredevil' => 'Daredevil',
         ]);
-        $bit->setValue([1, 2, 4]);
-        assert($bit['Batman']->getElement()->checked());
-        assert($bit[1]->getElement()->checked());
-        assert($bit[2]->getElement()->checked());
-        assert(!$bit[3]->getElement()->checked());
-        assert(!$bit[4]->getElement()->checked());
+        $bit->setValue(['batman', 'superman', 'spiderman']);
+        assert($bit['batman']->getElement()->checked());
+        assert($bit['superman']->getElement()->checked());
+        assert($bit['spiderman']->getElement()->checked());
+        assert(!$bit['hulk']->getElement()->checked());
+        assert(!$bit['daredevil']->getElement()->checked());
     };
 
     /** Non-supplied bitflags are left alone */
@@ -119,6 +119,26 @@ EOT
         $bit->setValue(['hulk']);
         assert(in_array('hulk', (array)$bit->getValue()));
         assert(!in_array('superman', (array)$bit->getValue()));
+    };
+
+    /** Fieldsets work as expected */
+    yield function () {
+        $fieldset = new Formulaic\Fieldset('With a legend', function ($fieldset) {
+            $fieldset[] = new Formulaic\Bitflag('superhero', [
+                'batman' => 'Batman',
+                'superman' => 'Superman',
+                'spiderman' => 'Spiderman',
+                'hulk' => 'The Hulk',
+                'daredevil' => 'Daredevil',
+            ]);
+        });
+        $binder = (object)[
+            'superhero' => (object)[
+                'batman' => true,
+            ],
+        ];
+        $fieldset->bind($binder);
+        assert($fieldset['superhero']['batman']->getElement()->checked() === true);
     };
 };
 
