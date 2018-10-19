@@ -15,7 +15,7 @@ class Label extends Element
      * @param string $label The text of the label.
      * @param Monolyth\Formulaic\Labelable $element Any labelable element.
      */
-    public function __construct($label, Labelable $element)
+    public function __construct(string $label, Labelable $element)
     {
         $this->label = $label;
         $this->element = $element;
