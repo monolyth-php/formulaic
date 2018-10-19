@@ -42,9 +42,9 @@ class Fieldset extends Element\Group
      * Binds the model to this fieldset.
      *
      * @param object $model
-     * @return Monolyth\Formulaic\Fieldset Self
+     * @return object Self
      */
-    public function bind(object $model) : Fieldset
+    public function bind(object $model) : object
     {
         return $this->bindGroup($model);
     }
