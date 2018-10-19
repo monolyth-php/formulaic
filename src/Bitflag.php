@@ -177,12 +177,13 @@ class Bitflag extends Checkbox\Group
      * Binds a model to the bitflag (it's actually a group).
      *
      * @param object $model
-     * @return void
+     * @return object Self
      */
-    public function bindGroup(object $model) : void
+    public function bindGroup(object $model) : object
     {
         parent::bindGroup($model);
         $this->setValue($model);
+        return $this;
     }
 }
 
