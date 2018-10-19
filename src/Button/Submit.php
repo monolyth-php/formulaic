@@ -10,7 +10,9 @@ use Monolyth\Formulaic\Button;
 class Submit extends Button
 {
     /**
-     * Array of attributes.
+     * @var array
+     *
+     * Hash of attributes.
      */
     protected $attributes = ['type' => 'submit'];
 }
