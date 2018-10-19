@@ -4,7 +4,12 @@ namespace Monolyth\Formulaic;
 
 trait Attributes
 {
-    public function attributes()
+    /**
+     * Formats set attributes as a string ready for insertion into HTML.
+     *
+     * @return string
+     */
+    public function attributes() : string
     {
         $return = [];
         ksort($this->attributes);
@@ -31,13 +36,28 @@ trait Attributes
         return $return ? ' '.implode(' ', $return) : '';
     }
 
-    public function attribute(string $name, string $value = null)
+    /**
+     * Set an attribute with optional value.
+     *
+     * @param string $name
+     * @param string|null $value
+     * @return object Self.
+     */
+    public function attribute(string $name, string $value = null) : object
     {
-        if ($value === false) {
-            unset($this->attributes[$name]);
-        } else {
-            $this->attributes[$name] = $value;
-        }
+        $this->attributes[$name] = $value;
+        return $this;
+    }
+
+    /**
+     * Unset an attribute.
+     *
+     * @param string $name
+     * @return object Self.
+     */
+    public function unsetAttribute(string $name) : object
+    {
+        unset($this->attributes[$name]);
         return $this;
     }
 }
