@@ -8,11 +8,16 @@ namespace Monolyth\Formulaic;
 class Button extends Element
 {
     /**
+     * @var string
+     *
      * The text to show in the button.
      */
     protected $text;
+
     /**
-     * Array of attributes.
+     * @var array
+     *
+     * Hash of attributes.
      */
     protected $attributes = ['type' => 'button'];
 
