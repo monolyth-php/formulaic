@@ -14,6 +14,7 @@ class Label extends Element
      *
      * @param string $label The text of the label.
      * @param Monolyth\Formulaic\Labelable $element Any labelable element.
+     * @return void
      */
     public function __construct(string $label, Labelable $element)
     {
@@ -55,8 +56,9 @@ class Label extends Element
      * Prefix label _and_ element with $prefix.
      *
      * @param string $prefix
+     * @return void
      */
-    public function prefix(string $prefix)
+    public function prefix(string $prefix) : void
     {
         parent::prefix($prefix);
         $this->element->prefix($prefix);
