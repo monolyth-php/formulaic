@@ -20,6 +20,7 @@ class Fieldset extends Element\Group
      *
      * @param string $legend Optional legend to display.
      * @param callable $callback
+     * @return void
      */
     public function __construct(string $legend = null, callable $callback)
     {
@@ -41,9 +42,9 @@ class Fieldset extends Element\Group
      * Binds the model to this fieldset.
      *
      * @param object $model
-     * @return self
+     * @return Monolyth\Formulaic\Fieldset Self
      */
-    public function bind($model) : Fieldset
+    public function bind(object $model) : Fieldset
     {
         return $this->bindGroup($model);
     }
