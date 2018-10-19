@@ -18,11 +18,12 @@ trait Bindable
      * Binds the element to a model.
      *
      * @param object $model The model to bind to.
-     * @return void
+     * @return object Self
      */
-    public function bind(object $model) : void
+    public function bind(object $model) : object
     {
         $this->model = $model;
+        return $this;
     }
 
     /**
