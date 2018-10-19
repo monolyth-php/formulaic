@@ -13,8 +13,9 @@ class Group extends Radio\Group
 
     /**
      * @param mixed $value New value or array of key/value pairs.
+     * @return void
      */
-    public function setValue($value)
+    public function setValue($value) : void
     {
         if (is_scalar($value)) {
             $value = [$value];
@@ -29,9 +30,9 @@ class Group extends Radio\Group
     }
     
     /**
-     * Gets all checked values as an array.
+     * Gets all checked values as an `ArrayObject`.
      *
-     * @return array
+     * @return ArrayObject
      */
     public function getValue() : ArrayObject
     {
@@ -49,7 +50,7 @@ class Group extends Radio\Group
     /**
      * @param int $min Minimum number of checked items.
      * @param int $max Optional maximum number of checked items.
-     * @return self
+     * @return Monolyth\Formulaic\Radio\Group Self.
      */
     public function isRequired(int $min = 1, int $max = null) : Radio\Group
     {
