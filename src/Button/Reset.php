@@ -11,7 +11,9 @@ use Monolyth\Formulaic\Button;
 class Reset extends Button
 {
     /**
-     * Array of attributes.
+     * @var array
+     *
+     * Hash of attributes.
      */
     protected $attributes = ['type' => 'reset'];
 }
