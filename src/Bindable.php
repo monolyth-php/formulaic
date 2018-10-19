@@ -11,14 +11,16 @@ use Throwable;
  */
 trait Bindable
 {
+    /** @var object */.
     private $model;
 
     /**
      * Binds the element to a model.
      *
      * @param object $model The model to bind to.
+     * @return void
      */
-    public function bind(object $model)
+    public function bind(object $model) : void
     {
         $this->model = $model;
     }
@@ -34,9 +36,9 @@ trait Bindable
      * model).
      *
      * @param object The model to bind.
-     * @return static $this
+     * @return object Self.
      */
-    public function bindGroup(object $model)
+    public function bindGroup(object $model) : object
     {
         if (!is_object($model)) {
             throw new DomainException(
