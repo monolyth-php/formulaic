@@ -4,11 +4,23 @@ namespace Monolyth\Formulaic;
 
 class Datetime extends Text
 {
+    /**
+     * @var array
+     *
+     * Hash of attributes.
+     */
     protected $attributes = ['type' => 'datetime'];
+
+    /**
+     * @var string
+     *
+     * Default format.
+     */
     protected $format = 'Y-m-d H:i:s';
 
     /**
      * @param string $name Name of the element.
+     * @return void
      */
     public function __construct(string $name)
     {
@@ -19,9 +31,9 @@ class Datetime extends Text
     }
 
     /**
-     * @param int $timestamp Timestamp for the new datetime value. This can be
-     *  any string parsable by PHP's `strtotime`.
-     * @return self
+     * @param string $timestamp Timestamp for the new datetime value. This can
+     *  be any string parsable by PHP's `strtotime`.
+     * @return Monolyth\Formulaic\Element Self
      */
     public function setValue(string $timestamp = null) : Element
     {
@@ -34,7 +46,7 @@ class Datetime extends Text
     /**
      * Requires the datetime to be in the past.
      *
-     * @return self
+     * @return Monolyth\Formulaic\Element Self
      */
     public function isInPast() : Element
     {
@@ -46,7 +58,7 @@ class Datetime extends Text
     /**
      * Requires the datetime to be in the future.
      *
-     * @return self
+     * @return Monolyth\Formulaic\Element Self
      */
     public function isInFuture() : Element
     {
@@ -60,7 +72,7 @@ class Datetime extends Text
      *
      * @param string $min Minimum timestamp. This can be any string parsable by
      *  PHP's `strtotime`.
-     * @return self
+     * @return Monolyth\Formulaic\Element Self
      */
     public function setMin(string $min) : Element
     {
@@ -76,7 +88,7 @@ class Datetime extends Text
      *
      * @param string $max Maximum timestamp. This can be any string parsable by
      *  PHP's `strtotime`.
-     * @return self
+     * @return Monolyth\Formulaic\Element Self
      */
     public function setMax(string $max) : Element
     {
