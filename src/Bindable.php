@@ -11,7 +11,7 @@ use Throwable;
  */
 trait Bindable
 {
-    /** @var object */.
+    /** @var object */
     private $model;
 
     /**
