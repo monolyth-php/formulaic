@@ -9,7 +9,10 @@ use ArrayObject;
 
 class Bitflag extends Checkbox\Group
 {
+    /** @var object */
     protected $value = null;
+
+    /** @var object */
     protected $class = null;
 
     /**
@@ -17,19 +20,17 @@ class Bitflag extends Checkbox\Group
      *
      * @param string $label Label for the bitflag.
      * @param array $options Hash of key/value options.
-     * @param mixed $class Optional name of class or object to store bitflag
+     * @param object|null $class Optional object to store bitflag
      *  state on.
+     * @return void
      */
-    public function __construct(string $label, array $options, $class = null)
+    public function __construct(string $label, array $options, object $class = null)
     {
         parent::__construct($label, $options);
         $default = new Hidden("{$label}[]");
         $default->setValue(0);
         $this[] = $default;
         if (isset($class)) {
-            if (!is_object($class)) {
-                throw new DomainException("Third parameter to Bitflag::__construct must be a class.");
-            }
             $this->class = $class;
         } else {
             $this->class = new StdClass;
@@ -43,8 +44,9 @@ class Bitflag extends Checkbox\Group
      * Set the current value.
      *
      * @param mixed $value Object or array containing new state.
+     * @return void
      */
-    public function setValue($value)
+    public function setValue($value) : void
     {
         if (is_object($value) && !($value instanceof ArrayObject)) {
             $this->class = $value;
@@ -95,7 +97,7 @@ class Bitflag extends Checkbox\Group
     /**
      * Get the current value.
      *
-     * @return array
+     * @return ArrayObject
      */
     public function getValue() : ArrayObject
     {
@@ -116,7 +118,7 @@ class Bitflag extends Checkbox\Group
      *
      * @return object
      */
-    public function getInternalStatus()
+    public function getInternalStatus() : object
     {
         return $this->value;
     }
@@ -171,7 +173,13 @@ class Bitflag extends Checkbox\Group
         return parent::offsetGet($index);
     }
 
-    public function bindGroup($model)
+    /**
+     * Binds a model to the bitflag (it's actually a group).
+     *
+     * @param object $model
+     * @return void
+     */
+    public function bindGroup(object $model) : void
     {
         parent::bindGroup($model);
         $this->setValue($model);
