@@ -33,9 +33,9 @@ class Datetime extends Text
     /**
      * @param string $timestamp Timestamp for the new datetime value. This can
      *  be any string parsable by PHP's `strtotime`.
-     * @return Monolyth\Formulaic\Element Self
+     * @return Monolyth\Formulaic\Datetime Self
      */
-    public function setValue(string $timestamp = null) : Element
+    public function setValue(string $timestamp = null) : Datetime
     {
         if ($time = strtotime($timestamp)) {
             $timestamp = date($this->format, $time);
@@ -46,9 +46,9 @@ class Datetime extends Text
     /**
      * Requires the datetime to be in the past.
      *
-     * @return Monolyth\Formulaic\Element Self
+     * @return Monolyth\Formulaic\Datetime Self
      */
-    public function isInPast() : Element
+    public function isInPast() : Datetime
     {
         return $this->addTest('inpast', function ($value) {
             return strtotime($value) < time();
@@ -58,9 +58,9 @@ class Datetime extends Text
     /**
      * Requires the datetime to be in the future.
      *
-     * @return Monolyth\Formulaic\Element Self
+     * @return Monolyth\Formulaic\Datetime Self
      */
-    public function isInFuture() : Element
+    public function isInFuture() : Datetime
     {
         return $this->addTest('infuture', function ($value) {
             return strtotime($value) > time();
@@ -72,9 +72,9 @@ class Datetime extends Text
      *
      * @param string $min Minimum timestamp. This can be any string parsable by
      *  PHP's `strtotime`.
-     * @return Monolyth\Formulaic\Element Self
+     * @return Monolyth\Formulaic\Datetime Self
      */
-    public function setMin(string $min) : Element
+    public function setMin(string $min) : Datetime
     {
         $min = date($this->format, strtotime($min));
         $this->attributes['min'] = $min;
@@ -88,9 +88,9 @@ class Datetime extends Text
      *
      * @param string $max Maximum timestamp. This can be any string parsable by
      *  PHP's `strtotime`.
-     * @return Monolyth\Formulaic\Element Self
+     * @return Monolyth\Formulaic\Datetime Self
      */
-    public function setMax(string $max) : Element
+    public function setMax(string $max) : Datetime
     {
         $max = date($this->format, strtotime($max));
         $this->attributes['max'] = $max;
