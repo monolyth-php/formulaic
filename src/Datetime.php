@@ -33,9 +33,9 @@ class Datetime extends Text
     /**
      * @param string $timestamp Timestamp for the new datetime value. This can
      *  be any string parsable by PHP's `strtotime`.
-     * @return Monolyth\Formulaic\Datetime Self
+     * @return Monolyth\Formulaic\Element Self
      */
-    public function setValue(string $timestamp = null) : Datetime
+    public function setValue(string $timestamp = null) : Element
     {
         if ($time = strtotime($timestamp)) {
             $timestamp = date($this->format, $time);
