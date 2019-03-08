@@ -3,6 +3,7 @@
 namespace Monolyth\Formulaic;
 
 use ArrayObject;
+use DomainException;
 
 class Select extends ArrayObject implements Labelable, Testable
 {
@@ -26,21 +27,24 @@ class Select extends ArrayObject implements Labelable, Testable
      * Constructor.
      *
      * @param string $name Name of the element.
-     * @param array $options Hash of options (value/label).
+     * @param array|callable $options Hash of options (value/label), or a
+     *  callable which receives the new Select element as its parameter.
      * @return void
      */
-    public function __construct(string $name, array $options)
+    public function __construct(string $name, $options)
     {
         if (isset($name)) {
             $this->attributes['name'] = $name;
         }
         if (is_callable($options)) {
             $options($this);
-        } else {
+        } elseif (is_array($options)) {
             foreach ($options as $value => $txt) {
                 $option = new Select\Option($value, $txt);
                 $this[] = $option;
             }
+        } else {
+            throw new DomainException('$options must be either a hash or a callable.');
         }
         $this->addTest('valid', function ($value) {
             foreach ((array)$this as $option) {
