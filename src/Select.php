@@ -22,7 +22,14 @@ class Select extends ArrayObject implements Labelable, Testable
     protected $prefix = [];
     protected $idPrefix;
 
-    public function __construct($name, $options)
+    /**
+     * Constructor.
+     *
+     * @param string $name Name of the element.
+     * @param array $options Hash of options (value/label).
+     * @return void
+     */
+    public function __construct(string $name, array $options)
     {
         if (isset($name)) {
             $this->attributes['name'] = $name;
@@ -45,18 +52,35 @@ class Select extends ArrayObject implements Labelable, Testable
         });
     }
 
-    public function setIdPrefix($prefix)
+    /**
+     * Set the prefix for this element.
+     *
+     * @param string $prefix
+     * @return Monolyth\Formulaic\Select
+     */
+    public function setIdPrefix($prefix) : Select
     {
         $this->idPrefix = $prefix;
         return $this;
     }
 
-    public function getValue()
+    /**
+     * Return the current value of the element.
+     *
+     * @return string
+     */
+    public function getValue() : string
     {
         return $this->value;
     }
 
-    public function setValue($value)
+    /**
+     * Set the value of the element.
+     *
+     * @param string $value
+     * @return void
+     */
+    public function setValue(string $value) : void
     {
         $this->value = $value;
         foreach ((array)$this as $option) {
@@ -71,9 +95,9 @@ class Select extends ArrayObject implements Labelable, Testable
     /**
      * This is here to avoid the need to check instanceof Label.
      *
-     * @return Element $this
+     * @return Monolyth\Formulaic\Select $this
      */
-    public function getElement()
+    public function getElement() : Select
     {
         return $this;
     }
@@ -83,11 +107,11 @@ class Select extends ArrayObject implements Labelable, Testable
      * Normally, you won't need to call this directly since Formulaic handles
      * data binding transparently.
      *
-     * @param mixed $status null to get, true or false to set.
-     * @return boolean The current status (true for user input, false for
-     *                 undefined or bound from a model object).
+     * @param bool|null $status null to get, true or false to set.
+     * @return bool The current status (true for user input, false for
+     *  undefined or bound from a model object).
      */
-    public function valueSuppliedByUser($status = null)
+    public function valueSuppliedByUser(bool $status = null) : bool
     {
         if (isset($status)) {
             $this->userInput = (bool)$status;
