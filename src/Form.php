@@ -66,7 +66,7 @@ abstract class Form extends ArrayObject implements JsonSerializable
      * @see Monolyth\Formulaic\Bindable::bindGroup
      * @return self
      */
-    public function bind($model) : Form
+    public function bind(object $model) : Form
     {
         return $this->bindGroup($model);
     }
