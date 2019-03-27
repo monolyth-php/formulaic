@@ -49,7 +49,10 @@ trait QueryHelper
         if (!isset($index)) {
             $index = count((array)$this);
         }
-        if (isset($this->attributes['id'])) {
+        if (is_object($newvalue)
+            && method_exists($newvalue, 'setIdPrefix')
+            && isset($this->attributes['id'])
+        ) {
             $newvalue->setIdPrefix($this->attributes['id']);
         }
         parent::offsetSet($index, $newvalue);
