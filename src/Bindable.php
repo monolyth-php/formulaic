@@ -83,7 +83,7 @@ EOT
                 $userSupplied = $element->valueSuppliedByUser();
                 if ($element instanceof Radio) {
                     $element->check((bool)$value);
-                } else {
+                } elseif (!is_null($value)) {
                     $element->setValue($value);
                 }
                 if ($userSupplied) {
