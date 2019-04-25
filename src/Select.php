@@ -75,7 +75,7 @@ class Select extends ArrayObject implements Labelable, Testable
      */
     public function getValue() : string
     {
-        return $this->value;
+        return "{$this->value}";
     }
 
     /**
