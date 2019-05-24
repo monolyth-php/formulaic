@@ -81,10 +81,10 @@ class Select extends ArrayObject implements Labelable, Testable
     /**
      * Set the value of the element.
      *
-     * @param string $value
+     * @param string|null $value
      * @return void
      */
-    public function setValue(string $value) : void
+    public function setValue(string $value = null) : void
     {
         $this->value = $value;
         foreach ((array)$this as $option) {
