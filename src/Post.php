@@ -64,7 +64,7 @@ abstract class Post extends Form
         $name = $element->name();
         if ($element instanceof File) {
             if (array_key_exists($name, $_FILES)) {
-                $element->setValue($_FILES[$name]);
+                $element->setValue($_FILES[$name]['tmp_name']);
                 $element->valueSuppliedByUser(true);
             }
         } elseif (array_key_exists($name, $_POST)) {
