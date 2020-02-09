@@ -30,7 +30,7 @@ class Tel extends Text
             $tmp = preg_replace('/[^\d]/', '', $value);
             if (strlen($tmp)) {
                 $value = $tmp;
-                if ($value{0} != '0') {
+                if (substr($value, 0, 1) != '0') {
                     $value = "0$value";
                 }
             }
