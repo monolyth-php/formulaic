@@ -1,5 +1,5 @@
 # Formulaic
-Object-oriented form utilities for PHP5.4+
+Object-oriented form utilities for PHP7.3+
 
 HTML forms suck. Well, no, they're superduper handy, but writing them and
 validating them server-side can be a pain. Formulaic offers a set of utilities
