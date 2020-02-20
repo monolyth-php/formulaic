@@ -122,7 +122,7 @@ class Group extends Element\Group implements Labelable, Testable
         return new class([$this->value]) extends ArrayObject {
             public function __toString() : string
             {
-                return "{$this[0]}";
+                return "0";
             }
         };
     }
