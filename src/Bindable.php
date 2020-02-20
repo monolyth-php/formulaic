@@ -115,7 +115,7 @@ EOT
         return $this;
     }
 
-    public function withTransformer(callable $transformer) : self
+    public function withTransformer(callable $transformer)
     {
         $reflection = new ReflectionFunction($transformer);
         $parameter = $reflection->getParameters()[0];
@@ -147,13 +147,22 @@ EOT
     protected function transform($value)
     {
         if (is_object($value)) {
+            $types = [get_class($value)];
+            $parent = get_class($value);
+            while (false != ($parent = get_parent_class($parent))) {
+                $types[] = $parent;
+            }
+            $types = array_merge($types, array_values(class_implements($value)));
         } else {
-            $type = gettype($value);
+            $types = [gettype($value)];
         }
-        if (isset($this->transformers[$type])) {
-            $value = $this->transformers[$type]($value);
-        } elseif (isset($this->transformers['*'])) {
-            $value = $this->transformers['*']($value);
+        foreach ($types as $type) {
+            if (isset($this->transformers[$type])) {
+                return $this->transformers[$type]($value);
+            }
+        }
+        if (isset($this->transformers['*'])) {
+            return $this->transformers['*']($value);
         }
         return $value;
     }
