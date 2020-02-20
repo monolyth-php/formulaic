@@ -5,6 +5,7 @@ namespace Monolyth\Formulaic;
 use DomainException;
 use ArrayObject;
 use TypeError;
+use ReflectionFunction;
 
 /**
  * Trait to make something bindable.
@@ -114,6 +115,23 @@ EOT
         return $this;
     }
 
+    public function withTransformer(callable $transformer) : self
+    {
+        $reflection = new ReflectionFunction($transformer);
+        $parameter = $reflection->getParameters()[0];
+        $type = '*';
+        if ($parameter->hasType()) {
+            $type = $parameter->getType();
+            if ((float)phpversion() >= 7.4) {
+                $type = $type->getName();
+            } else {
+                $type = "$type";
+            }
+        }
+        $this->transformers[$type] = $transformer;
+        return $this;
+    }
+
     /**
      * "Normalize" a name string, i.e. only the first part without stuff in
      * square brackets (since that's invalid on models).
@@ -128,13 +146,16 @@ EOT
 
     protected function transform($value)
     {
-        var_dump(gettype($value));
+        if (is_object($value)) {
+        } else {
+            $type = gettype($value);
+        }
+        if (isset($this->transformers[$type])) {
+            $value = $this->transformers[$type]($value);
+        } elseif (isset($this->transformers['*'])) {
+            $value = $this->transformers['*']($value);
+        }
         return $value;
-    }
-
-    public function withTransformer(callable $transformer) : self
-    {
-        return $this;
     }
 }
 
