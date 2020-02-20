@@ -14,6 +14,9 @@ trait Bindable
     /** @var object */
     private $model;
 
+    /** @var callable[][] */
+    private $transformers = [];
+
     /**
      * Binds the element to a model.
      *
@@ -127,6 +130,11 @@ EOT
     {
         var_dump(gettype($value));
         return $value;
+    }
+
+    public function withTransformer(callable $transformer) : self
+    {
+        return $this;
     }
 }
 
