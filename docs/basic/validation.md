@@ -128,22 +128,14 @@ $form->bind($user);
 echo $user->name; // "Linus"
 ```
 
-The binding is by reference, so the following would also be true extending the
-above example:
+An element's `setValue` call automatically propagates the set value to the
+associated model:
 
 ```php
 <?php
 
 $form['name']->getElement()->setValue('Chuck Norris');
 echo $user->name; // "Chuck Norris"
-```
-
-...and it goes both ways:
-
-```php
-
-$user->name = 'Santa';
-echo $form['name']->getValue(); // "Santa"
 ```
 
 > Note that for forms with default values supplied using the `setDefaultValue`
@@ -184,4 +176,37 @@ internally is entirely up to you!)
 
 It's also fine if models have "overlap" properties; they'll just all get bound
 to the same form element.
+
+## Complex models and transformations
+A more complex model might decorate its properties, or otherwise expect a value
+that Formulaic (since HTML forms contain strings by default) is not able to cast
+on its own. This is especially problematic since PHP 7.4, since it adds type
+hints to object properties.
+
+Formulaic 1.10 introduces the concept of "transformers" for this purpose. Each
+bindable element can specify one or more transformers using the following
+syntax, for instance if the model expects an instance of `Carbon\Carbon` for
+date fields:
+
+```php
+<?php
+
+$field = (new Monolyth\Formulaic\Date('foo'))
+    ->withTransformer(function (string $date) : Carbon\Carbon {
+        return new Carbon\Carbon($date);
+    });
+```
+
+The internal `transform` method tries to apply the most specific transformer
+defined; to specify a "default-default-fallback" simply don't type hint the
+parameter to the callable (this means "match anything"). If the supplied type
+_already_ is valid, the transformer does nothing of course. The same is true for
+callables that return an invalid type, although this feature will only work in
+PHP 7.4 or higher.
+
+Note that some elements (especially the grouped ones) will try to set non-string
+values on your model.
+
+`withTransformer` return the current element, so you can embed the calls in your
+form definition's logic chain (`isRequired()` etc.).
 
