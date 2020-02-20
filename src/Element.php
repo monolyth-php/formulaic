@@ -13,11 +13,22 @@ abstract class Element implements Labelable, Testable
     use Validate\Element;
     use Bindable;
 
+    /** @var callable[] */
     private $tests = [];
+
+    /** @var bool */
     private $userInput = false;
+
+    /** @var string[] */
     protected $prefix = [];
+
+    /** @var ?string */
     protected $idPrefix = null;
+
+    /** @var string[] */
     protected $attributes = [];
+
+    /** @var mixed */
     protected $value = null;
 
     /**
@@ -51,7 +62,7 @@ abstract class Element implements Labelable, Testable
     {
         $this->value = $value;
         if (isset($this->model)) {
-            $this->model->{$this->attributes['name']} = $value;
+            $this->model->{$this->attributes['name']} = $this->transform($value);
         }
         return $this;
     }
