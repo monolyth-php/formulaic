@@ -4,6 +4,7 @@ namespace Monolyth\Formulaic;
 
 use DomainException;
 use ArrayObject;
+use TypeError;
 
 /**
  * Trait to make something bindable.
@@ -18,10 +19,19 @@ trait Bindable
      *
      * @param object $model The model to bind to.
      * @return object Self
+     * @throws Monolyth\Formulaic\TransformerRequiredException if the property
+     *  on the model is type hinted (PHP7.4+) and its value is incompatible.
      */
     public function bind(object $model) : object
     {
         $this->model = $model;
+        $name = self::normalize($this->name());
+        try {
+            $model->$name = $this->transform($this->getValue());
+        } catch (TypeError $e) {
+            $value = $this->getValue();
+            throw new TransformerRequiredException($model, $name, $value);
+        }
         return $this;
     }
 
@@ -89,10 +99,10 @@ EOT
                 if ($userSupplied) {
                     if ($element instanceof Radio) {
                         $element->check((bool)$curr);
-                        $model->$name = $element->checked();
+            //            $model->$name = $element->checked();
                     } else {
                         $element->setValue($curr);
-                        $model->$name = $element->getValue();
+              //          $model->$name = $element->transform($element->getValue());
                     }
                 }
                 $element->bind($model);
@@ -111,6 +121,12 @@ EOT
     protected static function normalize(string $name) : string
     {
         return explode('[', $name)[0];
+    }
+
+    protected function transform($value)
+    {
+        var_dump(gettype($value));
+        return $value;
     }
 }
 
