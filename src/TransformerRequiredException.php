@@ -10,7 +10,7 @@ class TransformerRequiredException extends TypeError
     {
         $type = is_object($value) ? get_class($value) : gettype($value);
         $class = get_class($model);
-        return parent::__construct("Model $class does not accept $type for property $property.");
+        return parent::__construct("$class::$property does not accept $type.");
     }
 }
 
