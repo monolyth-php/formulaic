@@ -110,7 +110,15 @@ class Bitflag extends Checkbox\Group
                 $array[] = $value->getElement()->getValue();
             }
         }
-        return new ArrayObject($array);
+        return new class($array) extends ArrayObject {
+            public function __toString() : string {
+                $bit = 0;
+                foreach ($this as $value) {
+                    $bit |= $value;
+                }
+                return "$bit";
+            }
+        };
     }
 
     /**
