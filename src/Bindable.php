@@ -30,11 +30,13 @@ trait Bindable
     {
         $this->model = $model;
         $name = self::normalize($this->name());
-        try {
-            $model->$name = $this->transform($this->getValue());
-        } catch (TypeError $e) {
+        if (property_exists($model, $name)) {
             $value = $this->getValue();
-            throw new TransformerRequiredException($model, $name, $value);
+            try {
+                $model->$name = $this->transform($value);
+            } catch (TypeError $e) {
+                throw new TransformerRequiredException($model, $name, $value);
+            }
         }
         return $this;
     }
@@ -148,10 +150,7 @@ EOT
     {
         if (is_object($value)) {
             $types = [get_class($value)];
-            $parent = get_class($value);
-            while (false != ($parent = get_parent_class($parent))) {
-                $types[] = $parent;
-            }
+            $types = array_merge($types, array_values(class_parents($value)));
             $types = array_merge($types, array_values(class_implements($value)));
         } else {
             $types = [gettype($value)];
