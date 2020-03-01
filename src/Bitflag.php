@@ -57,7 +57,7 @@ class Bitflag extends Checkbox\Group
                     $work = $work->jsonSerialize();
                 }
                 foreach ($work as $prop => $status) {
-                    $value->$prop = isset($old->$prop) ? $old->$prop : false;
+                    $value->$prop = (bool)($old->$prop ?? false);
                 }
             }
             $this->value = $value;
