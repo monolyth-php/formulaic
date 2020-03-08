@@ -117,7 +117,15 @@ EOT
         return $this;
     }
 
-    public function withTransformer(callable $transformer)
+    public function withTransformers(callable ...$transformers) : object
+    {
+        array_walk($transformers, function (callable $transformer) : void {
+            $this->withTransformer($transformer);
+        });
+        return $this;
+    }
+
+    public function withTransformer(callable $transformer) : object
     {
         $reflection = new ReflectionFunction($transformer);
         $parameter = $reflection->getParameters()[0];
@@ -134,6 +142,32 @@ EOT
         return $this;
     }
 
+    protected function transform($value, string $requested = null)
+    {
+        if (is_object($value)) {
+            if (isset($requested) && ($value instanceof $requested)) {
+                return $value;
+            }
+            $types = [get_class($value)];
+            $types = array_merge($types, array_values(class_parents($value)));
+            $types = array_merge($types, array_values(class_implements($value)));
+        } else {
+            $types = [gettype($value)];
+        }
+        $types[] = '*';
+        foreach ($types as $type) {
+            if (isset($this->transformers[$type])) {
+                $value = $this->transformers[$type]($value);
+                if (isset($requested) && (is_object($value) ? ($value instanceof $requested) : gettype($value) != $requested)) {
+                    return $this->transform($value, $requested);
+                } else {
+                    return $value;
+                }
+            }
+        }
+        return $value;
+    }
+
     /**
      * "Normalize" a name string, i.e. only the first part without stuff in
      * square brackets (since that's invalid on models).
@@ -144,26 +178,6 @@ EOT
     protected static function normalize(string $name) : string
     {
         return explode('[', $name)[0];
-    }
-
-    protected function transform($value)
-    {
-        if (is_object($value)) {
-            $types = [get_class($value)];
-            $types = array_merge($types, array_values(class_parents($value)));
-            $types = array_merge($types, array_values(class_implements($value)));
-        } else {
-            $types = [gettype($value)];
-        }
-        foreach ($types as $type) {
-            if (isset($this->transformers[$type])) {
-                return $this->transformers[$type]($value);
-            }
-        }
-        if (isset($this->transformers['*'])) {
-            return $this->transformers['*']($value);
-        }
-        return $value;
     }
 }
 
