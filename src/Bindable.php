@@ -117,6 +117,13 @@ EOT
         return $this;
     }
 
+    /**
+     * Specify one or more transformers used to transform in- and output to
+     * values compatible with your model.
+     *
+     * @param callable ...$transformers
+     * @return object Self
+     */
     public function withTransformers(callable ...$transformers) : object
     {
         array_walk($transformers, function (callable $transformer) : void {
@@ -125,6 +132,13 @@ EOT
         return $this;
     }
 
+    /**
+     * Specify a transformer used to transform in- or output to values
+     * compatible with your model.
+     *
+     * @param callable ...$transformers
+     * @return object Self
+     */
     public function withTransformer(callable $transformer) : object
     {
         $reflection = new ReflectionFunction($transformer);
@@ -142,6 +156,15 @@ EOT
         return $this;
     }
 
+    /**
+     * Internal method performing the actual transformation.
+     *
+     * @param mixed $value Element's current value.
+     * @param string|null $requested Optional type or class name you require
+     *  the value to be resolved to. Can be used to chain transformations.
+     * @return mixed Transformed value, or original if not suitable
+     *  transformation was found.
+     */
     protected function transform($value, string $requested = null)
     {
         if (is_object($value)) {
