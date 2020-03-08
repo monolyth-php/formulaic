@@ -105,7 +105,7 @@ class Group extends Element\Group implements Labelable, Testable
      *  Element\Group, but obviously radio groups can only ever have one entry
      *  checked at a time).
      */
-    public function getValue() : ArrayObject
+    public function getValue() : object
     {
         foreach ((array)$this as $element) {
             if ($element->getElement() instanceof Radio
