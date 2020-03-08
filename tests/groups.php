@@ -138,7 +138,8 @@ EOT
             ],
         ];
         $fieldset->bind($binder);
-        assert($fieldset['superhero']['batman']->getElement()->checked() === true);
+        assert($fieldset['superhero']['batman']->getElement()->checked() === false);
+        assert($binder->superhero->batman === false);
     };
 };
 
