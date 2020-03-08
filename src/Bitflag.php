@@ -9,88 +9,33 @@ use ArrayObject;
 
 class Bitflag extends Checkbox\Group
 {
-    /** @var object */
-    protected $value = null;
-
-    /** @var object */
-    protected $class = null;
-
-    /**
-     * Constructor.
-     *
-     * @param string $label Label for the bitflag.
-     * @param array $options Hash of key/value options.
-     * @param object|null $class Optional object to store bitflag
-     *  state on.
-     * @return void
-     */
-    public function __construct(string $label, array $options, object $class = null)
-    {
-        parent::__construct($label, $options);
-        $default = new Hidden("{$label}[]");
-        $default->setValue(0);
-        $this[] = $default;
-        if (isset($class)) {
-            $this->class = $class;
-        } else {
-            $this->class = new StdClass;
-            foreach ($options as $key => $value) {
-                $this->class->$key = false;
-            }
-        }
-    }
-
     /**
      * Set the current value.
      *
-     * @param mixed $value Object or array containing new state.
+     * @param mixed $value Integer or array containing new state.
      * @return void
      */
     public function setValue($value) : void
     {
-        if (is_object($value) && !($value instanceof ArrayObject)) {
-            $this->class = $value;
-            if (isset($this->value)) {
-                $old = clone $this->value;
-                $work = clone $value;
-                if ($work instanceof JsonSerializable) {
-                    $work = $work->jsonSerialize();
-                }
-                foreach ($work as $prop => $status) {
-                    $value->$prop = (bool)($old->$prop ?? false);
-                }
-            }
-            $this->value = $value;
-        }
-        if (!isset($this->value)) {
-            $this->value = clone $this->class;
-        }
-        if (is_array($value) || $value instanceof ArrayObject) {
-            $work = clone $this->value;
-            if ($work instanceof JsonSerializable) {
-                $work = $work->jsonSerialize();
-            }
-            foreach ($work as $prop => $status) {
-                $this->value->$prop = false;
-            }
-            foreach ($value as $prop) {
-                if (is_string($prop) && $this->hasBit($prop) && isset($this->value->$prop)) {
-                    $this->value->$prop = true;
-                }
+        $value = $this->transform($value);
+        if (is_object($value)) {
+            if (method_exists($value, 'getArrayCopy')) {
+                $value = $value->getArrayCopy();
+            } else {
+                $value = (array)$value;
             }
         }
-        $found = [];
+        parent::setValue($value);
         foreach ((array)$this as $element) {
             if ($element->getElement() instanceof Hidden) {
                 continue;
             }
             $check = $element->getElement()->getValue();
-            if (isset($this->value->$check) && $this->value->$check) {
+            if (in_array($check, $value)) {
                 $element->getElement()->check();
             } else {
                 $element->getElement()->check(false);
             }
-            $found[] = $check;
         }
     }
 
@@ -99,24 +44,35 @@ class Bitflag extends Checkbox\Group
      *
      * @return ArrayObject
      */
-    public function getValue() : ArrayObject
+    public function getValue() : object
     {
-        $array = [];
+        $values = new ArrayObject;
+        foreach ($this as $value) {
+            if ($value->getElement()->checked()) {
+                $values[] = $value->getElement()->getValue();
+            }
+        }
+        return new ArrayObject($values);
+        return $this->transform($values);
         foreach ($this as $value) {
             if ($value instanceof Hidden) {
                 continue;
             }
-            if ($value->getElement()->checked()) {
-                $array[] = $value->getElement()->getValue();
-            }
         }
-        return new class($array) extends ArrayObject {
+        $bit = 0;
+        foreach ($array as $option) {
+            $bit |= $this->mapping[$option];
+        }
+        return new class($array, $bit) extends ArrayObject {
+            private $bit;
+
+            public function __construct(array $array, int $bit) {
+                parent::__construct($array);
+                $this->bit = $bit;
+            }
+
             public function __toString() : string {
-                $bit = 0;
-                foreach ($this as $value) {
-                    $bit |= $value;
-                }
-                return "$bit";
+                return $this->bit;
             }
         };
     }
@@ -189,8 +145,10 @@ class Bitflag extends Checkbox\Group
      */
     public function bindGroup(object $model) : object
     {
-        parent::bindGroup($model);
-        $this->setValue($model);
+        foreach ($this as $element) {
+            $name = $element->getElement()->getValue();
+            $model->$name = $element->getElement()->checked();
+        }
         return $this;
     }
 }
