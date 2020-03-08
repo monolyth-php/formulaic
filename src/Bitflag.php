@@ -17,7 +17,6 @@ class Bitflag extends Checkbox\Group
      */
     public function setValue($value) : void
     {
-        $value = $this->transform($value);
         if (is_object($value)) {
             if (method_exists($value, 'getArrayCopy')) {
                 $value = $value->getArrayCopy();
@@ -53,28 +52,6 @@ class Bitflag extends Checkbox\Group
             }
         }
         return new ArrayObject($values);
-        return $this->transform($values);
-        foreach ($this as $value) {
-            if ($value instanceof Hidden) {
-                continue;
-            }
-        }
-        $bit = 0;
-        foreach ($array as $option) {
-            $bit |= $this->mapping[$option];
-        }
-        return new class($array, $bit) extends ArrayObject {
-            private $bit;
-
-            public function __construct(array $array, int $bit) {
-                parent::__construct($array);
-                $this->bit = $bit;
-            }
-
-            public function __toString() : string {
-                return $this->bit;
-            }
-        };
     }
 
     /**
