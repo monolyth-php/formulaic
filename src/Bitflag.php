@@ -17,6 +17,7 @@ class Bitflag extends Checkbox\Group
      */
     public function setValue($value) : void
     {
+        $value = $this->transform($value, ArrayObject::class);
         if (is_object($value)) {
             if (method_exists($value, 'getArrayCopy')) {
                 $value = $value->getArrayCopy();
