@@ -20,6 +20,9 @@ class Group extends Radio\Group
         if (is_scalar($value)) {
             $value = [$value];
         }
+        if (is_object($value)) {
+            $value = $value->getArrayCopy();
+        }
         foreach ((array)$this as $element) {
             if (in_array($element->getElement()->getValue(), $value)) {
                 $element->getElement()->check();
@@ -34,7 +37,7 @@ class Group extends Radio\Group
      *
      * @return ArrayObject
      */
-    public function getValue() : ArrayObject
+    public function getValue() : object
     {
         $this->value = [];
         foreach ((array)$this as $element) {
