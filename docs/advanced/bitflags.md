@@ -49,19 +49,57 @@ $form['superhero']['Batman']->checked(); // true
 ## Binding models
 If a model was bound, it is its own responsibility to convert the bound
 `superhero` back into a byte if needed. Formulaic doesn't care about the mapping
-of readable names to bits. The optional third parameter passed to the `Bitflag`
-constructor can be a "model"-type object to use internally. The implementation
-is up to you, but the assumption is that the checked keys are `true` whilst
-unchecked keys are `false`.
-
-> If no binding was specified, Formulaic will use a `StdClass`.
-
-Hence, building on our previous example:
+of readable names to bits. To convert, you can use the `withTransformer` helper.
+To convert input to a valid value for the model, typehint with `ArrayObject` For
+the converse, type hint whatever the model is supplying. An example:
 
 ```php
 <?php
 
-$model = new Superhero;
+use Monolyth\Formulaic\Post;
+use Monolyth\Formulaic\Bitflag;
+
+class MyForm extends Post
+{
+    public function __construct()
+    {
+        $this[] = (new Bitflag('superhero', [
+            'batman' => 'Batman',
+            'superman' => 'Superman',
+            'spiderman' => 'Spiderman',
+            'hulk' => 'The Hulk',
+            'daredevil' => 'Daredevil',
+        ]))->withTransformer(function (ArrayObject $input) : stdClass {
+            $property = (object)[
+                'batman' => false,
+                'superman' => false,
+                'spiderman' => false,
+                'hulk' => false,
+                'daredevil' => false,
+            ];
+            foreach ($input as $name) {
+                $property->$name = true;
+            }
+            return $property;
+        })->withTransformer(stdClass $output) : ArrayObject {
+            $raw = [];
+            foreach ($output as $key => $value) {
+                if ($value) {
+                    $raw[] = $key;
+                }
+            }
+            return $raw;
+        });
+    }
+}
+
+class Comic
+{
+    stdClass $superhero;
+}
+
+$_POST = ['superhero' => ['batman']];
+$model = new Comic;
 $form = new MyForm;
 $form->bind($model);
 // If "Batman" was checked:
@@ -71,51 +109,12 @@ var_dump($model->superhero->daredevil); // false
 
 It's up to your code to actually convert the checked bits into a byte again;
 Formulaic by design doesn't care about bit values since they would amount to
-"magic numbers" outside of the model context.
+"magic numbers" outside of the model context. A common strategy is to not use
+a simple `stdClass` but a custom type that can be `__toString`'ed.
 
 ## Undefined values
-A bitflag element silently ignores unknown values tossed at it:
-
-```php
-<?php
-
-// We want a form that just asks if we prefer Batman or Superman (e.g. for some
-// poll module), but elsewhere the user is able to choose all 5 heroes (e.g. on
-// a settings page).
-
-class PollForm extends Post
-{
-    public function __construct()
-    {
-        $this[] = new Bitflag('superhero', [
-            'batman' => 'Batman',
-            'superman' => 'Superman',
-        ]);
-    }
-}
-
-// On posting, the user only selected Batman from the two options:
-$_POST['superhero'] = ['batman'];
-$form = new PollForm;
-// Assuming the user previously selected Batman, Superman and Spiderman:
-$form['superhero']->setValue(['batman', 'superman', 'spiderman']);
-var_dump(isset($form['superhero']->getValue()->spiderman)); // false
-```
-
-The underlying idea is that typically a bitflag will contain multiple yes/no
-choices, but users won't want to edit them all in one form per se. So you just
-pass in the complete value containing all flags, allow the user to edit those
-supplied in the form, and your handler or model can just persist the resulting
-value object back to your storage, using only defined properties.
-
-Note that "known" bits are available as booleans, i.e. if in the previous
-example `'superman'` wasn't set, it _will_ be available as a property, only
-false:
-
-```php
-<?php
-
-var_dump(isset($form['superhero']->getValue()->superman)); // true
-var_dump($form['superhero']->getValue()->superman); // false
-```
+A bitflag element silently ignores unknown values tossed at it. If you need to
+split a single bit value over multiple `Bitflag` elements (e.g. because they
+belong in different forms), it is up to you to add "type objects" that only work
+on the relevant bits and leave the others alone.
 
