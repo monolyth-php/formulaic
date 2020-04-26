@@ -105,10 +105,10 @@ EOT
                 if ($userSupplied) {
                     if ($element instanceof Radio) {
                         $element->check((bool)$curr);
-            //            $model->$name = $element->checked();
+                        $model->$name = $element->checked();
                     } else {
                         $element->setValue($curr);
-              //          $model->$name = $element->transform($element->getValue());
+                        $model->$name = $this->transform($element->getValue());
                     }
                 }
                 $element->bind($model);
