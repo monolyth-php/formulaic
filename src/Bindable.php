@@ -6,6 +6,7 @@ use DomainException;
 use ArrayObject;
 use TypeError;
 use ReflectionFunction;
+use ReflectionProperty;
 
 /**
  * Trait to make something bindable.
@@ -33,7 +34,7 @@ trait Bindable
         if (property_exists($model, $name)) {
             $value = $this->getValue();
             try {
-                $model->$name = $this->transform($value);
+                $model->$name = $this->transform($value, $this->getType($model, $name));
             } catch (TypeError $e) {
                 throw new TransformerRequiredException($model, $name, $value);
             }
@@ -108,7 +109,6 @@ EOT
                         $model->$name = $element->checked();
                     } else {
                         $element->setValue($curr);
-                        $model->$name = $this->transform($element->getValue());
                     }
                 }
                 $element->bind($model);
@@ -189,6 +189,24 @@ EOT
             }
         }
         return $value;
+    }
+
+    /**
+     * Internal helper to properly get the request value type.
+     *
+     * @param object $model
+     * @param string $name
+     * @return string|null The requested class, or null if not relevant/defined.
+     */
+    protected function getType(object $model, string $name) :? string
+    {
+        $property = new ReflectionProperty($model, $name);
+        $type = $property->getType();
+        if ($type) {
+            return phpversion() < 7.4 ? "$type" : $type->getName();
+        } else {
+            return null;
+        }
     }
 
     /**
