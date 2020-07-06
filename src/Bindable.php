@@ -81,7 +81,10 @@ EOT
                 continue;
             }
             if ($field instanceof Element\Group) {
-                $field->bindGroup($model->{self::normalize($field->getElement()->name())});
+                $name = self::normalize($field->getElement()->name());
+                if (isset($model->$name)) {
+                    $field->bindGroup($model->$name);
+                }
                 continue;
             }
             if ($field instanceof Button) {
@@ -152,6 +155,7 @@ EOT
                 $type = "$type";
             }
         }
+        $type = $this->normalizedType($type);
         $this->transformers[$type] = $transformer;
         return $this;
     }
@@ -162,7 +166,7 @@ EOT
      * @param mixed $value Element's current value.
      * @param string|null $requested Optional type or class name you require
      *  the value to be resolved to. Can be used to chain transformations.
-     * @return mixed Transformed value, or original if not suitable
+     * @return mixed Transformed value, or original if no suitable
      *  transformation was found.
      */
     protected function transform($value, string $requested = null)
@@ -175,13 +179,13 @@ EOT
             $types = array_merge($types, array_values(class_parents($value)));
             $types = array_merge($types, array_values(class_implements($value)));
         } else {
-            $types = [gettype($value)];
+            $types = [$this->normalizedType(gettype($value))];
         }
         $types[] = '*';
         foreach ($types as $type) {
             if (isset($this->transformers[$type])) {
                 $value = $this->transformers[$type]($value);
-                if (isset($requested) && (is_object($value) ? ($value instanceof $requested) : gettype($value) != $requested)) {
+                if (isset($requested) && (is_object($value) ? (!($value instanceof $requested)) : $this->normalizedType(gettype($value)) != $requested)) {
                     return $this->transform($value, $requested);
                 } else {
                     return $value;
@@ -203,10 +207,18 @@ EOT
         $property = new ReflectionProperty($model, $name);
         $type = $property->getType();
         if ($type) {
-            return phpversion() < 7.4 ? "$type" : $type->getName();
+            return $this->normalizedType(phpversion() < 7.4 ? "$type" : $type->getName());
         } else {
             return null;
         }
+    }
+
+    protected function normalizedType(string $type) : string
+    {
+        switch ($type) {
+            case 'integer': return 'int';
+        }
+        return $type;
     }
 
     /**
