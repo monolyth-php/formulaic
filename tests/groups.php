@@ -141,5 +141,24 @@ EOT
         assert($fieldset['superhero']['batman']->getElement()->checked() === false);
         assert($binder->superhero->batman === false);
     };
+
+    /** Element groups can be correctly transformed */
+    yield function () {
+        $model = new class {
+            public int $test;
+        };
+        $form = new class extends Formulaic\Post {
+            public function __construct()
+            {
+                $this[] = (new Formulaic\Radio\Group('test', [1 => 'foo', 2 => 'bar']))
+                    ->withTransformer(function (ArrayObject $value) : int {
+                        return (int)"$value";
+                    });
+            }
+        };
+        $_POST = ['test' => 2];
+        $form->bind($model);
+        assert($model->test === 2);
+    };
 };
 
