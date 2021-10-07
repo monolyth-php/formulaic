@@ -24,7 +24,7 @@ trait Attributes
                     continue;
                 }
                 if ($name == 'name') {
-                    $value = preg_replace("@^\[(.*?)\]@", '$1', $value);
+                    $value = preg_replace("@\[(.*?)\[\]\]$@", '[$1][]', $value);
                 }
                 $return[] = sprintf(
                     '%s="%s"',
