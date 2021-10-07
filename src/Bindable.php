@@ -82,8 +82,12 @@ EOT
             }
             if ($field instanceof Element\Group) {
                 $name = self::normalize($field->getElement()->name());
-                if (isset($model->$name)) {
-                    $field->bindGroup($model->$name);
+                if (property_exists($model, $name)) {
+                    if (is_object($model->$name)) {
+                        $field->bindGroup($model->$name);
+                    } else {
+                        $field->bind($model);
+                    }
                 }
                 continue;
             }
@@ -112,6 +116,7 @@ EOT
                         $model->$name = $element->checked();
                     } else {
                         $element->setValue($curr);
+                        $model->$name = $curr;
                     }
                 }
                 $element->bind($model);
