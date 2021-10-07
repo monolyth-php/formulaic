@@ -147,6 +147,7 @@ EOT
         $model = new class {
             public int $test;
         };
+        $_POST = ['test' => 2];
         $form = new class extends Formulaic\Post {
             public function __construct()
             {
@@ -156,7 +157,6 @@ EOT
                     });
             }
         };
-        $_POST = ['test' => 2];
         $form->bind($model);
         assert($model->test === 2);
     };
