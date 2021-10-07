@@ -2,9 +2,6 @@
 
 namespace Monolyth\Formulaic;
 
-use StdClass;
-use JsonSerializable;
-use DomainException;
 use ArrayObject;
 
 class Bitflag extends Checkbox\Group
