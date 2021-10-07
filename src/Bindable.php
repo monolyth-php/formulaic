@@ -83,7 +83,7 @@ EOT
             if ($field instanceof Element\Group) {
                 $name = self::normalize($field->getElement()->name());
                 if (property_exists($model, $name)) {
-                    if (is_object($model->$name)) {
+                    if (isset($model->$name) && is_object($model->$name)) {
                         $field->bindGroup($model->$name);
                     } else {
                         $field->bind($model);
