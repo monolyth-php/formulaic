@@ -116,7 +116,6 @@ EOT
                         $model->$name = $element->checked();
                     } else {
                         $element->setValue($curr);
-                        $model->$name = $curr;
                     }
                 }
                 $element->bind($model);
