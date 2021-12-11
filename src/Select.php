@@ -94,6 +94,7 @@ class Select extends ArrayObject implements Labelable, Testable
                 $option->unselected();
             }
         }
+        return $this;
     }
 
     /**
