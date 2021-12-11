@@ -86,8 +86,9 @@ class Group extends Element\Group implements Labelable, Testable
      * Sets the element where the value matches to `checked`.
      *
      * @param mixed $value
+     * @return Monolyth\Formulaic\Radio\Group
      */
-    public function setValue($value)
+    public function setValue($value) : self
     {
         foreach ((array)$this as $element) {
             if ($value == $element->getElement()->getValue()) {
@@ -96,6 +97,7 @@ class Group extends Element\Group implements Labelable, Testable
                 $element->getElement()->check(false);
             }
         }
+        return $this;
     }
 
     /**
