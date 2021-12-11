@@ -98,7 +98,7 @@ class Group extends ArrayObject implements JsonSerializable
     public function setValue($value) : self
     {
         if (is_scalar($value) or is_null($value)) {
-            return;
+            return $this;
         }
         foreach ($value as $name => $val) {
             if ($field = $this[$name]) {
