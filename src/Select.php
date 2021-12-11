@@ -82,9 +82,9 @@ class Select extends ArrayObject implements Labelable, Testable
      * Set the value of the element.
      *
      * @param string|null $value
-     * @return Monolyth\Formulaic\Element
+     * @return self
      */
-    public function setValue(string $value = null) : Element
+    public function setValue(string $value = null) : self
     {
         $this->value = $value;
         foreach ((array)$this as $option) {
