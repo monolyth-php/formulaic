@@ -92,9 +92,10 @@ class Group extends ArrayObject implements JsonSerializable
      * Set a group of values on elements in this group. Call with a hash or
      * object key/value pairs, where the keys must match element names.
      *
-     * @param iterable $value
+     * @param mixed $value
+     * @return Monolyth\Formulaic\Element\Group
      */
-    public function setValue($value)
+    public function setValue($value) : self
     {
         if (is_scalar($value) or is_null($value)) {
             return;
@@ -104,6 +105,7 @@ class Group extends ArrayObject implements JsonSerializable
                 $field->getElement()->setValue($val);
             }
         }
+        return $this;
     }
 
     /**
