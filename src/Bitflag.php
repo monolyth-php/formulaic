@@ -10,9 +10,9 @@ class Bitflag extends Checkbox\Group
      * Set the current value.
      *
      * @param mixed $value Integer or array containing new state.
-     * @return void
+     * @return self
      */
-    public function setValue($value) : void
+    public function setValue($value) : self
     {
         $value = $this->transform($value, ArrayObject::class);
         if (is_object($value)) {
@@ -34,6 +34,7 @@ class Bitflag extends Checkbox\Group
                 $element->getElement()->check(false);
             }
         }
+        return $this;
     }
 
     /**
