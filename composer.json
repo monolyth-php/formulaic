@@ -14,7 +14,7 @@
     },
     "require-dev": {
         "gentry/gentry": "^0.13",
-        "toast/unit": "^2.0"
+        "toast/unit": "^2.1.7"
     },
     "autoload": {
         "psr-4": {
