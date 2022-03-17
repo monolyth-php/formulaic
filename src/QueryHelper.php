@@ -10,7 +10,7 @@ trait QueryHelper
      * @param mixed $index
      * @return mixed The found index, or null
      */
-    public function offsetGet($index)
+    public function offsetGet($index) : mixed
     {
         foreach ((array)$this as $i => $element) {
             $i = (string)$i;
