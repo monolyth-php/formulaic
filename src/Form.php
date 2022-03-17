@@ -40,7 +40,7 @@ abstract class Form extends ArrayObject implements JsonSerializable
      *
      * @return array
      */
-    public function getArrayCopy()
+    public function getArrayCopy() : array
     {
         $copy = [];
         foreach ((array)$this as $key => $value) {
