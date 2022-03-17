@@ -9,9 +9,9 @@ trait JsonSerialize
     /**
      * Returns a `json_encode`able hash.
      *
-     * @return array
+     * @return mixed
      */
-    public function jsonSerialize()
+    public function jsonSerialize() : mixed
     {
         $copy = [];
         foreach ((array)$this as $key => $value) {
