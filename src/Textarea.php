@@ -25,7 +25,7 @@ class Textarea extends Element
         $old = $this->prepareToString();
         $out = $this->htmlBefore
             .'<textarea'.$this->attributes().'>'
-            .htmlentities($this->value, ENT_COMPAT, 'UTF-8')
+            .htmlentities($this->value ?? '', ENT_COMPAT, 'UTF-8')
             .'</textarea>'
             .$this->htmlAfter;
         if (isset($old)) {
