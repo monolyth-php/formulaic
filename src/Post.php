@@ -84,6 +84,8 @@ abstract class Post extends Form
             $element->valueSuppliedByUser(true);
         } elseif ($element instanceof Radio) {
             $element->check(false);
+        } elseif ($element instanceof Bitflag) {
+            $element->setValue(0);
         }
     }
 }
