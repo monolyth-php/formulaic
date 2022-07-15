@@ -86,7 +86,7 @@ abstract class Post extends Form
             if ($element instanceof Radio) {
                 $element->check(false);
                 $element->valueSuppliedByUser(true);
-            } elseif ($element instanceof Bitflag) {
+            } elseif ($element instanceof Radio\Group) {
                 $element->setValue(0);
                 $element->valueSuppliedByUser(true);
             }
