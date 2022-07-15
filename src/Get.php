@@ -62,6 +62,14 @@ abstract class Get extends Form
             }
             $element->setValue($_GET[$name]);
             $element->valueSuppliedByUser(true);
+        } elseif ($_GET) {
+            if ($element instanceof Radio) {
+                $element->check(false);
+                $element->valueSuppliedByUser(true);
+            } elseif ($element instanceof Bitflag) {
+                $element->setValue(0);
+                $element->valueSuppliedByUser(true);
+            }
         }
     }
 }
