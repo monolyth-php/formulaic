@@ -82,10 +82,14 @@ abstract class Post extends Form
                 $element->setValue($_POST[$name]);
             }
             $element->valueSuppliedByUser(true);
-        } elseif ($element instanceof Radio) {
-            $element->check(false);
-        } elseif ($element instanceof Bitflag) {
-            $element->setValue(0);
+        } elseif ($_SERVER['REQUEST_METHOD'] == 'POST') {
+            if ($element instanceof Radio) {
+                $element->check(false);
+                $element->valueSuppliedByUser(true);
+            } elseif ($element instanceof Bitflag) {
+                $element->setValue(0);
+                $element->valueSuppliedByUser(true);
+            }
         }
     }
 }
