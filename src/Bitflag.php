@@ -14,6 +14,9 @@ class Bitflag extends Checkbox\Group
      */
     public function setValue($value) : self
     {
+        if (is_scalar($value)) {
+            $value = [$value];
+        }
         $value = $this->transform($value, ArrayObject::class);
         if (is_object($value)) {
             if (method_exists($value, 'getArrayCopy')) {
