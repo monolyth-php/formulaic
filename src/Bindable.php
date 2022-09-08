@@ -57,14 +57,6 @@ trait Bindable
      */
     public function bindGroup(object $model) : object
     {
-        if (!is_object($model)) {
-            throw new DomainException(
-                <<<EOT
-Bindable::bindGroup must be called with an object containing publicly accessible
-key/value pairs of data.
-EOT
-            );
-        }
         if (!($this instanceof ArrayObject)) {
             throw new DomainException(
                 <<<EOT
@@ -116,6 +108,7 @@ EOT
                         $model->$name = $element->checked();
                     } else {
                         $element->setValue($curr);
+                        $model->$name = $curr;
                     }
                 }
                 $element->bind($model);
