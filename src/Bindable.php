@@ -32,7 +32,7 @@ trait Bindable
         $this->model = $model;
         $name = self::normalize($this->name());
         if (property_exists($model, $name)) {
-            $value = $this->getValue();
+            $value = $this instanceof Radio ? $this->checked() : $this->getValue();
             try {
                 $model->$name = $this->transform($value, $this->getType($model, $name));
             } catch (TypeError $e) {
@@ -105,7 +105,6 @@ EOT
                 if ($userSupplied) {
                     if ($element instanceof Radio) {
                         $element->check((bool)$curr);
-                        $model->$name = $element->checked();
                     } else {
                         $element->setValue($curr);
                     }
