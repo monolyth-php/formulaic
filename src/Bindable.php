@@ -7,6 +7,7 @@ use ArrayObject;
 use TypeError;
 use ReflectionFunction;
 use ReflectionProperty;
+use BackedEnum;
 
 /**
  * Trait to make something bindable.
@@ -100,7 +101,7 @@ EOT
                 if ($element instanceof Radio) {
                     $element->check((bool)$value);
                 } elseif (!is_null($value)) {
-                    $element->setValue($value);
+                    $element->setValue($value instanceof BackedEnum ? $value->value : $value);
                 }
                 if ($userSupplied) {
                     if ($element instanceof Radio) {
