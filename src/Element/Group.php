@@ -133,7 +133,7 @@ class Group extends ArrayObject implements JsonSerializable
     {
         $this->value = [];
         foreach ((array)$this as $field) {
-            $this->value[$field->getName()] = $field->getElement()->getValue();
+            $this->value[$field->name()] = $field->getElement()->getValue();
         }
         return new ArrayObject($this->value);
     }
