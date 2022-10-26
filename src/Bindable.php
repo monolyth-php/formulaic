@@ -32,13 +32,11 @@ trait Bindable
     {
         $this->model = $model;
         $name = self::normalize($this->name());
-        if (property_exists($model, $name)) {
-            $value = $this instanceof Radio ? $this->checked() : $this->getValue();
-            try {
-                $model->$name = $this->transform($value, $this->getType($model, $name));
-            } catch (TypeError $e) {
-                throw new TransformerRequiredException($model, $name, $value);
-            }
+        $value = $this instanceof Radio ? $this->checked() : $this->getValue();
+        try {
+            $model->$name = $this->transform($value, $this->getType($model, $name));
+        } catch (TypeError $e) {
+            throw new TransformerRequiredException($model, $name, $value);
         }
         return $this;
     }
@@ -200,13 +198,11 @@ EOT
      */
     protected function getType(object $model, string $name) :? string
     {
-        $property = new ReflectionProperty($model, $name);
-        $type = $property->getType();
-        if ($type) {
-            return $this->normalizedType(phpversion() < 7.4 ? "$type" : $type->getName());
-        } else {
-            return null;
+        $check = $model->$name ?? null;
+        if (is_object($check)) {
+            return get_class($check);
         }
+        return $this->normalizedType(gettype($check));
     }
 
     protected function normalizedType(string $type) : string
