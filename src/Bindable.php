@@ -158,12 +158,10 @@ EOT
      * Internal method performing the actual transformation.
      *
      * @param mixed $value Element's current value.
-     * @param string|null $requested Optional type or class name you require
-     *  the value to be resolved to. Can be used to chain transformations.
      * @return mixed Transformed value, or original if no suitable
      *  transformation was found.
      */
-    protected function transform($value, string $requested = null)
+    protected function transform(mixed $value) : mixed
     {
         if (is_object($value)) {
             if (isset($requested) && ($value instanceof $requested)) {
@@ -178,12 +176,7 @@ EOT
         $types[] = '*';
         foreach ($types as $type) {
             if (isset($this->transformers[$type])) {
-                $value = $this->transformers[$type]($value);
-                if (isset($requested) && (is_object($value) ? (!($value instanceof $requested)) : $this->normalizedType(gettype($value)) != $requested)) {
-                    return $this->transform($value, $requested);
-                } else {
-                    return $value;
-                }
+                return $this->transformers[$type]($value);
             }
         }
         return $value;
