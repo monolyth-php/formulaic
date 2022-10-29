@@ -14,6 +14,8 @@ class Button extends Element
      */
     protected string $text;
 
+    protected array $attributes = ['type' => 'button'];
+
     /**
      * Constructor.
      *
@@ -26,7 +28,6 @@ class Button extends Element
         if (isset($name)) {
             $this->attributes['name'] = $name;
         }
-        $this->attributes['type'] = 'button';
         $this->text = $text;
     }
 
