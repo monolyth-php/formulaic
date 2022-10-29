@@ -4,6 +4,8 @@ namespace Monolyth\Formulaic\Element;
 
 trait Identify
 {
+    protected array $prefix = [];
+
     /**
      * Add a prefix to this element.
      *
