@@ -2,9 +2,11 @@
 
 namespace Monolyth\Formulaic;
 
+use Stringable;
+
 class Tel extends Text
 {
-    protected $attributes = ['type' => 'tel'];
+    protected array $attributes = ['type' => 'tel'];
 
     /**
      * Constructor.
@@ -22,9 +24,9 @@ class Tel extends Text
     /**
      * Set the value of the element.
      *
-     * @param string $value Optional value (null for "undefined").
+     * @param string|Stringable $value Optional value (null for "undefined").
      */
-    public function setValue(string $value = null) : Element
+    public function setValue(string|Stringable $value = null) : Element
     {
         if (!is_null($value)) {
             $tmp = preg_replace('/[^\d]/', '', $value);
