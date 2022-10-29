@@ -2,7 +2,7 @@
 
 namespace Monolyth\Formulaic;
 
-abstract class Element implements Labelable, Testable
+abstract class Element implements Labelable, Testable, Bindable
 {
     use Element\Tostring;
     use Element\Identify;
@@ -11,25 +11,18 @@ abstract class Element implements Labelable, Testable
     use Validate\Test;
     use Validate\Required;
     use Validate\Element;
-    use Bindable;
+    use Transform;
+    use Normalize;
 
-    /** @var callable[] */
-    private $tests = [];
+    private array $tests = [];
 
-    /** @var bool */
-    private $userInput = false;
+    private bool $userInput = false;
 
-    /** @var string[] */
-    protected $prefix = [];
+    protected ?string $idPrefix = null;
 
-    /** @var ?string */
-    protected $idPrefix = null;
+    protected array $attributes = [];
 
-    /** @var string[] */
-    protected $attributes = [];
-
-    /** @var mixed */
-    protected $value = null;
+    protected mixed $value = null;
 
     /**
      * Constructor.
@@ -55,10 +48,10 @@ abstract class Element implements Labelable, Testable
     /**
      * Sets the current value of this element.
      *
-     * @param mixed $value The new value.
+     * @param ?string $value The new value.
      * @return self
      */
-    public function setValue(string $value = null) : Element
+    public function setValue(?string $value = null) : self
     {
         $this->value = $value;
         if (isset($this->model)) {
@@ -114,7 +107,7 @@ abstract class Element implements Labelable, Testable
      *
      * @return self
      */
-    public function getElement() : Labelable
+    public function getElement() : self
     {
         return $this;
     }
@@ -126,7 +119,7 @@ abstract class Element implements Labelable, Testable
      * @param boolean $state True for disabled, false for enabled.
      * @return self
      */
-    public function disabled(bool $state = true) : Element
+    public function disabled(bool $state = true) : self
     {
         $this->attributes['disabled'] = $state;
         return $this;
@@ -139,7 +132,7 @@ abstract class Element implements Labelable, Testable
      * @param string $text The placeholder text.
      * @return self
      */
-    public function placeholder(string $text) : Element
+    public function placeholder(string $text) : self
     {
         $this->attributes['placeholder'] = $text;
         return $this;
@@ -152,7 +145,7 @@ abstract class Element implements Labelable, Testable
      * @param int $tabindex The tabindex to use.
      * @return self
      */
-    public function tabindex(int $tabindex) : Element
+    public function tabindex(int $tabindex) : self
     {
         $this->attributes['tabindex'] = (int)$tabindex;
         return $this;
@@ -164,11 +157,9 @@ abstract class Element implements Labelable, Testable
      * @param mixed $test
      * @return self
      */
-    public function isEqualTo($test) : Element
+    public function isEqualTo(mixed $test) : self
     {
-        return $this->addTest('equals', function ($value) use ($test) {
-            return $value == $test;
-        });
+        return $this->addTest('equals', fn ($value) => $value == $test);
     }
 
     /**
@@ -177,11 +168,38 @@ abstract class Element implements Labelable, Testable
     * @param mixed $test
     * @return self
     */
-    public function isNotEqualTo($test) : Element
+    public function isNotEqualTo(mixed $test) : self
     {
-        return $this->addTest('differs', function ($value) use ($test) {
-            return $value != $test;
-        });
+        return $this->addTest('differs', fn ($value) => $value != $test);
+    }
+
+    /**
+     * Bind this element to a model.
+     *
+     * @param object $model
+     * @return self
+     */
+    public function bind(object $model) : self
+    {
+        if ($this instanceof Button) {
+            return $this;
+        }
+        $this->model = $model;
+        $name = self::normalize($this->name());
+        if (!strlen($name)) {
+            var_dump($this);die();
+        }
+        if ($this->valueSuppliedByUser()) {
+            $value = $this instanceof Radio ? $this->checked() : $this->getValue();
+            try {
+                $model->$name = $this->transform($value);
+            } catch (TypeError $e) {
+                throw new TransformerRequiredException($model, $name, $value);
+            }
+        } else {
+            $this->setValue($this->transform($model->$name));
+        }
+        return $this;
     }
 }
 
