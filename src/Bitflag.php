@@ -6,13 +6,15 @@ use ArrayObject;
 
 class Bitflag extends Checkbox\Group
 {
+    use Transform;
+
     /**
      * Set the current value.
      *
      * @param mixed $value Integer or array containing new state.
      * @return self
      */
-    public function setValue($value) : self
+    public function setValue(mixed $value) : self
     {
         if (is_scalar($value)) {
             $value = [$value];
@@ -45,7 +47,7 @@ class Bitflag extends Checkbox\Group
      *
      * @return ArrayObject
      */
-    public function getValue() : object
+    public function getValue() : ArrayObject
     {
         $values = new ArrayObject;
         foreach ($this as $value) {
@@ -120,9 +122,9 @@ class Bitflag extends Checkbox\Group
      * Binds a model to the bitflag (it's actually a group).
      *
      * @param object $model
-     * @return object Self
+     * @return self
      */
-    public function bindGroup(object $model) : object
+    public function bind(object $model) : self
     {
         foreach ($this as $element) {
             $name = $element->getElement()->getValue();
