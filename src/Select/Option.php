@@ -55,7 +55,7 @@ class Option extends Element
     public function __toString() : string
     {
         unset($this->attributes['name']);
-        return '<option'.$this->attributes().'>'.$this->label.'</option>';
+        return '<option'.$this->attributes().'>'.$this->label."</option>\n";
     }
 }
 
