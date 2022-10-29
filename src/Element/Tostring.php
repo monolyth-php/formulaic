@@ -13,10 +13,7 @@ trait Tostring
     {
         $old = $this->prepareToString();
         $out = $this->htmlBefore;
-        if ($this instanceof Checkbox && !$this->inGroup()) {
-            $out .= '<input type="hidden" name="'.$this->getName().'" value="0">';
-        }
-        $out .= '<input'.$this->attributes().'>';
+        $out .= '<input'.$this->attributes().">\n";
         $out .= $this->htmlAfter;
         if (isset($old)) {
             $this->attributes['name'] = $old;
