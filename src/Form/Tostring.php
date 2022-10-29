@@ -26,13 +26,7 @@ trait Tostring
         if ($fields) {
             $out .= "\n";
             foreach ($fields as $field) {
-                if ($field instanceof ArrayObject
-                    && !($field instanceof Select)
-                ) {
-                    $out .= "$field\n";
-                } else {
-                    $out .= "<div>$field</div>\n";
-                }
+                $out .= "$field\n";
             }
         }
         $out .= '</form>';
