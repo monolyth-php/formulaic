@@ -13,7 +13,7 @@
         "php": ">=8.1"
     },
     "require-dev": {
-        "gentry/gentry": "^0.13",
+        "gentry/gentry": "^0.16",
         "toast/unit": "^2.1.7"
     },
     "autoload": {
