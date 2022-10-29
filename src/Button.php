@@ -38,7 +38,7 @@ class Button extends Element
      */
     public function __toString() : string
     {
-        return '<button'.$this->attributes().'>'.$this->text.'</button>';
+        return '<button'.$this->attributes().'>'.$this->text."</button>\n";
     }
 }
 
