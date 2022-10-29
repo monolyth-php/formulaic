@@ -9,11 +9,10 @@ use Monolyth\Formulaic\Bindable;
 use Monolyth\Formulaic\JsonSerialize;
 use JsonSerializable;
 
-class Group extends ArrayObject implements JsonSerializable
+class Group extends ArrayObject implements JsonSerializable, Bindable
 {
     use Validate\Group;
     use QueryHelper;
-    use Bindable;
     use JsonSerialize;
 
     const WRAP_GROUP = 1;
@@ -221,6 +220,14 @@ class Group extends ArrayObject implements JsonSerializable
         $this->htmlBefore = $before;
         $this->htmlAfter = $after;
         $this->htmlGroup = $group;
+        return $this;
+    }
+
+    public function bind(object $model) : self
+    {
+        foreach ($this as $element) {
+            $element->bind($model);
+        }
         return $this;
     }
 }
