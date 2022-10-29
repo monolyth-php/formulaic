@@ -15,6 +15,6 @@ class Reset extends Button
      *
      * Hash of attributes.
      */
-    protected $attributes = ['type' => 'reset'];
+    protected array $attributes = ['type' => 'reset'];
 }
 
