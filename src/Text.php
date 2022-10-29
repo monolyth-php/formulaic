@@ -4,7 +4,7 @@ namespace Monolyth\Formulaic;
 
 class Text extends Element
 {
-    protected $attributes = ['type' => 'text'];
+    protected array $attributes = ['type' => 'text'];
 
     /**
      * Set the size of the text input.
