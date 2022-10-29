@@ -2,12 +2,12 @@
 
 namespace Monolyth\Formulaic;
 
-class Label extends Element
+class Label
 {
     use Label\Tostring;
-
-    protected $label;
-    protected $element;
+    use Element\Identify {
+        prefix as originalPrefix;
+    }
 
     /**
      * Constructor.
@@ -16,40 +16,32 @@ class Label extends Element
      * @param Monolyth\Formulaic\Labelable $element Any labelable element.
      * @return void
      */
-    public function __construct(string $label, Labelable $element)
-    {
-        $this->label = $label;
-        $this->element = $element;
-    }
+    public function __construct(protected string $label, protected Labelable $element) {}
 
     /**
-     * Get the text of the label.
+     * For convenience, forward all non-existing calls to the underlying
+     * Labelable element.
      *
-     * @return string
-     */
-    public function name() : string
-    {
-        return $this->label;
-    }
-
-    /**
-     * Get the associated element.
-     *
-     * @return Monolyth\Formulaic\Labelable
-     */
-    public function getElement() : Labelable
-    {
-        return $this->element;
-    }
-
-    /**
-     * Get the associated element's value.
-     *
+     * @param string $fn
+     * @param array $args
      * @return mixed
      */
-    public function getValue()
+    public function __call(string $fn, array $args) : mixed
     {
-        return $this->element->getValue();
+        return $this->element->$fn(...$args);
+    }
+
+    /**
+     * Set the associated element's value. This is not forwarded since we want
+     * to return the label, not the element.
+     *
+     * @param mixed $value
+     * @return self
+     */
+    public function setValue(mixed $value = null) : self
+    {
+        $this->element->setValue($value);
+        return $this;
     }
 
     /**
@@ -60,7 +52,7 @@ class Label extends Element
      */
     public function prefix(string $prefix) : void
     {
-        parent::prefix($prefix);
+        $this->originalPrefix($prefix);
         $this->element->prefix($prefix);
     }
 }
