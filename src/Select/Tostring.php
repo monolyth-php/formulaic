@@ -37,10 +37,10 @@ trait Tostring
         if (count((array)$this)) {
             $out .= "\n";
             foreach ((array)$this as $option) {
-                $out .= "$option\n";
+                $out .= "$option";
             }
         }
-        $out .= '</select>';
+        $out .= "</select>\n";
         $out .= $this->htmlAfter;
         if (isset($old)) {
             $this->attributes['name'] = $old;
