@@ -11,21 +11,19 @@ use Monolyth\Formulaic\Label;
 use Monolyth\Formulaic\Labelable;
 use Monolyth\Formulaic\Bindable;
 use Monolyth\Formulaic\Testable;
+use Monolyth\Formulaic\Transform;
 use ArrayObject;
 
-class Group extends Element\Group implements Labelable, Testable
+class Group extends Element\Group implements Labelable, Testable, Bindable
 {
     use Attributes;
     use Validate\Group;
     use Validate\Test;
     use Group\Tostring;
-    use Bindable;
+    use Transform;
+    use Element\Identify;
     
-    protected $attributes = [];
-    protected $tests = [];
-    protected $source = [];
-    private $prefix = [];
-    private $value = null;
+    private mixed $value = null;
     
     /**
      * Constructor.
