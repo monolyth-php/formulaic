@@ -26,6 +26,7 @@ class Button extends Element
         if (isset($name)) {
             $this->attributes['name'] = $name;
         }
+        $this->attributes['type'] = 'button';
         $this->text = $text;
     }
 
