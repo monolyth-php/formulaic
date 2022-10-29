@@ -21,12 +21,11 @@ trait Tostring
             $this->attributes['action'] = '';
         }
         ksort($this->attributes);
-        $out = '<form'.$this->attributes().'>';
+        $out = "<form".$this->attributes().">\n";
         $fields = (array)$this;
         if ($fields) {
-            $out .= "\n";
             foreach ($fields as $field) {
-                $out .= "$field\n";
+                $out .= "$field";
             }
         }
         $out .= '</form>';
