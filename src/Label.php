@@ -11,6 +11,7 @@ class Label implements Bindable
         id as private;
     }
     use Attributes;
+    use Element\Wrap;
 
     /**
      * Constructor.
