@@ -7,7 +7,10 @@ class Label
     use Label\Tostring;
     use Element\Identify {
         prefix as originalPrefix;
+        name as private;
+        id as private;
     }
+    use Attributes;
 
     /**
      * Constructor.
@@ -24,11 +27,13 @@ class Label
      *
      * @param string $fn
      * @param array $args
-     * @return mixed
+     * @return mixed Either the label if the method returned the underlying
+     *  Labelable (to continue proxying) or whatever (scalar?) value.
      */
     public function __call(string $fn, array $args) : mixed
     {
-        return $this->element->$fn(...$args);
+        $return = $this->element->$fn(...$args);
+        return $return instanceof Labelable ? $this : $return;
     }
 
     /**
