@@ -10,11 +10,11 @@ return function () : Generator {
         $_POST['foo'] = ['bar' => ['baz' => 'fizzbuz']];
         $form = new class extends Formulaic\Post {};
         $form->attribute('id', 'test');
-        $form[] = new Wrapper(new Formulaic\Element\Group('foo', function ($group) {
+        $form[] = new Formulaic\Element\Group('foo', function ($group) {
             $group[] = new Formulaic\Element\Group('bar', function ($group) {
                 $group[] = new Formulaic\Text('baz');
             });
-        }));
+        });
         assert('fizzbuz' == $form['foo']['bar']['baz']->getValue());
         assert("$form" == <<<EOT
 <form action="" id="test" method="post">
@@ -152,7 +152,7 @@ EOT
         $form = new class extends Formulaic\Post {
             public function __construct()
             {
-                $this[] = (new Wrapper(new Formulaic\Radio\Group('test', [1 => 'foo', 2 => 'bar'])))
+                $this[] = (new Formulaic\Radio\Group('test', [1 => 'foo', 2 => 'bar']))
                     ->withTransformer(function (ArrayObject $value) : int {
                         return (int)"$value";
                     });
