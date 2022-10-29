@@ -23,11 +23,11 @@ class Textarea extends Element
     public function __toString() : string
     {
         $old = $this->prepareToString();
-        $out = $this->htmlBefore
+        $out = ($this->htmlBefore ?? '')
             .'<textarea'.$this->attributes().">\n"
             .htmlentities($this->value ?? '', ENT_COMPAT, 'UTF-8')."\n"
             ."</textarea>\n"
-            .$this->htmlAfter;
+            .($this->htmlAfter ?? '');
         if (isset($old)) {
             $this->attributes['name'] = $old;
         }
