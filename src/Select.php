@@ -134,10 +134,14 @@ class Select extends ArrayObject implements Labelable, Testable, Bindable
     public function bind(object $model) : self
     {
         $name = self::normalize($this->name());
-        try {
-            $model->$name = $this->transform($this->getValue());
-        } catch (TypeError $e) {
-            throw new TransformerRequiredException($model, $name, $value);
+        if ($this->valueSuppliedByUser()) {
+            try {
+                $model->$name = $this->transform($this->getValue());
+            } catch (TypeError $e) {
+                throw new TransformerRequiredException($model, $name, $value);
+            }
+        } else {
+            $this->setValue($this->transform($model->$name));
         }
         return $this;
     }
