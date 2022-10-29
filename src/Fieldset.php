@@ -34,19 +34,5 @@ class Fieldset extends Element\Group
     {
         return isset($this->legend) ? $this->legend : '';
     }
-
-    /**
-     * Binds the model to this fieldset.
-     *
-     * @param object $model
-     * @return self
-     */
-    public function bind(object $model) : self
-    {
-        foreach ($this as $element) {
-            $element->bind($model);
-        }
-        return $this;
-    }
 }
 
