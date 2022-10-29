@@ -32,7 +32,7 @@ trait Tostring
             }
             $this->attributes['id'] = $id;
         }
-        $out = $this->htmlBefore;
+        $out = $this->htmlBefore ?? '';
         $out .= '<select'.$this->attributes().'>';
         if (count((array)$this)) {
             $out .= "\n";
@@ -41,7 +41,7 @@ trait Tostring
             }
         }
         $out .= "</select>\n";
-        $out .= $this->htmlAfter;
+        $out .= $this->htmlAfter ?? '';
         if (isset($old)) {
             $this->attributes['name'] = $old;
         }
