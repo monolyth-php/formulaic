@@ -223,10 +223,18 @@ class Group extends ArrayObject implements JsonSerializable, Bindable
         return $this;
     }
 
+    /**
+     * Bind a model to this group.
+     *
+     * @param object $model
+     * @return self
+     */
     public function bind(object $model) : self
     {
         foreach ($this as $element) {
-            $element->bind($model);
+            if ($element instanceof Bindable) {
+                $element->bind($model);
+            }
         }
         return $this;
     }
