@@ -9,19 +9,13 @@ use JsonSerializable;
 /**
  * The base Form class.
  */
-abstract class Form extends ArrayObject implements JsonSerializable
+abstract class Form extends ArrayObject implements JsonSerializable, Bindable
 {
     use Attributes;
     use Form\Tostring;
     use Validate\Group;
     use QueryHelper;
-    use Bindable;
     use JsonSerialize;
-
-    /**
-     * Hash of key/value pairs for HTML attributes.
-     */
-    protected $attributes = [];
 
     /**
      * Returns name of the form.
@@ -60,15 +54,21 @@ abstract class Form extends ArrayObject implements JsonSerializable
     }
 
     /**
-     * Binds a $model object to this form by proxying Bindable::bindGroup.
+     * Binds a $model object to this form. Note that any properties not matching
+     * fields in the form will be ignored, so it's safe to pass a full model to
+     * a partial form.
      *
      * @param object The model to bind.
-     * @see Monolyth\Formulaic\Bindable::bindGroup
      * @return Monolyth\Formulaic\Form self
      */
-    public function bind(object $model) : Form
+    public function bind(object $model) : self
     {
-        return $this->bindGroup($model);
+        foreach ($this as $element) {
+            if ($element instanceof Bindable) {
+                $element->bind($model);
+            }
+        }
+        return $this;
     }
 }
 
