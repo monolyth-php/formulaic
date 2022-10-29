@@ -12,9 +12,9 @@ trait Tostring
     public function __toString() : string
     {
         $old = $this->prepareToString();
-        $out = $this->htmlBefore;
+        $out = $this->htmlBefore ?? '';
         $out .= '<input'.$this->attributes().">\n";
-        $out .= $this->htmlAfter;
+        $out .= $this->htmlAfter ?? '';
         if (isset($old)) {
             $this->attributes['name'] = $old;
         }
