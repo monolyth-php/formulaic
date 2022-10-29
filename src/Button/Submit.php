@@ -14,6 +14,6 @@ class Submit extends Button
      *
      * Hash of attributes.
      */
-    protected $attributes = ['type' => 'submit'];
+    protected array $attributes = ['type' => 'submit'];
 }
 
