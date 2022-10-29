@@ -15,7 +15,7 @@ class Group extends Radio\Group
      * @param mixed $value New value or array of key/value pairs.
      * @return self
      */
-    public function setValue($value) : self
+    public function setValue(mixed $value) : self
     {
         if (is_scalar($value)) {
             $value = [$value];
