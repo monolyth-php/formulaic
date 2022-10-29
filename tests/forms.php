@@ -1,5 +1,6 @@
 <?php
 
+use Gentry\Gentry\Wrapper;
 use Monolyth\Formulaic\Get;
 use Monolyth\Formulaic\Post;
 use Monolyth\Formulaic\Text;
@@ -16,7 +17,7 @@ use Monolyth\Formulaic\Radio;
 return function () : Generator {
     /** A basic form without any elements should render just the form tags */
     yield function () {
-        $form = new class extends Get {};
+        $form = new Wrapper(new class extends Get {});
         assert("$form" == '<form action="" method="get"></form>');
     };
 
@@ -28,8 +29,8 @@ return function () : Generator {
 <div><button type="submit"></button></div>
 </form>
 EOT;
-        $form = new class extends Get {};
-        $form[] = new Text('test');
+        $form = new Wrapper(new class extends Get {});
+        $form[] = new Wrapper(new Text('test'));
         $form[] = new Submit;
         assert("$form" == $out);
     };
@@ -44,7 +45,7 @@ EOT;
 </fieldset>
 </form>
 EOT;
-        $form = new class extends Get {};
+        $form = new Wrapper(new class extends Get {});
         $form[] = new Fieldset('Hello world!', function($fieldset) {
             $fieldset[] = new Text('test');
         });
@@ -53,14 +54,14 @@ EOT;
 
     /** Fields in a form can be referenced by name */
     yield function () {
-        $form = new class extends Get {};
+        $form = new Wrapper(new class extends Get {});
         $form[] = new Text('mytextfield');
         assert($form['mytextfield'] instanceof Text);
     };
 
     /** Forms can be of type POST */
     yield function () {
-        $form = new class extends Post {};
+        $form = new Wrapper(new class extends Post {});
         assert("$form" == '<form action="" method="post"></form>');
     };
 
@@ -71,7 +72,7 @@ EOT;
 <div><input id="test" name="test" type="file"></div>
 </form>
 EOT;
-        $form = new class extends Post {};
+        $form = new Wrapper(new class extends Post {});
         $form[] = new File('test');
         assert("$form" == $out);
     };
@@ -83,9 +84,9 @@ EOT;
 <div><input id="test-bla" name="bla" type="text"></div>
 </form>
 EOT;
-        $form = new class extends Get {
-            protected $attributes = ['id' => 'test'];
-        };
+        $form = new Wrapper(new class extends Get {
+            protected array $attributes = ['id' => 'test'];
+        });
         $form[] = new Text('bla');
         assert("$form" == $out);
     };
@@ -93,7 +94,7 @@ EOT;
     /** $_GET auto-populates a GET form */
     yield function () {
         $_GET['q'] = 'query';
-        $form = new class Extends Get {};
+        $form = new Wrapper(new class Extends Get {});
         $form[] = new Search('q');
         assert('query' ==  $form['q']->getValue());
     };
@@ -101,7 +102,7 @@ EOT;
     /** $_POST auto-populates a POST form */
     yield function () {
         $_POST['q'] = 'query';
-        $form = new class extends Post {};
+        $form = new Wrapper(new class extends Post {});
         $form[] = new Search('q');
         assert('query' == $form['q']->getValue());
     };
@@ -109,7 +110,7 @@ EOT;
     /** Groups also get auto-populated */
     yield function () {
         $_POST['foo'] = ['bar' => 'baz'];
-        $form = new class extends Post {};
+        $form = new Wrapper(new class extends Post {});
         $form[] = new Group('foo', function($group) {
             $group[] = new Text('bar');
         });
@@ -119,7 +120,7 @@ EOT;
     /** Forms with conditions validate correctly */
     yield function () {
         $_POST = [];
-        $form = new class extends Post {};
+        $form = new Wrapper(new class extends Post {});
         $form[] = (new Text('foo'))->isRequired();
         $form[] = (new Text('bar'))->isRequired();
         assert($form->valid() != true);
@@ -128,7 +129,7 @@ EOT;
             'bar' => ['required'],
         ]);
         $_POST = ['foo' => 1, 'bar' => 2];
-        $form = new class extends Post {};
+        $form = new Wrapper(new class extends Post {});
         $form[] = (new Text('foo'))->isRequired();
         $form[] = (new Text('bar'))->isRequired();
         assert($form->valid());
@@ -139,7 +140,7 @@ EOT;
     /** More complex forms also get filled correctly */
     yield function () {
         $_POST = [];
-        $form = new class extends Post {
+        $form = new Wrapper(new class extends Post {
             public function __construct()
             {
                 $this[] = new Label(
@@ -158,10 +159,10 @@ EOT;
                     ))
                 );
             }
-        };
+        });
         assert($form->valid() != true);
         $_POST = ['foo' => 'Foo', 'radios' => 1, 'checkboxes' => [2, 3]];
-        $form = new class extends Post {
+        $form = new Wrapper(new class extends Post {
             public function __construct()
             {
                 $this[] = new Fieldset('Test', function ($fieldset) {
@@ -182,7 +183,7 @@ EOT;
                     );
                 });
             }
-        };
+        });
         assert($form->valid());
     };
 };
