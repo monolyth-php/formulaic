@@ -13,20 +13,23 @@ use Monolyth\Formulaic\Label;
 use Monolyth\Formulaic\Checkbox;
 use Monolyth\Formulaic\Radio;
 
+$_SERVER['REQUEST_METHOD'] = 'POST';
+
 /** Global form tests */
 return function () : Generator {
     /** A basic form without any elements should render just the form tags */
     yield function () {
         $form = new Wrapper(new class extends Get {});
-        assert("$form" == '<form action="" method="get"></form>');
+        assert("$form" == '<form action="" method="get">
+</form>');
     };
 
     /** A basic form with input and button should render correctly */
     yield function () {
         $out = <<<EOT
 <form action="" method="get">
-<div><input id="test" name="test" type="text"></div>
-<div><button type="submit">go</button></div>
+<input id="test" name="test" type="text">
+<button type="submit">go</button>
 </form>
 EOT;
         $form = new Wrapper(new class extends Get {});
@@ -41,7 +44,7 @@ EOT;
 <form action="" method="get">
 <fieldset>
 <legend>Hello world!</legend>
-<div><input id="test" name="test" type="text"></div>
+<input id="test" name="test" type="text">
 </fieldset>
 </form>
 EOT;
@@ -49,7 +52,7 @@ EOT;
         $form[] = new Fieldset('Hello world!', function($fieldset) {
             $fieldset[] = new Text('test');
         });
-        assert("$form" == $out);
+        assert("$form" === $out);
     };
 
     /** Fields in a form can be referenced by name */
@@ -62,14 +65,15 @@ EOT;
     /** Forms can be of type POST */
     yield function () {
         $form = new Wrapper(new class extends Post {});
-        assert("$form" == '<form action="" method="post"></form>');
+        assert("$form" == '<form action="" method="post">
+</form>');
     };
 
     /** Post forms can contain files */
     yield function () {
         $out = <<<EOT
 <form action="" enctype="multipart/form-data" method="post">
-<div><input id="test" name="test" type="file"></div>
+<input id="test" name="test" type="file">
 </form>
 EOT;
         $form = new Wrapper(new class extends Post {});
@@ -81,7 +85,7 @@ EOT;
     yield function () {
         $out = <<<EOT
 <form action="" id="test" method="get">
-<div><input id="test-bla" name="bla" type="text"></div>
+<input id="test-bla" name="bla" type="text">
 </form>
 EOT;
         $form = new Wrapper(new class extends Get {
