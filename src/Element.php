@@ -14,13 +14,9 @@ abstract class Element implements Labelable, Testable, Bindable
     use Transform;
     use Normalize;
 
-    private array $tests = [];
-
     private bool $userInput = false;
 
     protected ?string $idPrefix = null;
-
-    protected array $attributes = [];
 
     protected mixed $value = null;
 
