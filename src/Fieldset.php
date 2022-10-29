@@ -7,11 +7,8 @@ class Fieldset extends Element\Group
     use Attributes;
     use Fieldset\Tostring;
     use Element\Identify;
-    use Bindable;
 
-    protected $attributes = [];
-    private $legend;
-    private $prefix = [];
+    private string $legend;
 
     /**
      * Constructor. Pass null for $legend to omit the `<legend>` tag.
@@ -42,11 +39,14 @@ class Fieldset extends Element\Group
      * Binds the model to this fieldset.
      *
      * @param object $model
-     * @return object Self
+     * @return self
      */
-    public function bind(object $model) : object
+    public function bind(object $model) : self
     {
-        return $this->bindGroup($model);
+        foreach ($this as $element) {
+            $element->bind($model);
+        }
+        return $this;
     }
 }
 
