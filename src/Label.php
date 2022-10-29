@@ -2,7 +2,7 @@
 
 namespace Monolyth\Formulaic;
 
-class Label
+class Label implements Bindable
 {
     use Label\Tostring;
     use Element\Identify {
@@ -59,6 +59,15 @@ class Label
     {
         $this->originalPrefix($prefix);
         $this->element->prefix($prefix);
+    }
+
+    /**
+     * Proxy to the underlying model (to satisfy interface).
+     */
+    public function bind(object $model) : self
+    {
+        $this->element->bind($model);
+        return $this;
     }
 }
 
