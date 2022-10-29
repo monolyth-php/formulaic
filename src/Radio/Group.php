@@ -2,15 +2,7 @@
 
 namespace Monolyth\Formulaic\Radio;
 
-use Monolyth\Formulaic\Attributes;
-use Monolyth\Formulaic\Validate;
-use Monolyth\Formulaic\Radio;
-use Monolyth\Formulaic\Checkbox;
-use Monolyth\Formulaic\Element;
-use Monolyth\Formulaic\Label;
-use Monolyth\Formulaic\Labelable;
-use Monolyth\Formulaic\Testable;
-use Monolyth\Formulaic\Transform;
+use Monolyth\Formulaic\{ Attributes, Validate, Radio, Checkbox, Element, Label, Labelable, Testable, Transform, Normalize };
 use ArrayObject;
 
 class Group extends Element\Group implements Labelable, Testable
@@ -21,6 +13,7 @@ class Group extends Element\Group implements Labelable, Testable
     use Group\Tostring;
     use Transform;
     use Element\Identify;
+    use Normalize;
     
     private mixed $value = null;
     
@@ -149,6 +142,16 @@ class Group extends Element\Group implements Labelable, Testable
             }
             return false;
         });
+    }
+
+    /**
+     * Bind to a model.
+     */
+    public function bind(object $model) : self
+    {
+        $name = self::normalize($this->name());
+        $model->$name = $this->transform($this->getValue()->__toString());
+        return $this;
     }
 }
 
