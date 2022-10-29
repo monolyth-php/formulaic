@@ -7,6 +7,7 @@ use ArrayObject;
 class Bitflag extends Checkbox\Group
 {
     use Transform;
+    use Normalize;
 
     /**
      * Set the current value.
@@ -126,9 +127,10 @@ class Bitflag extends Checkbox\Group
      */
     public function bind(object $model) : self
     {
+        $basename = self::normalize($this->name());
         foreach ($this as $element) {
             $name = $element->getElement()->getValue();
-            $model->$name = $element->getElement()->checked();
+            $model->$basename->$name = $element->getElement()->checked();
         }
         return $this;
     }
