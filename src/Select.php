@@ -4,8 +4,9 @@ namespace Monolyth\Formulaic;
 
 use ArrayObject;
 use DomainException;
+use Stringable;
 
-class Select extends ArrayObject implements Labelable, Testable
+class Select extends ArrayObject implements Labelable, Testable, Bindable
 {
     use Attributes;
     use Element\Identify;
@@ -14,13 +15,11 @@ class Select extends ArrayObject implements Labelable, Testable
     use Validate\Required;
     use Validate\Element;
     use Select\Tostring;
-    use Bindable;
+    use Transform;
 
     private $userInput = false;
-    protected $attributes = [];
     protected $value;
     protected $name;
-    protected $prefix = [];
     protected $idPrefix;
 
     /**
@@ -60,9 +59,9 @@ class Select extends ArrayObject implements Labelable, Testable
      * Set the prefix for this element.
      *
      * @param string $prefix
-     * @return Monolyth\Formulaic\Select
+     * @return self
      */
-    public function setIdPrefix($prefix) : Select
+    public function setIdPrefix($prefix) : self
     {
         $this->idPrefix = $prefix;
         return $this;
@@ -81,12 +80,19 @@ class Select extends ArrayObject implements Labelable, Testable
     /**
      * Set the value of the element.
      *
-     * @param string|null $value
+     * @param string|Stringable|array|ArrayObject $value
      * @return self
+     * @throws DomainException if passed an array without the "multiple"
+     *  attribute being set to true
      */
-    public function setValue(string $value = null) : self
+    public function setValue(string|Stringable|array|ArrayObject $value = null) : self
     {
-        $this->value = $value;
+        if ((!isset($this->attributes['multiple']) || !$this->attributes['multiple'])
+            && (is_array($value) || $value instanceof ArrayObject)
+        ) {
+            throw new DomainException("Select::setValue only accepts array when the multiple attribute is true");
+        }
+        $this->value = $this->transform($value);
         foreach ((array)$this as $option) {
             if ($option->getValue() == $value) {
                 $option->selected();
@@ -100,9 +106,9 @@ class Select extends ArrayObject implements Labelable, Testable
     /**
      * This is here to avoid the need to check instanceof Label.
      *
-     * @return Monolyth\Formulaic\Select $this
+     * @return self
      */
-    public function getElement() : Select
+    public function getElement() : self
     {
         return $this;
     }
@@ -122,6 +128,17 @@ class Select extends ArrayObject implements Labelable, Testable
             $this->userInput = (bool)$status;
         }
         return $this->userInput;
+    }
+
+    public function bind(object $model) : self
+    {
+        $name = self::normalise($this->name());
+        try {
+            $model->$name = $this->transform($value);
+        } catch (TypeError $e) {
+            throw new TransformerRequiredException($model, $name, $value);
+        }
+        return $this;
     }
 }
 
