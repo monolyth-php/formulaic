@@ -44,9 +44,9 @@ trait Attributes
      *
      * @param string $name
      * @param string|null $value
-     * @return object Self.
+     * @return self
      */
-    public function attribute(string $name, string $value = null) : object
+    public function attribute(string $name, string $value = null) : self
     {
         $this->attributes[$name] = $value;
         return $this;
@@ -56,9 +56,9 @@ trait Attributes
      * Unset an attribute.
      *
      * @param string $name
-     * @return object Self.
+     * @return self
      */
-    public function unsetAttribute(string $name) : object
+    public function unsetAttribute(string $name) : self
     {
         unset($this->attributes[$name]);
         return $this;
