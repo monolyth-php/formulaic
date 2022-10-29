@@ -16,6 +16,7 @@ class Select extends ArrayObject implements Labelable, Testable, Bindable
     use Validate\Element;
     use Select\Tostring;
     use Transform;
+    use Normalize;
 
     private $userInput = false;
     protected $value;
@@ -132,7 +133,7 @@ class Select extends ArrayObject implements Labelable, Testable, Bindable
 
     public function bind(object $model) : self
     {
-        $name = self::normalise($this->name());
+        $name = self::normalize($this->name());
         try {
             $model->$name = $this->transform($value);
         } catch (TypeError $e) {
