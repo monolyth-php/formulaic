@@ -4,6 +4,8 @@ namespace Monolyth\Formulaic;
 
 trait Attributes
 {
+    protected array $attributes = [];
+
     /**
      * Formats set attributes as a string ready for insertion into HTML.
      *
