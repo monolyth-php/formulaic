@@ -1,6 +1,7 @@
 <?php
 
 use Monolyth\Formulaic;
+use Gentry\Gentry\Wrapper;
 
 /** Test element groups */
 return function () : Generator {
@@ -9,11 +10,11 @@ return function () : Generator {
         $_POST['foo'] = ['bar' => ['baz' => 'fizzbuz']];
         $form = new class extends Formulaic\Post {};
         $form->attribute('id', 'test');
-        $form[] = new Formulaic\Element\Group('foo', function ($group) {
+        $form[] = new Wrapper(new Formulaic\Element\Group('foo', function ($group) {
             $group[] = new Formulaic\Element\Group('bar', function ($group) {
                 $group[] = new Formulaic\Text('baz');
             });
-        });
+        }));
         assert('fizzbuz' == $form['foo']['bar']['baz']->getValue());
         assert("$form" == <<<EOT
 <form action="" id="test" method="post">
@@ -26,9 +27,9 @@ EOT
     /** Labels in groups cascade the group name to their elements */
     yield function () {
         $form = new class extends Formulaic\Post {};
-        $form[] = new Formulaic\Element\Group('test', function ($group) {
+        $form[] = new Wrapper(new Formulaic\Element\Group('test', function ($group) {
             $group[] = new Formulaic\Label('dummy', (new Formulaic\Text('foo'))->isRequired());
-        });
+        }));
         assert("$form" == <<<EOT
 <form action="" method="post">
 <label for="test-foo">dummy</label>
@@ -41,17 +42,17 @@ EOT
     /** Groups of checkboxes */
     yield function () {
         $form = new class extends Formulaic\Post {};
-        $form[] = (new Formulaic\Checkbox\Group(
+        $form[] = new Wrapper((new Formulaic\Checkbox\Group(
             'test',
             [1 => 'foo', 2 => 'bar']
-        ))->isRequired();
+        ))->isRequired());
         assert($form->valid() != true);
         $_POST['test'] = [1];
         $form = new class extends Formulaic\Post {};
-        $form[] = (new Formulaic\Checkbox\Group(
+        $form[] = new Wrapper((new Formulaic\Checkbox\Group(
             'test',
             [1 => 'foo', 2 => 'bar']
-        ))->isRequired();
+        ))->isRequired());
         assert($form->valid());
         assert("$form" == <<<EOT
 <form action="" method="post">
@@ -67,17 +68,17 @@ EOT
     /** Groups of radio buttons */
     yield function () {
         $form = new class extends Formulaic\Post {};
-        $form[] = (new Formulaic\Radio\Group(
+        $form[] = new Wrapper((new Formulaic\Radio\Group(
             'test',
             [1 => 'foo', 2 => 'bar']
-        ))->isRequired();
+        ))->isRequired());
         assert($form->valid() != true);
         $_POST['test'] = 1;
         $form = new class extends Formulaic\Post {};
-        $form[] = (new Formulaic\Radio\Group(
+        $form[] = new Wrapper((new Formulaic\Radio\Group(
             'test',
             [1 => 'foo', 2 => 'bar']
-        ))->isRequired();
+        ))->isRequired());
         assert($form->valid());
         assert($form['test']->getValue()->__toString() === "1");
         assert("$form" == <<<EOT
@@ -93,13 +94,13 @@ EOT
 
     /** Bitflags */
     yield function () {
-        $bit = new Formulaic\Bitflag('superhero', [
+        $bit = new Wrapper(new Formulaic\Bitflag('superhero', [
             'batman' => 'Batman',
             'superman' => 'Superman',
             'spiderman' => 'Spiderman',
             'hulk' => 'The Hulk',
             'daredevil' => 'Daredevil',
-        ]);
+        ]));
         $bit->setValue(['batman', 'superman', 'spiderman']);
         assert($bit['batman']->getElement()->checked());
         assert($bit['superman']->getElement()->checked());
@@ -110,11 +111,11 @@ EOT
 
     /** Non-supplied bitflags are left alone */
     yield function () {
-        $bit = new Formulaic\Bitflag('superhero', [
+        $bit = new Wrapper(new Formulaic\Bitflag('superhero', [
             'spidey' => 'Spiderman',
             'hulk' => 'The Hulk',
             'daredevil' => 'Daredevil',
-        ]);
+        ]));
         $bit->setDefaultValue(['superman']);
         $bit->setValue(['hulk']);
         assert(in_array('hulk', (array)$bit->getValue()));
@@ -123,7 +124,7 @@ EOT
 
     /** Fieldsets work as expected */
     yield function () {
-        $fieldset = new Formulaic\Fieldset('With a legend', function ($fieldset) {
+        $fieldset = new Wrapper(new Formulaic\Fieldset('With a legend', function ($fieldset) {
             $fieldset[] = new Formulaic\Bitflag('superhero', [
                 'batman' => 'Batman',
                 'superman' => 'Superman',
@@ -131,7 +132,7 @@ EOT
                 'hulk' => 'The Hulk',
                 'daredevil' => 'Daredevil',
             ]);
-        });
+        }));
         $binder = (object)[
             'superhero' => (object)[
                 'batman' => true,
@@ -151,7 +152,7 @@ EOT
         $form = new class extends Formulaic\Post {
             public function __construct()
             {
-                $this[] = (new Formulaic\Radio\Group('test', [1 => 'foo', 2 => 'bar']))
+                $this[] = (new Wrapper(new Formulaic\Radio\Group('test', [1 => 'foo', 2 => 'bar'])))
                     ->withTransformer(function (ArrayObject $value) : int {
                         return (int)"$value";
                     });
