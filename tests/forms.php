@@ -26,12 +26,12 @@ return function () : Generator {
         $out = <<<EOT
 <form action="" method="get">
 <div><input id="test" name="test" type="text"></div>
-<div><button type="submit"></button></div>
+<div><button type="submit">go</button></div>
 </form>
 EOT;
         $form = new Wrapper(new class extends Get {});
-        $form[] = new Wrapper(new Text('test'));
-        $form[] = new Submit;
+        $form[] = new Text('test');
+        $form[] = new Submit('go');
         assert("$form" == $out);
     };
 
@@ -140,51 +140,33 @@ EOT;
     /** More complex forms also get filled correctly */
     yield function () {
         $_POST = [];
-        $form = new Wrapper(new class extends Post {
-            public function __construct()
-            {
-                $this[] = new Label(
-                    'Test',
-                    (new Text('foo'))->isRequired()
-                );
-                $this[] = new Label(
-                    'Group of radio buttons',
-                    (new Radio\Group('radios', [1 => 'foo', 2 => 'bar']))
-                );
-                $this[] = new Label(
-                    'Group of checkboxes',
-                    (new Checkbox\Group(
-                        'checkboxes',
-                        [1 => 'foo', 2 => 'bar', 3 => 'baz']
-                    ))
-                );
-            }
-        });
-        assert($form->valid() != true);
-        $_POST = ['foo' => 'Foo', 'radios' => 1, 'checkboxes' => [2, 3]];
-        $form = new Wrapper(new class extends Post {
-            public function __construct()
-            {
-                $this[] = new Fieldset('Test', function ($fieldset) {
-                    $fieldset[] = new Label(
+        $theform = function () {
+            return new Wrapper(new class extends Post {
+                public function __construct()
+                {
+                    $this[] = new Label(
                         'Test',
                         (new Text('foo'))->isRequired()
                     );
-                    $fieldset[] = new Label(
+                    $this[] = new Label(
                         'Group of radio buttons',
                         (new Radio\Group('radios', [1 => 'foo', 2 => 'bar']))
                     );
-                    $fieldset[] = new Label(
+                    $this[] = new Label(
                         'Group of checkboxes',
                         (new Checkbox\Group(
                             'checkboxes',
                             [1 => 'foo', 2 => 'bar', 3 => 'baz']
                         ))
                     );
-                });
-            }
-        });
-        assert($form->valid());
+                }
+            });
+        };
+        $form = $theform();
+        assert($form->valid() !== true);
+        $_POST = ['foo' => 'Foo', 'radios' => 1, 'checkboxes' => [2, 3]];
+        $form = $theform();
+        assert($form->valid() === true);
     };
 };
 
