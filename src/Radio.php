@@ -4,9 +4,11 @@ namespace Monolyth\Formulaic;
 
 class Radio extends Element
 {
-    protected $attributes = ['type' => 'radio', 'name' => true];
-    protected $value = 1;
-    protected $inGroup = false;
+    protected array $attributes = ['type' => 'radio', 'name' => true];
+
+    protected mixed $value = 1;
+
+    protected bool $inGroup = false;
 
     /**
      * Returns the ID of the element.
