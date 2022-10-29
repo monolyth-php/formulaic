@@ -4,7 +4,7 @@ namespace Monolyth\Formulaic;
 
 class File extends Element
 {
-    protected $attributes = ['type' => 'file'];
+    protected array $attributes = ['type' => 'file'];
 
     /**
      * A rendered version of this element.
