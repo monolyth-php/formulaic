@@ -1,6 +1,7 @@
 <?php
 
 use Monolyth\Formulaic;
+use Gentry\Gentry\Wrapper;
 
 /** Data persistance */
 return function () : Generator {
@@ -16,7 +17,7 @@ return function () : Generator {
         assert('Marijn' == $user->name);
         $form = new class extends Formulaic\Post {
             public function __construct() {
-                $this[] = new Formulaic\Text('name');
+                $this[] = new Wrapper(new Formulaic\Text('name'));
             }
         };
         $form->bind($user);
