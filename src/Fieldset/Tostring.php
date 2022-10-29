@@ -11,18 +11,17 @@ trait Tostring
      */
     public function __toString() : string
     {
-        $out = "<fieldset'.$this->attributes().'>\n";
+        $out = "<fieldset".$this->attributes().">\n";
         if (isset($this->legend)) {
-            $out .= "\n<legend>{$this->legend}</legend>";
+            $out .= "<legend>{$this->legend}</legend>\n";
         }
         $fields = (array)$this;
         if ($fields) {
-            $out .= "\n";
             foreach ($fields as $field) {
                 if (isset($this->prefix)) {
                     $field->prefix(implode('-', $this->prefix));
                 }
-                $out .= "$field\n";
+                $out .= "$field";
             }
         }
         $out .= "</fieldset>\n";
