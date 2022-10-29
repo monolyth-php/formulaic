@@ -4,7 +4,7 @@ namespace Monolyth\Formulaic;
 
 class Url extends Text
 {
-    protected $attributes = ['type' => 'url'];
+    protected array $attributes = ['type' => 'url'];
 
     /**
      * Constructor.
