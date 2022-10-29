@@ -11,7 +11,7 @@ trait Tostring
      */
     public function __toString() : string
     {
-        $out = '<fieldset'.$this->attributes().'>';
+        $out = "<fieldset'.$this->attributes().'>\n";
         if (isset($this->legend)) {
             $out .= "\n<legend>{$this->legend}</legend>";
         }
@@ -22,10 +22,10 @@ trait Tostring
                 if (isset($this->prefix)) {
                     $field->prefix(implode('-', $this->prefix));
                 }
-                $out .= "<div>$field</div>\n";
+                $out .= "$field\n";
             }
         }
-        $out .= '</fieldset>';
+        $out .= "</fieldset>\n";
         return $out;
     }
 }
