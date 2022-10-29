@@ -18,7 +18,8 @@ trait Tostring
         }
         $out = '<label'.$this->attributes().'>';
         if ($this->element instanceof Radio) {
-            $out .= "{$this->element} {$this->label}";
+            $element = trim("{$this->element}");
+            $out .= "$element {$this->label}";
             $out .= '</label>';
         } else {
             $out .= "{$this->label}</label>\n";
