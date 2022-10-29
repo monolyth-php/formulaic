@@ -6,6 +6,8 @@ use Monolyth\Formulaic\Testable;
 
 trait Test
 {
+    protected array $tests = [];
+
     /**
      * Generic test adder.
      *
