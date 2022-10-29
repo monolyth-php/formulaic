@@ -16,7 +16,8 @@ trait Tostring
         if ($id = $this->element->id()) {
             $this->attributes['for'] = $id;
         }
-        $out = '<label'.$this->attributes().'>';
+        $out = $this->htmlBefore ?? '';
+        $out .= '<label'.$this->attributes().'>';
         if ($this->element instanceof Radio) {
             $element = trim("{$this->element}");
             $out .= "$element {$this->label}";
@@ -25,6 +26,7 @@ trait Tostring
             $out .= "{$this->label}</label>\n";
             $out .= $this->element;
         }
+        $out .= $this->htmlAfter ?? '';
         return $out;
     }
 }
