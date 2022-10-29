@@ -82,7 +82,7 @@ abstract class Post extends Form
                 $element->setValue($_POST[$name]);
             }
             $element->valueSuppliedByUser(true);
-        } elseif ($_POST) {
+        } elseif (($_SERVER['REQUEST_METHOD'] ?? '') === 'POST') {
             if ($element instanceof Radio) {
                 $element->check(false);
                 $element->valueSuppliedByUser(true);
