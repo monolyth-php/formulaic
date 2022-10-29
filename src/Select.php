@@ -119,16 +119,13 @@ class Select extends ArrayObject implements Labelable, Testable, Bindable
      * Normally, you won't need to call this directly since Formulaic handles
      * data binding transparently.
      *
-     * @param bool|null $status null to get, true or false to set.
+     * @param bool|null $status null (empty) to get, true or false to set
      * @return bool The current status (true for user input, false for
-     *  undefined or bound from a model object).
+     *  undefined or bound from a model object)
      */
     public function valueSuppliedByUser(bool $status = null) : bool
     {
-        if (isset($status)) {
-            $this->userInput = (bool)$status;
-        }
-        return $this->userInput;
+        return $this->userInput = $status ?? $this->userInput;
     }
 
     public function bind(object $model) : self
