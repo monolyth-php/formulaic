@@ -7,6 +7,7 @@ use ArrayObject;
 use Monolyth\Formulaic\QueryHelper;
 use Monolyth\Formulaic\Bindable;
 use Monolyth\Formulaic\JsonSerialize;
+use Monolyth\Formulaic\Label;
 use JsonSerializable;
 
 class Group extends ArrayObject implements JsonSerializable, Bindable
@@ -162,7 +163,7 @@ class Group extends ArrayObject implements JsonSerializable, Bindable
             if (is_string($field)) {
                 continue;
             }
-            if ($this->htmlGroup & self::WRAP_LABEL) {
+            if ($this->htmlGroup & self::WRAP_LABEL && $field instanceof Label) {
                 $field->wrap($this->htmlBefore, $this->htmlAfter);
             }
             if ($this->htmlGroup & self::WRAP_ELEMENT) {
