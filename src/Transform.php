@@ -4,39 +4,14 @@ namespace Monolyth\Formulaic;
 
 use ReflectionFunction;
 
+/**
+ * Typically, there are likely to be mismatches between your form data (usually
+ * just strings) and your models, which will be more sophisticated. Transformers
+ * allow for massaging of this data.
+ */
 trait Transform
 {
     private array $transformers;
-
-    /**
-     * Internal method performing the actual transformation.
-     *  
-     * @param mixed $value Element's current value.
-     * @return mixed Transformed value, or original if no suitable
-     *  transformation was found.
-     */
-    protected function transform(mixed $value) : mixed
-    {
-        if (is_object($value)) {
-            $types = [get_class($value)]; 
-            $types = array_merge($types, array_values(class_parents($value)));
-            $types = array_merge($types, array_values(class_implements($value)));
-        } else {
-            $type = gettype($value);
-            // PHP inconsistency...
-            if ($type === 'integer') {
-                $type = 'int';
-            }
-            $types = [$type];
-        }
-        $types[] = '*';
-        foreach ($types as $type) {
-            if (isset($this->transformers[$type])) {
-                return $this->transformers[$type]($value);
-            }
-        }
-        return $value;
-    }
 
     /**
      * Specify one or more transformers used to transform in- and output to
@@ -74,6 +49,36 @@ trait Transform
         }
         $this->transformers[$type] = $transformer;
         return $this;
+    }
+
+    /**
+     * Internal method performing the actual transformation.
+     *  
+     * @param mixed $value Element's current value.
+     * @return mixed Transformed value, or original if no suitable
+     *  transformation was found. This might trigger a `TypeError`.
+     */
+    protected function transform(mixed $value) : mixed
+    {
+        if (is_object($value)) {
+            $types = [get_class($value)]; 
+            $types = array_merge($types, array_values(class_parents($value)));
+            $types = array_merge($types, array_values(class_implements($value)));
+        } else {
+            $type = gettype($value);
+            // PHP inconsistency...
+            if ($type === 'integer') {
+                $type = 'int';
+            }
+            $types = [$type];
+        }
+        $types[] = '*';
+        foreach ($types as $type) {
+            if (isset($this->transformers[$type])) {
+                return $this->transformers[$type]($value);
+            }
+        }
+        return $value;
     }
 }
 
