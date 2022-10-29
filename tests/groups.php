@@ -3,6 +3,8 @@
 use Monolyth\Formulaic;
 use Gentry\Gentry\Wrapper;
 
+$_SERVER['REQUEST_METHOD'] = 'POST';
+
 /** Test element groups */
 return function () : Generator {
     /** Groups can contain groups */
@@ -54,12 +56,10 @@ EOT
             [1 => 'foo', 2 => 'bar']
         ))->isRequired());
         assert($form->valid());
-        assert("$form" == <<<EOT
+        assert(trim("$form") == <<<EOT
 <form action="" method="post">
-<div>
 <label for="test-1"><input checked id="test-1" name="test[]" type="checkbox" value="1"> foo</label>
 <label for="test-2"><input id="test-2" name="test[]" type="checkbox" value="2"> bar</label>
-</div>
 </form>
 EOT
         );
@@ -81,12 +81,10 @@ EOT
         ))->isRequired());
         assert($form->valid());
         assert($form['test']->getValue()->__toString() === "1");
-        assert("$form" == <<<EOT
+        assert(trim("$form") == <<<EOT
 <form action="" method="post">
-<div>
 <label for="test-1"><input checked id="test-1" name="test" required="1" type="radio" value="1"> foo</label>
 <label for="test-2"><input id="test-2" name="test" required="1" type="radio" value="2"> bar</label>
-</div>
 </form>
 EOT
         );
