@@ -9,12 +9,11 @@ use Monolyth\Formulaic\Checkbox;
 use Monolyth\Formulaic\Element;
 use Monolyth\Formulaic\Label;
 use Monolyth\Formulaic\Labelable;
-use Monolyth\Formulaic\Bindable;
 use Monolyth\Formulaic\Testable;
 use Monolyth\Formulaic\Transform;
 use ArrayObject;
 
-class Group extends Element\Group implements Labelable, Testable, Bindable
+class Group extends Element\Group implements Labelable, Testable
 {
     use Attributes;
     use Validate\Group;
