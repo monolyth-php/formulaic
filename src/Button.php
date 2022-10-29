@@ -12,14 +12,7 @@ class Button extends Element
      *
      * The text to show in the button.
      */
-    protected $text;
-
-    /**
-     * @var array
-     *
-     * Hash of attributes.
-     */
-    protected $attributes = ['type' => 'button'];
+    protected string $text;
 
     /**
      * Constructor.
