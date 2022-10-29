@@ -37,6 +37,16 @@ class Label implements Bindable
     }
 
     /**
+     * Return the underlying element.
+     *
+     * @return Labelable
+     */
+    public function getElement() : Labelable
+    {
+        return $this->element;
+    }
+
+    /**
      * Set the associated element's value. This is not forwarded since we want
      * to return the label, not the element.
      *
