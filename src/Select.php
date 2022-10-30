@@ -14,7 +14,6 @@ class Select extends ArrayObject implements Labelable, Testable, Bindable
     use Validate\Test;
     use Validate\Required;
     use Validate\Element;
-    use Select\Tostring;
     use Transform;
     use Normalize;
 
