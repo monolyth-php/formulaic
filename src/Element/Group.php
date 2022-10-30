@@ -191,10 +191,7 @@ class Group extends ArrayObject implements JsonSerializable, Bindable
             if (is_string($field)) {
                 continue;
             }
-            if (isset($status)) {
-                $field->getElement()->valueSuppliedByUser($status);
-            }
-            if ($field->getElement()->valueSuppliedByUser()) {
+            if ($field->getElement()->valueSuppliedByUser($status)) {
                 $is = true;
             }
         }
