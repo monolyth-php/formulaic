@@ -10,7 +10,6 @@ class Group extends Element\Group implements Labelable, Testable
     use Attributes;
     use Validate\Group;
     use Validate\Test;
-    use Group\Tostring;
     use Transform;
     use Element\Identify;
     use Normalize;
@@ -186,5 +185,6 @@ class Group extends Element\Group implements Labelable, Testable
             $out .= $this->htmlAfter;
         }
         return $out;
+    }
 }
 
