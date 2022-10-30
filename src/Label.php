@@ -4,7 +4,6 @@ namespace Monolyth\Formulaic;
 
 class Label implements Bindable
 {
-    use Label\Tostring;
     use Element\Identify {
         prefix as originalPrefix;
         name as private;
@@ -79,6 +78,30 @@ class Label implements Bindable
     {
         $this->element->bind($model);
         return $this;
+    }
+
+    /**
+     * Returns the label and its associated element, as a string.
+     *
+     * @return string
+     */
+    public function __toString() : string
+    {
+        if ($id = $this->element->id()) {
+            $this->attributes['for'] = $id;
+        }
+        $out = $this->htmlBefore ?? '';
+        $out .= '<label'.$this->attributes().'>';
+        if ($this->element instanceof Radio) {
+            $element = trim("{$this->element}");
+            $out .= "$element {$this->label}";
+            $out .= '</label>';
+        } else {
+            $out .= "{$this->label}</label>\n";
+            $out .= $this->element;
+        }
+        $out .= $this->htmlAfter ?? '';
+        return $out;
     }
 }
 
