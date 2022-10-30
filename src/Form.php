@@ -12,7 +12,6 @@ use JsonSerializable;
 abstract class Form extends ArrayObject implements JsonSerializable, Bindable
 {
     use Attributes;
-    use Form\Tostring;
     use Validate\Group;
     use QueryHelper;
     use JsonSerialize;
@@ -69,6 +68,31 @@ abstract class Form extends ArrayObject implements JsonSerializable, Bindable
             }
         }
         return $this;
+    }
+
+    /**
+     * Returns a rendered version of the form.
+     *
+     * @return string
+     */
+    public function __toString() : string
+    {
+        if ($name = $this->name()) {
+            $this->attributes['id'] = $name;
+        }
+        if (!isset($this->attributes['action'])) {
+            $this->attributes['action'] = '';
+        }
+        ksort($this->attributes);
+        $out = "<form".$this->attributes().">\n";
+        $fields = (array)$this;
+        if ($fields) {
+            foreach ($fields as $field) {
+                $out .= "$field";
+            }
+        }
+        $out .= '</form>';
+        return $out;
     }
 }
 
