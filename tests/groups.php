@@ -90,57 +90,6 @@ EOT
         );
     };
 
-    /** Bitflags */
-    yield function () {
-        $bit = new Wrapper(new Formulaic\Bitflag('superhero', [
-            'batman' => 'Batman',
-            'superman' => 'Superman',
-            'spiderman' => 'Spiderman',
-            'hulk' => 'The Hulk',
-            'daredevil' => 'Daredevil',
-        ]));
-        $bit->setValue(['batman', 'superman', 'spiderman']);
-        assert($bit['batman']->getElement()->checked());
-        assert($bit['superman']->getElement()->checked());
-        assert($bit['spiderman']->getElement()->checked());
-        assert(!$bit['hulk']->getElement()->checked());
-        assert(!$bit['daredevil']->getElement()->checked());
-    };
-
-    /** Non-supplied bitflags are left alone */
-    yield function () {
-        $bit = new Wrapper(new Formulaic\Bitflag('superhero', [
-            'spidey' => 'Spiderman',
-            'hulk' => 'The Hulk',
-            'daredevil' => 'Daredevil',
-        ]));
-        $bit->setDefaultValue(['superman']);
-        $bit->setValue(['hulk']);
-        assert(in_array('hulk', (array)$bit->getValue()));
-        assert(!in_array('superman', (array)$bit->getValue()));
-    };
-
-    /** Fieldsets work as expected */
-    yield function () {
-        $fieldset = new Wrapper(new Formulaic\Fieldset('With a legend', function ($fieldset) {
-            $fieldset[] = new Formulaic\Bitflag('superhero', [
-                'batman' => 'Batman',
-                'superman' => 'Superman',
-                'spiderman' => 'Spiderman',
-                'hulk' => 'The Hulk',
-                'daredevil' => 'Daredevil',
-            ]);
-        }));
-        $binder = (object)[
-            'superhero' => (object)[
-                'batman' => true,
-            ],
-        ];
-        $fieldset->bind($binder);
-        assert($fieldset['superhero']['batman']->getElement()->checked() === false);
-        assert($binder->superhero->batman === false);
-    };
-
     /** Element groups can be correctly transformed */
     yield function () {
         $model = new class {
