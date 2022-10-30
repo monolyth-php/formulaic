@@ -7,8 +7,6 @@ use ArrayObject;
 
 class Group extends Radio\Group
 {
-    use Group\Tostring;
-
     private $value;
 
     /**
