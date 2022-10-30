@@ -24,7 +24,7 @@ class Group extends Element\Group implements Labelable, Testable
      * @param callable|array $options Either a callback (called with new group
      *  as first parameter) or an array of value/label pairs.
      */
-    public function __construct(string $name, $options)
+    public function __construct(string $name, callable|array $options)
     {
         if (is_callable($options)) {
             $options($this);
@@ -150,7 +150,11 @@ class Group extends Element\Group implements Labelable, Testable
     public function bind(object $model) : self
     {
         $name = self::normalize($this->name());
-        $model->$name = $this->transform($this->getValue()->__toString());
+        if ($this->valueSuppliedByUser()) {
+            $model->$name = $this->transform($this->getValue());
+        } else {
+            $this->setValue($this->transform($model->$name ?? null));
+        }
         return $this;
     }
 }
