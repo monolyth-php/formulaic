@@ -182,9 +182,6 @@ abstract class Element implements Labelable, Testable, Bindable
         }
         $this->model = $model;
         $name = self::normalize($this->name());
-        if (!strlen($name)) {
-            var_dump($this);die();
-        }
         if ($this->valueSuppliedByUser()) {
             $value = $this instanceof Radio ? $this->checked() : $this->getValue();
             try {
@@ -193,7 +190,7 @@ abstract class Element implements Labelable, Testable, Bindable
                 throw new TransformerRequiredException($model, $name, $value);
             }
         } else {
-            $this->setValue($this->transform($model->$name));
+            $this->setValue($this->transform($model->$name ?? null));
         }
         return $this;
     }
