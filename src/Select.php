@@ -93,7 +93,7 @@ class Select extends ArrayObject implements Labelable, Testable, Bindable
         ) {
             throw new DomainException("Select::setValue only accepts array when the multiple attribute is true");
         }
-        $this->value = $this->transform($value);
+        $this->value = $value;
         foreach ((array)$this as $option) {
             if ($option->getValue() == $value) {
                 $option->selected();
@@ -138,7 +138,7 @@ class Select extends ArrayObject implements Labelable, Testable, Bindable
                 throw new TransformerRequiredException($model, $name, $value);
             }
         } else {
-            $this->setValue($this->transform($model->$name));
+            $this->setValue($this->transform($model->$name ?? null));
         }
         return $this;
     }
