@@ -8,8 +8,6 @@ class Fieldset extends Element\Group
     use Fieldset\Tostring;
     use Element\Identify;
 
-    private string $legend;
-
     /**
      * Constructor. Pass null for $legend to omit the `<legend>` tag.
      * `$callback` is called with the newly created fieldset as its argument
@@ -19,9 +17,8 @@ class Fieldset extends Element\Group
      * @param callable $callback
      * @return void
      */
-    public function __construct(string $legend = null, callable $callback)
+    public function __construct(private ?string $legend = null, callable $callback)
     {
-        $this->legend = $legend;
         $callback($this);
     }
 
