@@ -13,11 +13,11 @@ class Fieldset extends Element\Group
      * `$callback` is called with the newly created fieldset as its argument
      * for further processing.
      *
-     * @param string $legend Optional legend to display.
+     * @param string|null $legend Optional legend to display.
      * @param callable $callback
      * @return void
      */
-    public function __construct(private ?string $legend = null, callable $callback)
+    public function __construct(private ?string $legend, callable $callback)
     {
         $callback($this);
     }
