@@ -167,10 +167,10 @@ class Group extends ArrayObject implements JsonSerializable, Bindable
                 continue;
             }
             if (isset($this->htmlBefore, $this->htmlAfter) && $this->htmlGroup & self::WRAP_LABEL && $field instanceof Label) {
-                $field->wrap($this->htmlBefore ?? '', $this->htmlAfter ?? '');
+                $field->wrap($this->htmlBefore, $this->htmlAfter);
             }
             if (isset($this->htmlBefore, $this->htmlAfter) && $this->htmlGroup & self::WRAP_ELEMENT) {
-                $field->getElement()->wrap($this->htmlBefore ?? '', $this->htmlAfter ?? '');
+                $field->getElement()->wrap($this->htmlBefore, $this->htmlAfter);
             }
         }
         $out .= trim(implode('', (array)$this))."\n";
