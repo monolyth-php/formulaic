@@ -20,15 +20,17 @@ class Group extends ArrayObject implements JsonSerializable, Bindable
     const WRAP_LABEL = 2;
     const WRAP_ELEMENT = 4;
 
-    private $prefix = [];
-    private $name;
-    private $value = [];
-    /** @var string */
-    protected $htmlBefore = '';
-    /** @var string */
-    protected $htmlAfter = '';
-    /** @var int */
-    protected $htmlGroup = 4;
+    private array $prefix = [];
+
+    private string $name;
+
+    private array $value = [];
+
+    protected string $htmlBefore = '';
+
+    protected string $htmlAfter = '';
+
+    protected int $htmlGroup = 4;
 
     /**
      * Constructor.
