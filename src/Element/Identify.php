@@ -40,5 +40,46 @@ trait Identify
         $id = preg_replace('/[\W]+/', '-', $id);
         return trim(preg_replace('/[-]+/', '-', $id), '-');
     }
+
+    /**
+     * Add a generated ID to the element if none was manually set.
+     *
+     * @return void
+     */
+    protected function generateId() : void
+    {
+        if (isset($this->attributes['id'])) {
+            return;
+        }
+        if ($id = $this->id()) {
+            if (isset($this->idPrefix)) {
+                $id = "{$this->idPrefix}-$id";
+            }
+            $this->attributes['id'] = $id;
+        }
+    }
+
+    /**
+     * Add a "printable name" to the element. For elements in groups, these will
+     * automatically contain group name(s), so your element foo[bar][baz] can
+     * simply be named 'baz' in code.
+     *
+     * @return void
+     */
+    protected function generatePrintableName() : void
+    {
+        if (isset($this->attributes['name']) && is_string($this->attributes['name'])) {
+            $parts = $this->prefix;
+            $parts[] = $this->attributes['name'];
+            $start = array_shift($parts);
+            $this->attributes['name'] = $start;
+            foreach ($parts as $part) {
+                if (is_string($part)) {
+                    $this->attributes['name'] .= "[$part]";
+                }
+            }
+        }
+    }
+
 }
 
