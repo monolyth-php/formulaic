@@ -85,10 +85,9 @@ abstract class Form extends ArrayObject implements JsonSerializable, Bindable
         }
         ksort($this->attributes);
         $out = "<form".$this->attributes().">\n";
-        $fields = (array)$this;
-        if ($fields) {
-            foreach ($fields as $field) {
-                $out .= "$field";
+        if (count($this)) {
+            foreach ($this as $field) {
+                $out .= $field;
             }
         }
         $out .= '</form>';
