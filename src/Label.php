@@ -95,7 +95,7 @@ class Label implements Bindable
         if ($this->element instanceof Radio) {
             $element = trim("{$this->element}");
             $out .= "$element {$this->label}";
-            $out .= '</label>';
+            $out .= "</label>\n";
         } else {
             $out .= "{$this->label}</label>\n";
             $out .= $this->element;
