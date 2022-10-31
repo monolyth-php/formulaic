@@ -9,8 +9,9 @@ use Monolyth\Formulaic\Bindable;
 use Monolyth\Formulaic\JsonSerialize;
 use Monolyth\Formulaic\Label;
 use JsonSerializable;
+use Stringable;
 
-class Group extends ArrayObject implements JsonSerializable, Bindable
+class Group extends ArrayObject implements JsonSerializable, Bindable, Stringable
 {
     use Validate\Group;
     use QueryHelper;
