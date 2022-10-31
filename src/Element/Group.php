@@ -161,15 +161,15 @@ class Group extends ArrayObject implements JsonSerializable, Bindable
         if ($this->htmlGroup & self::WRAP_GROUP) {
             $out .= $this->htmlBefore ?? '';
         }
-        foreach ((array)$this as $field) {
+        foreach ($this as $field) {
             if (is_string($field)) {
                 echo $field;
                 continue;
             }
-            if ($this->htmlGroup & self::WRAP_LABEL && $field instanceof Label) {
+            if (isset($this->htmlBefore, $this->htmlAfter) && $this->htmlGroup & self::WRAP_LABEL && $field instanceof Label) {
                 $field->wrap($this->htmlBefore ?? '', $this->htmlAfter ?? '');
             }
-            if ($this->htmlGroup & self::WRAP_ELEMENT) {
+            if (isset($this->htmlBefore, $this->htmlAfter) && $this->htmlGroup & self::WRAP_ELEMENT) {
                 $field->getElement()->wrap($this->htmlBefore ?? '', $this->htmlAfter ?? '');
             }
         }
