@@ -3,6 +3,8 @@
 namespace Monolyth\Formulaic;
 
 use ReflectionFunction;
+use ReflectionUnionType;
+use ReflectionIntersectionType;
 
 /**
  * Typically, there are likely to be mismatches between your form data (usually
@@ -18,9 +20,9 @@ trait Transform
      * values compatible with your model.
      *  
      * @param callable ...$transformers
-     * @return object Self
+     * @return self
      */
-    public function withTransformers(callable ...$transformers) : object
+    public function withTransformers(callable ...$transformers) : self
     {
         array_walk($transformers, function (callable $transformer) : void {
             $this->withTransformer($transformer);
@@ -33,21 +35,31 @@ trait Transform
      * compatible with your model.
      *
      * @param callable ...$transformers
-     * @return object Self
+     * @return self
+     * @throws Monolyth\Formulaic\IntersectionTypesNotAllowedException
      */
-    public function withTransformer(callable $transformer) : object
+    public function withTransformer(callable $transformer) : self
     {
         $reflection = new ReflectionFunction($transformer);
         $parameter = $reflection->getParameters()[0];
         $type = '*';
         if ($parameter->hasType()) {
-            $type = $parameter->getType()->getName();
+            $type = $parameter->getType();
+            if ($type instanceof ReflectionIntersectionType) {
+                throw new IntersectionTypesNotAllowedException;
+            }
+            if ($type instanceof ReflectionUnionType) {
+                $types = $type->getTypes();
+                array_walk($types, fn (&$type) => $type = $type->getName());
+            } else {
+                $types = [$type->getName()];
+            }
         }
         // PHP inconsistency...
-        if ($type === 'integer') {
-            $type = 'int';
+        array_walk($types, fn (&$type) => $type = $type === 'integer' ? 'int' : $type);
+        foreach ($types as $type) {
+            $this->transformers[$type] = $transformer;
         }
-        $this->transformers[$type] = $transformer;
         return $this;
     }
 
