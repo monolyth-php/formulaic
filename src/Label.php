@@ -2,7 +2,9 @@
 
 namespace Monolyth\Formulaic;
 
-class Label implements Bindable
+use Stringable;
+
+class Label implements Bindable, Stringable
 {
     use Element\Identify {
         prefix as originalPrefix;
