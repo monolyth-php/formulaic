@@ -68,7 +68,6 @@ EOT;
                 2 => 'Option 2',
             ]
         ));
-        var_dump("$group");
         assert(trim("$group") == $out);
     };
 
