@@ -5,11 +5,12 @@ namespace Monolyth\Formulaic;
 use ArrayObject;
 use DomainException;
 use JsonSerializable;
+use Stringable;
 
 /**
  * The base Form class.
  */
-abstract class Form extends ArrayObject implements JsonSerializable, Bindable
+abstract class Form extends ArrayObject implements JsonSerializable, Bindable, Stringable
 {
     use Attributes;
     use Validate\Group;
