@@ -4,7 +4,6 @@ namespace Monolyth\Formulaic;
 
 abstract class Element implements Labelable, Testable, Bindable
 {
-    use Element\Tostring;
     use Element\Identify;
     use Element\Wrap;
     use Attributes;
@@ -194,5 +193,26 @@ abstract class Element implements Labelable, Testable, Bindable
         }
         return $this;
     }
+
+    /**
+     * Returns a rendered string representation of the element.
+     *
+     * @return string
+     */
+    public function __toString() : string
+    {
+        $work = clone $this;
+        $work->generateId();
+        $work->generatePrintableName();
+    //    $old = $work->prepareToString();
+        $out = $work->htmlBefore ?? '';
+        $out .= '<input'.$work->attributes().">\n";
+        $out .= $work->htmlAfter ?? '';
+      //  if (isset($old)) {
+        //    $work->attributes['name'] = $old;
+        //}
+        return $out;
+    }
+
 }
 
