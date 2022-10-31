@@ -2,7 +2,9 @@
 
 namespace Monolyth\Formulaic;
 
-abstract class Element implements Labelable, Testable, Bindable
+use Stringable;
+
+abstract class Element implements Labelable, Testable, Bindable, Stringable
 {
     use Element\Identify;
     use Element\Wrap;
