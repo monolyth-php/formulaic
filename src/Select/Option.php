@@ -3,8 +3,9 @@
 namespace Monolyth\Formulaic\Select;
 
 use Monolyth\Formulaic\Element;
+use Stringable;
 
-class Option extends Element
+class Option extends Element implements Stringable
 {
     private $label;
 
