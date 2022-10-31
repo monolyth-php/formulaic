@@ -26,9 +26,9 @@ class Group extends ArrayObject implements JsonSerializable, Bindable
 
     private array $value = [];
 
-    protected string $htmlBefore = '';
+    protected string $htmlBefore;
 
-    protected string $htmlAfter = '';
+    protected string $htmlAfter;
 
     protected int $htmlGroup = 4;
 
@@ -159,22 +159,22 @@ class Group extends ArrayObject implements JsonSerializable, Bindable
     {
         $out = '';
         if ($this->htmlGroup & self::WRAP_GROUP) {
-            $out .= $this->htmlBefore;
+            $out .= $this->htmlBefore ?? '';
         }
         foreach ((array)$this as $field) {
             if (is_string($field)) {
                 continue;
             }
             if ($this->htmlGroup & self::WRAP_LABEL && $field instanceof Label) {
-                $field->wrap($this->htmlBefore, $this->htmlAfter);
+                $field->wrap($this->htmlBefore ?? '', $this->htmlAfter ?? '');
             }
             if ($this->htmlGroup & self::WRAP_ELEMENT) {
-                $field->getElement()->wrap($this->htmlBefore, $this->htmlAfter);
+                $field->getElement()->wrap($this->htmlBefore ?? '', $this->htmlAfter ?? '');
             }
         }
         $out .= trim(implode('', (array)$this))."\n";
         if ($this->htmlGroup & self::WRAP_GROUP) {
-            $out .= $this->htmlAfter;
+            $out .= $this->htmlAfter ?? '';
         }
         return $out;
     }
