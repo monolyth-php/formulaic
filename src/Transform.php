@@ -54,6 +54,8 @@ trait Transform
             } else {
                 $types = [$type->getName()];
             }
+        } else {
+            $types = [$type];
         }
         // PHP inconsistency...
         array_walk($types, fn (&$type) => $type = $type === 'integer' ? 'int' : $type);
