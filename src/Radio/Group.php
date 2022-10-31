@@ -4,8 +4,9 @@ namespace Monolyth\Formulaic\Radio;
 
 use Monolyth\Formulaic\{ Attributes, Validate, Radio, Checkbox, Element, Label, Labelable, Testable, Transform, Normalize };
 use ArrayObject;
+use Stringable;
 
-class Group extends Element\Group implements Labelable, Testable
+class Group extends Element\Group implements Labelable, Testable, Stringable
 {
     use Attributes;
     use Validate\Group;
