@@ -2,10 +2,12 @@
 
 namespace Monolyth\Formulaic;
 
+use Stringable;
+
 /**
  * Generic button (`type="button"`).
  */
-class Button extends Element
+class Button extends Element implements Stringable
 {
     /**
      * @var string
