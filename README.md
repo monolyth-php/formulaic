@@ -242,3 +242,11 @@ echo get_class($model->foo); // Foo
 You can define multiple transformers in one go with the `withTransformers`
 method (note the plural). Each argument is a callable.
 
+Typically, you'll need two transformers: one from the model to the form, and one
+from the form back to the model. In some cases, the input may vary depending on
+the complexity of your project; define as many transformers as you need.
+
+The input type hint may be a _union_ in which case the transformer is valid for
+multiple types. Intersection type hints are not supported as they wouldn't
+really make sense in a transformation context.
+
