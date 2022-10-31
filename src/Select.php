@@ -6,7 +6,7 @@ use ArrayObject;
 use DomainException;
 use Stringable;
 
-class Select extends ArrayObject implements Labelable, Testable, Bindable
+class Select extends ArrayObject implements Labelable, Testable, Bindable, Stringable
 {
     use Attributes;
     use Element\Identify;
