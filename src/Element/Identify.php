@@ -10,8 +10,9 @@ trait Identify
      * Add a prefix to this element.
      *
      * @param string $prefix
+     * @return void
      */
-    public function prefix(string $prefix)
+    public function prefix(string $prefix) : void
     {
         array_unshift($this->prefix, $prefix);
     }
