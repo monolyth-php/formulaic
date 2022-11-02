@@ -10,22 +10,19 @@ class Group extends Radio\Group
     private $value;
 
     /**
-     * @param mixed $value New value or array of key/value pairs.
+     * @param array $value New hash of key/value pairs.
      * @return self
      */
     public function setValue(mixed $value) : self
     {
-        if (is_scalar($value)) {
-            $value = [$value];
+        if (!is_array($value)) {
+            return $this;
         }
-        if (is_object($value)) {
-            $value = $value->getArrayCopy();
-        }
-        foreach ((array)$this as $element) {
-            if (in_array($element->getElement()->getValue(), $value)) {
-                $element->getElement()->check();
+        foreach ($this as $element) {
+            if (!in_array($element->getValue(), $value)) {
+                $element->check(false);
             } else {
-                $element->getElement()->check(false);
+                $element->check();
             }
         }
         return $this;
@@ -56,12 +53,10 @@ class Group extends Radio\Group
      */
     public function isRequired(int $min = 1, int $max = null) : Radio\Group
     {
-        return $this->addTest('required', function ($value) use ($min, $max) {
+        return $this->addTest('required', function () use ($min, $max) {
             $checked = 0;
-            foreach ($value as $option) {
-                if ($option->getElement() instanceof Radio
-                    && $option->getElement()->checked()
-                ) {
+            foreach ($this as $option) {
+                if ($option->getElement() instanceof Radio && $option->getElement()->checked()) {
                     $checked++;
                 }
             }
