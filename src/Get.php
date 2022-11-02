@@ -31,13 +31,7 @@ abstract class Get extends Form
      */
     public function offsetSet($index, $item) : void
     {
-        if ($item instanceof Fieldset) {
-            foreach ($item as $subitem) {
-                $this->setValue($subitem);
-            }
-        } else {
-            $this->setValue($item);
-        }
+        $this->setValue($item);
         parent::offsetSet($index, $item);
     }
 
@@ -59,8 +53,9 @@ abstract class Get extends Form
                 } else {
                     $element->check(false);
                 }
+            } else {
+                $element->setValue($_GET[$name]);
             }
-            $element->setValue($_GET[$name]);
             $element->valueSuppliedByUser(true);
         } elseif ($_GET) {
             if ($element instanceof Radio) {
