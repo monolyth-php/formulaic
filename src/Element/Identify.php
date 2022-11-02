@@ -15,6 +15,13 @@ trait Identify
     public function prefix(string $prefix) : void
     {
         array_unshift($this->prefix, $prefix);
+        if ($this instanceof Group) {
+            foreach ((array)$this as $element) {
+                if (is_object($element)) {
+                    $element->prefix($prefix);
+                }
+            }
+        }
     }
     
     /**
