@@ -92,20 +92,20 @@ class Group extends ArrayObject implements JsonSerializable, Bindable, Stringabl
     }
 
     /**
-     * Set a group of values on elements in this group. Call with a hash or
+     * Set a group of values on elements in this group. Call with a hash of
      * object key/value pairs, where the keys must match element names.
      *
-     * @param mixed $value
+     * @param array $value Type hinted as mixed, but must really be an array
      * @return Monolyth\Formulaic\Element\Group
      */
-    public function setValue($value) : self
+    public function setValue(mixed $value) : self
     {
-        if (is_scalar($value) or is_null($value)) {
+        if (!is_array($value)) {
             return $this;
         }
-        foreach ($value as $name => $val) {
-            if ($field = $this[$name]) {
-                $field->getElement()->setValue($val);
+        foreach ($this as $element) {
+            if (isset($value[$element->name()])) {
+                $element->setValue($value[$element->name()]);
             }
         }
         return $this;
