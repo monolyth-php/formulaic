@@ -16,13 +16,10 @@ trait Attributes
         $return = [];
         ksort($this->attributes);
         foreach ($this->attributes as $name => $value) {
-            if (is_null($value) || $value === true) {
-                if ($name == 'value') {
-                    continue;
-                }
+            if ($value === true) {
                 $return[] = $name;
             } else {
-                if ($value === false) {
+                if ($value === null || $value === false) {
                     continue;
                 }
                 if ($name == 'name') {
