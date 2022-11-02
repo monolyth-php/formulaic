@@ -24,7 +24,7 @@ class Group extends Element\Group implements Labelable, Testable, Stringable
      * @param callable|array $options Either a callback (called with new group
      *  as first parameter) or an array of value/label pairs.
      */
-    public function __construct(string $name, callable|array $options)
+    public function __construct(protected string $name, callable|array $options)
     {
         if (is_callable($options)) {
             $options($this);
@@ -59,7 +59,7 @@ class Group extends Element\Group implements Labelable, Testable, Stringable
      */
     public function name() : string
     {
-        return $this->id();
+        return $this->name;
     }
     
     /**
@@ -76,15 +76,17 @@ class Group extends Element\Group implements Labelable, Testable, Stringable
      * Sets the element where the value matches to `checked`.
      *
      * @param mixed $value
-     * @return Monolyth\Formulaic\Radio\Group
+     * @return self
      */
-    public function setValue($value) : self
+    public function setValue(mixed $value) : self
     {
-        foreach ((array)$this as $element) {
-            if ($value == $element->getElement()->getValue()) {
-                $element->getElement()->check();
+        foreach ($this as $element) {
+            if ((string)$element->getValue() !== "$value") {
+                $element->check(false);
             } else {
-                $element->getElement()->check(false);
+                $element->check();
+                // Radio groups can only ever have one option selected
+                break;
             }
         }
         return $this;
@@ -124,19 +126,14 @@ class Group extends Element\Group implements Labelable, Testable, Stringable
      *
      * @return self
      */
-    public function isRequired() : Group
+    public function isRequired() : self
     {
-        foreach ((array)$this as $el) {
-            if (!is_object($el)) {
-                continue;
-            }
-            $el->getElement()->attribute('required', 1);
+        foreach ($this as $option) {
+            $option->isRequired();
         }
         return $this->addTest('required', function ($value) {
-            foreach ($value as $option) {
-                if ($option->getElement() instanceof Radio
-                    && $option->getElement()->checked()
-                ) {
+            foreach ($this as $option) {
+                if ($option->getElement() instanceof Radio && $option->getElement()->checked()) {
                     return true;
                 }
             }
@@ -156,6 +153,17 @@ class Group extends Element\Group implements Labelable, Testable, Stringable
             $this->setValue($this->transform($model->$name ?? null));
         }
         return $this;
+    }
+
+    public function valid() : bool
+    {
+        $errors = $this->runTests();
+        return $errors ? false : true;
+    }
+
+    public function errors() : array
+    {
+        return $this->runTests();
     }
 }
 
