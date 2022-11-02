@@ -9,7 +9,7 @@ $_SERVER['REQUEST_METHOD'] = 'POST';
 return function () : Generator {
     /** Groups can contain groups */
     yield function () {
-        $_POST['foo'] = ['bar' => ['baz' => 'fizzbuz']];
+        $_POST = ['foo' => ['bar' => ['baz' => 'fizzbuz']]];
         $form = new class extends Formulaic\Post {};
         $form->attribute('id', 'test');
         $form[] = new Formulaic\Element\Group('foo', function ($group) {
@@ -43,13 +43,14 @@ EOT
 
     /** Groups of checkboxes */
     yield function () {
+        $_POST = [];
         $form = new class extends Formulaic\Post {};
         $form[] = new Wrapper((new Formulaic\Checkbox\Group(
             'test',
             [1 => 'foo', 2 => 'bar']
         ))->isRequired());
         assert($form->valid() != true);
-        $_POST['test'] = [1];
+        $_POST = ['test' => [1]];
         $form = new class extends Formulaic\Post {};
         $form[] = new Wrapper((new Formulaic\Checkbox\Group(
             'test',
@@ -67,13 +68,14 @@ EOT
 
     /** Groups of radio buttons */
     yield function () {
+        $_POST = [];
         $form = new class extends Formulaic\Post {};
-        $form[] = new Wrapper((new Formulaic\Radio\Group(
+        $form[] = (new Formulaic\Radio\Group(
             'test',
             [1 => 'foo', 2 => 'bar']
-        ))->isRequired());
+        ))->isRequired();
         assert($form->valid() != true);
-        $_POST['test'] = 1;
+        $_POST = ['test' => 1];
         $form = new class extends Formulaic\Post {};
         $form[] = new Wrapper((new Formulaic\Radio\Group(
             'test',
@@ -83,8 +85,8 @@ EOT
         assert($form['test']->getValue()->__toString() === "1");
         assert(trim("$form") == <<<EOT
 <form action="" method="post">
-<label for="test-1"><input checked id="test-1" name="test" required="1" type="radio" value="1"> foo</label>
-<label for="test-2"><input id="test-2" name="test" required="1" type="radio" value="2"> bar</label>
+<label for="test-1"><input checked id="test-1" name="test" required type="radio" value="1"> foo</label>
+<label for="test-2"><input id="test-2" name="test" required type="radio" value="2"> bar</label>
 </form>
 EOT
         );
