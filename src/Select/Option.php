@@ -20,6 +20,7 @@ class Option extends Element implements Stringable
         $this->value = $value;
         $this->label = $label;
         parent::__construct($value);
+        unset($this->attributes['name']);
     }
 
     /**
@@ -37,7 +38,7 @@ class Option extends Element implements Stringable
      */
     public function selected()
     {
-        $this->attributes['selected'] = null;
+        $this->attributes['selected'] = true;
     }
 
     /**
