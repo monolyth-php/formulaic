@@ -93,8 +93,14 @@ class Select extends ArrayObject implements Labelable, Testable, Bindable, Strin
             throw new DomainException("Select::setValue only accepts array when the multiple attribute is true");
         }
         $this->value = $value;
-        foreach ((array)$this as $option) {
-            if ($option->getValue() == $value) {
+        $values = [];
+        if (is_array($value) || $value instanceof ArrayObject) {
+            $values = $value;
+        } else {
+            $values[] = "$value";
+        }
+        foreach ($this as $option) {
+            if (in_array($option->getValue(), $values)) {
                 $option->selected();
             } else {
                 $option->unselected();
