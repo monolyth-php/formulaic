@@ -87,7 +87,9 @@ abstract class Post extends Form
                 $element->check(false);
                 $element->valueSuppliedByUser(true);
             } elseif ($element instanceof Radio\Group) {
-                $element->setValue(0);
+                foreach ($element as $radio) {
+                    $radio->check(false);
+                }
                 $element->valueSuppliedByUser(true);
             }
         }
