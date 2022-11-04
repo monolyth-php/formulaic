@@ -113,16 +113,15 @@ class Group extends ArrayObject implements JsonSerializable, Bindable, Stringabl
      * Returns a hash of key/value pairs for all elements in this group,
      * or something else if a transformer was set.
      *
-     * @return mixed
+     * @return array
      */
-    public function getValue() : mixed
+    public function getValue() : array
     {
         $value = [];
         foreach ((array)$this as $field) {
             $value[$field->name()] = $field->getElement()->getValue();
         }
-        return $this->transform($value);
-        return new ArrayObject($this->value);
+        return $value;
     }
 
     /**
@@ -220,8 +219,8 @@ class Group extends ArrayObject implements JsonSerializable, Bindable, Stringabl
         $name = $this->name();
         $value = $this->getValue();
         $transformed = $this->transform($value);
-        if ($value !== $transformed) {
-            $model->$name = $value;
+        if ($value !== $transformed && $this->valueSuppliedByUser()) {
+            $model->$name = $transformed;
         } else {
             foreach ($this as $element) {
                 if ($element instanceof Bindable && isset($model->$name) && is_object($model->$name)) {
