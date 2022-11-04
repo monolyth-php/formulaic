@@ -82,7 +82,7 @@ EOT
             [1 => 'foo', 2 => 'bar']
         ))->isRequired());
         assert($form->valid());
-        assert($form['test']->getValue()->__toString() === "1");
+        assert($form['test']->getValue()[0] === 1);
         assert(trim("$form") == <<<EOT
 <form action="" method="post">
 <label for="test-1"><input checked id="test-1" name="test" required type="radio" value="1"> foo</label>
@@ -102,9 +102,7 @@ EOT
             public function __construct()
             {
                 $this[] = (new Formulaic\Radio\Group('test', [1 => 'foo', 2 => 'bar']))
-                    ->withTransformer(function (ArrayObject $value) : int {
-                        return (int)"$value";
-                    });
+                    ->withTransformer(fn (array $value) : int => (int)$value[0]);
             }
         };
         $form->bind($model);
