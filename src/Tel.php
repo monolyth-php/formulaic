@@ -24,12 +24,12 @@ class Tel extends Text
     /**
      * Set the value of the element.
      *
-     * @param string|Stringable $value Optional value (null for "undefined").
+     * @param mixed $value Optional value (null for "undefined").
      */
-    public function setValue(string|Stringable $value = null) : Element
+    public function setValue(mixed $value = null) : Element
     {
         if (!is_null($value)) {
-            $tmp = preg_replace('/[^\d]/', '', $value);
+            $tmp = preg_replace('/[^\d]/', '', "$value");
             if (strlen($tmp)) {
                 $value = $tmp;
                 if (substr($value, 0, 1) != '0') {
