@@ -30,6 +30,19 @@ abstract class Form extends ArrayObject implements JsonSerializable, Bindable, S
     }
 
     /**
+     * Adds an item to the form.
+     *
+     * @param integer|string|null $index The index to set the new item at.
+     * @param mixed $item An element or a label containing one.
+     * @return void
+     */
+    public function offsetSet($index, mixed $item) : void
+    {
+        $this->setValue($item);
+        parent::offsetSet($index, $item);
+    }
+
+    /**
      * Returns the current form as an array of key/value pairs with data.
      *
      * @return array
@@ -93,6 +106,51 @@ abstract class Form extends ArrayObject implements JsonSerializable, Bindable, S
         }
         $out .= '</form>';
         return $out;
+    }
+
+    protected function getSource() : array
+    {
+        return [];
+    }
+
+    /**
+     * Internal helper method to set the value of whatever we are dealing with.
+     *
+     * @param mixed $item
+     * @return void
+     */
+    private function setValue($item) : void
+    {
+        if (is_string($item)) {
+            return;
+        }
+        $element = $item->getElement();
+        $name = $element->name();
+        $data = $this->getSource();
+        if (array_key_exists($name, $data)) {
+            if ($element instanceof Radio) {
+                if ($data[$name] == $element->getValue()
+                    || (is_array($data[$name]) && in_array($element->getValue(), $data[$name]))
+                ) {
+                    $element->check();
+                } else {
+                    $element->check(false);
+                }
+            } else {
+                $element->setValue($data[$name]);
+            }
+            $element->valueSuppliedByUser(true);
+        } elseif ($this->wasSubmitted()) {
+            if ($element instanceof Radio) {
+                $element->check(false);
+                $element->valueSuppliedByUser(true);
+            } elseif ($element instanceof Radio\Group) {
+                foreach ($element as $radio) {
+                    $radio->check(false);
+                }
+                $element->valueSuppliedByUser(true);
+            }
+        }
     }
 }
 
