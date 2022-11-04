@@ -44,7 +44,7 @@ trait QueryHelper
      * @param mixed $newvalue
      * @return void
      */
-    public function offsetSet($index, $newvalue) : void
+    public function offsetSet(mixed $index, mixed $newvalue) : void
     {
         if (!isset($index)) {
             $index = count((array)$this);
