@@ -99,18 +99,13 @@ class Group extends Element\Group implements Labelable, Testable, Stringable
      *  Element\Group, but obviously radio groups can only ever have one entry
      *  checked at a time).
      */
-    public function getValue() : object
+    public function getValue() : array
     {
         foreach ((array)$this as $element) {
             if ($element->getElement() instanceof Radio
                 && $element->getElement()->checked()
             ) {
-                return new class([$element->getElement()->getValue()]) extends ArrayObject {
-                    public function __toString() : string
-                    {
-                        return "{$this[0]}";
-                    }
-                };
+                return [$element->getElement()->getValue()];
             }
         }
         return new class([$this->value]) extends ArrayObject {
