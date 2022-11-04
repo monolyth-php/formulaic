@@ -45,28 +45,14 @@ abstract class Element implements Labelable, Testable, Bindable, Stringable
     /**
      * Sets the current value of this element.
      *
-     * @param ?string $value The new value.
+     * @param mixed $value The new value.
      * @return self
      */
-    public function setValue(?string $value = null) : self
+    public function setValue(mixed $value = null) : self
     {
         $this->value = $value;
         if (isset($this->model)) {
             $this->model->{$this->attributes['name']} = $this->transform($value);
-        }
-        return $this;
-    }
-
-    /**
-     * Sets the current value of this element, but only if not yet supplied.
-     *
-     * @param mixed $value The new (default) value.
-     * @return self
-     */
-    public function setDefaultValue($value)
-    {
-        if (!$this->userInput) {
-            $this->setValue($value);
         }
         return $this;
     }
