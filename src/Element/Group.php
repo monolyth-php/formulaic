@@ -10,12 +10,14 @@ use Monolyth\Formulaic\JsonSerialize;
 use Monolyth\Formulaic\Label;
 use JsonSerializable;
 use Stringable;
+use Monolyth\Formulaic\Transform;
 
 class Group extends ArrayObject implements JsonSerializable, Bindable, Stringable
 {
     use Validate\Group;
     use QueryHelper;
     use JsonSerialize;
+    use Transform;
 
     const WRAP_GROUP = 1;
     const WRAP_LABEL = 2;
@@ -25,7 +27,7 @@ class Group extends ArrayObject implements JsonSerializable, Bindable, Stringabl
 
     private string $name;
 
-    private array $value = [];
+    private mixed $value;
 
     protected string $htmlBefore;
 
@@ -100,6 +102,7 @@ class Group extends ArrayObject implements JsonSerializable, Bindable, Stringabl
      */
     public function setValue(mixed $value) : self
     {
+        $value = $this->transform($value);
         if (!is_array($value)) {
             return $this;
         }
@@ -119,7 +122,7 @@ class Group extends ArrayObject implements JsonSerializable, Bindable, Stringabl
      * @param iterable $value
      * @return self
      */
-    public function setDefaultValue($value)
+    public function setDefaultValue($value) : self
     {
         if (!$this->valueSuppliedByUser()) {
             $this->setValue($value);
@@ -128,16 +131,18 @@ class Group extends ArrayObject implements JsonSerializable, Bindable, Stringabl
     }
 
     /**
-     * Returns a hash of key/value pairs for all elements in this group.
+     * Returns a hash of key/value pairs for all elements in this group,
+     * or something else if a transformer was set.
      *
-     * @return array
+     * @return mixed
      */
-    public function getValue() : object
+    public function getValue() : mixed
     {
-        $this->value = [];
+        $value = [];
         foreach ((array)$this as $field) {
-            $this->value[$field->name()] = $field->getElement()->getValue();
+            $value[$field->name()] = $field->getElement()->getValue();
         }
+        return $this->transform($value);
         return new ArrayObject($this->value);
     }
 
@@ -233,9 +238,10 @@ class Group extends ArrayObject implements JsonSerializable, Bindable, Stringabl
      */
     public function bind(object $model) : self
     {
+        $name = $this->name();
         foreach ($this as $element) {
             if ($element instanceof Bindable) {
-                $element->bind($model);
+                $element->bind($model->$name);
             }
         }
         return $this;
