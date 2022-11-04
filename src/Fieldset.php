@@ -18,7 +18,7 @@ class Fieldset extends Element\Group
      */
     public function __construct(private ?string $legend, callable $callback)
     {
-        $callback($this);
+        parent::__construct(null, $callback);
     }
 
     /**
