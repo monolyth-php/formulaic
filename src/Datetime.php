@@ -33,13 +33,13 @@ class Datetime extends Text
     }
 
     /**
-     * @param string|Stringable $timestamp Timestamp for the new datetime value.
-     *  This can be any string parsable by PHP's `strtotime`.
+     * @param mixed $timestamp Timestamp for the new datetime value. This should
+     *  be any string parsable by PHP's `strtotime`.
      * @return self
      */
-    public function setValue(string|Stringable $timestamp = null) : self
+    public function setValue(mixed $timestamp = null) : self
     {
-        if ($time = strtotime($timestamp)) {
+        if ($time = strtotime("$timestamp")) {
             $timestamp = date($this->format, $time);
         }
         return parent::setValue($timestamp);
