@@ -250,3 +250,35 @@ The input type hint may be a _union_ in which case the transformer is valid for
 multiple types. Intersection type hints are not supported as they wouldn't
 really make sense in a transformation context.
 
+## GET forms gotcha!
+In PHP, it is not possible to distinguish a "regular" page load from one
+triggered by a submitted GET form (unlike POST requests). To determine whether
+or not the user supplied values, Formulaic simply checks `$_GET` for truthiness.
+Note that this may or may not be sufficient for your needs; theoretically, an
+entirely empty form could be submitted which should still trigger this, _or_
+the URL may already contain (unrelated) GET-parameters.
+
+In these corner cases, extend the `Get` form and implement your own
+`wasSubmitted` method doing an alternative check, e.g. for a hidden form field
+or a named submit button.
+
+For post forms, the user is assumed to have supplied values whenever
+`$_SERVER['REQUEST_METHOD'] == 'POST'`. Again, situations may arise where this
+check is not good enough for you - extend and override, again.
+
+## Other methods than GET or POST
+In casu, PUT or DELETE may crop up. These are not supported out of the box,
+since Formulaic is an HTML form library, and HTML only supports GET and POST.
+However, it is not unthinkable you would like to use validation and binding
+logic in controllers handling AJAX calls for instance. In that case, feel free
+to extend your own form class.
+
+Any extension will want to implement the `getSource` method, e.g. for PUT you
+will manually parse `file_get_contents('php://input')`. Since we can't know what
+that contains (likely JSON, but assumption is the mother of all fuckup...)
+you'll need to write your own implementation suiting your needs.
+
+Similarly, DELETE _can_ contain GET data in the URL. We're not really sure when
+this would be necessary, but there you have it - a custom `Delete` form would
+likely extend GET.
+
