@@ -2,15 +2,10 @@
 
 namespace Monolyth\Formulaic\Element;
 
-use Monolyth\Formulaic\Validate;
+use Monolyth\Formulaic\{ Validate, QueryHelper, Bindable, JsonSerialize, Label, Transform, ContainsFile };
 use ArrayObject;
-use Monolyth\Formulaic\QueryHelper;
-use Monolyth\Formulaic\Bindable;
-use Monolyth\Formulaic\JsonSerialize;
-use Monolyth\Formulaic\Label;
 use JsonSerializable;
 use Stringable;
-use Monolyth\Formulaic\Transform;
 
 class Group extends ArrayObject implements JsonSerializable, Bindable, Stringable
 {
@@ -18,6 +13,7 @@ class Group extends ArrayObject implements JsonSerializable, Bindable, Stringabl
     use QueryHelper;
     use JsonSerialize;
     use Transform;
+    use ContainsFile;
 
     const WRAP_GROUP = 1;
     const WRAP_LABEL = 2;
@@ -110,22 +106,6 @@ class Group extends ArrayObject implements JsonSerializable, Bindable, Stringabl
             if (isset($value[$element->name()])) {
                 $element->setValue($value[$element->name()]);
             }
-        }
-        return $this;
-    }
-
-    /**
-     * Set a group of values on elements in this group as defaults. Call with a
-     * hash or object key/value pairs, where the keys must match element names.
-     * If any element is supplied by the user, it is ignored.
-     *
-     * @param iterable $value
-     * @return self
-     */
-    public function setDefaultValue($value) : self
-    {
-        if (!$this->valueSuppliedByUser()) {
-            $this->setValue($value);
         }
         return $this;
     }
