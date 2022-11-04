@@ -94,6 +94,13 @@ abstract class Form extends ArrayObject implements JsonSerializable, Bindable, S
         if ($name = $this->name()) {
             $this->attributes['id'] = $name;
         }
+        if (isset($this->attributes['id'])) {
+            foreach ($this as $element) {
+                if (is_object($element)) {
+                    $element->setIdPrefix($this->attributes['id']);
+                }
+            }
+        }
         if (!isset($this->attributes['action'])) {
             $this->attributes['action'] = '';
         }
