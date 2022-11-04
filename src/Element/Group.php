@@ -98,7 +98,6 @@ class Group extends ArrayObject implements JsonSerializable, Bindable, Stringabl
      */
     public function setValue(mixed $value) : self
     {
-        $value = $this->transform($value);
         if (!is_array($value)) {
             return $this;
         }
@@ -219,9 +218,15 @@ class Group extends ArrayObject implements JsonSerializable, Bindable, Stringabl
     public function bind(object $model) : self
     {
         $name = $this->name();
-        foreach ($this as $element) {
-            if ($element instanceof Bindable) {
-                $element->bind($model->$name);
+        $value = $this->getValue();
+        $transformed = $this->transform($value);
+        if ($value !== $transformed) {
+            $model->$name = $value;
+        } else {
+            foreach ($this as $element) {
+                if ($element instanceof Bindable && isset($model->$name) && is_object($model->$name)) {
+                    $element->bind($model->$name);
+                }
             }
         }
         return $this;
