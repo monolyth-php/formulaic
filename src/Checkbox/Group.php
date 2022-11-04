@@ -29,11 +29,11 @@ class Group extends Radio\Group
     }
     
     /**
-     * Gets all checked values as an `ArrayObject`.
+     * Gets all checked values.
      *
-     * @return ArrayObject
+     * @return array
      */
-    public function getValue() : object
+    public function getValue() : array
     {
         $this->value = [];
         foreach ((array)$this as $element) {
@@ -43,7 +43,7 @@ class Group extends Radio\Group
                 $this->value[] = $element->getElement()->getValue();
             }
         }
-        return new ArrayObject($this->value);
+        return $this->value;
     }
 
     /**
