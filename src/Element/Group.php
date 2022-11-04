@@ -21,8 +21,6 @@ class Group extends ArrayObject implements JsonSerializable, Bindable, Stringabl
 
     private array $prefix = [];
 
-    private string $name;
-
     private mixed $value;
 
     protected string $htmlBefore;
@@ -34,16 +32,18 @@ class Group extends ArrayObject implements JsonSerializable, Bindable, Stringabl
     /**
      * Constructor.
      *
-     * @param string $name Name of the group. Note that form elements are also
-     *  prefixed with this name (if you don't want that, don't group them!).
+     * @param string|null $name Name of the group. Note that form elements are
+     *  also prefixed with this name (if you don't want that, don't group
+     *  them!). The exception is for fieldsets.
      * @param callable $callback Will be called with the new group as argument,
      *  so you can populate it.
      */
-    public function __construct(string $name, callable $callback)
+    public function __construct(private ?string $name, callable $callback)
     {
-        $this->name = $name;
         $callback($this);
-        $this->prefix($name);
+        if (isset($name)) {
+            $this->prefix($name);
+        }
     }
 
     /**
