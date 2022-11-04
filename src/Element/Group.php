@@ -71,7 +71,7 @@ class Group extends ArrayObject implements JsonSerializable, Bindable, Stringabl
      */
     public function setIdPrefix(string $prefix = null)
     {
-        foreach ((array)$this as $element) {
+        foreach ($this as $element) {
             if (is_object($element)) {
                 $element->setIdPrefix($prefix);
             }
