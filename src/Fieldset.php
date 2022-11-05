@@ -32,6 +32,37 @@ class Fieldset extends Element\Group
     }
 
     /**
+     * @param object $model
+     * @return self
+     */
+    public function bind(object $model) : self
+    {
+        foreach ($this as $element) {
+            $element->bind($model);
+        }
+        return $this;
+    }
+
+    /**
+     * Set the values of this fieldset. This is an override since fieldset,
+     * although being element groups, do not add an additional prefix; they are
+     * just a grouping for better user interface.
+     *
+     * @param array $value Type hinted as mixed, but must really be an array
+     * @return self
+     */
+    public function setValue(mixed $value) : self
+    {
+        if (!is_array($value)) {
+            return $this;
+        }
+        foreach ($this as $element) {
+            $element->setValue($value[$element->name()] ?? null);
+        }
+        return $this;
+    }
+
+    /**
      * Returns a rendered version of the fieldset.
      *
      * @return string
