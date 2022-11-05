@@ -197,7 +197,7 @@ class Group extends ArrayObject implements JsonSerializable, Bindable, Stringabl
      * @return self
      * @see Element::wrap
      */
-    public function wrap(string $before, string $after, int $group = null) : Group
+    public function wrap(string $before, string $after, int $group = null) : self
     {
         if (!isset($group)) {
             $group = self::WRAP_ELEMENT;
