@@ -134,7 +134,12 @@ abstract class Form extends ArrayObject implements JsonSerializable, Bindable, S
         $element = $item->getElement();
         $name = $element->name();
         $data = $this->getSource();
-        if (array_key_exists($name, $data)) {
+        if ($element instanceof Fieldset) {
+            $element->setValue($data);
+            if ($this->wasSubmitted()) {
+                $element->valueSuppliedByUser(true);
+            }
+        } elseif (array_key_exists($name, $data)) {
             if ($element instanceof Radio) {
                 if ($data[$name] == $element->getValue()
                     || (is_array($data[$name]) && in_array($element->getValue(), $data[$name]))
