@@ -17,6 +17,7 @@ class Tel extends Text
         $this->addTest('numeric', function ($value) {
             return preg_replace('/[^\d]/', '', $value) == $value;
         });
+        $this->matchPattern("00?[0-9]+");
     }
 
     /**
