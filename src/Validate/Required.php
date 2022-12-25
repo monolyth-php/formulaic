@@ -16,9 +16,9 @@ trait Required
         $this->attributes['required'] = true;
         return $this->addTest('required', function ($value) {
             if (is_array($value)) {
-                return $value;
+                return count($value) > 0;
             }
-            return strlen(trim($value));
+            return strlen(trim($value ?? ''));
         });
     }
 }

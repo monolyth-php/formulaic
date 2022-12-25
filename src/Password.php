@@ -4,7 +4,7 @@ namespace Monolyth\Formulaic;
 
 class Password extends Text
 {
-    protected $attributes = ['type' => 'password'];
+    protected array $attributes = ['type' => 'password'];
 
     /**
      * Returns string representation of the element.

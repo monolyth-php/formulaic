@@ -4,7 +4,7 @@ namespace Monolyth\Formulaic;
 
 class Number extends Text
 {
-    protected $attributes = ['type' => 'number', 'step' => 1];
+    protected array $attributes = ['type' => 'number', 'step' => 1];
 
     /**
      * Constructor.

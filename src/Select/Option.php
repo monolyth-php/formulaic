@@ -3,8 +3,9 @@
 namespace Monolyth\Formulaic\Select;
 
 use Monolyth\Formulaic\Element;
+use Stringable;
 
-class Option extends Element
+class Option extends Element implements Stringable
 {
     private $label;
 
@@ -19,6 +20,7 @@ class Option extends Element
         $this->value = $value;
         $this->label = $label;
         parent::__construct($value);
+        unset($this->attributes['name']);
     }
 
     /**
@@ -36,7 +38,7 @@ class Option extends Element
      */
     public function selected()
     {
-        $this->attributes['selected'] = null;
+        $this->attributes['selected'] = true;
     }
 
     /**
@@ -55,7 +57,7 @@ class Option extends Element
     public function __toString() : string
     {
         unset($this->attributes['name']);
-        return '<option'.$this->attributes().'>'.$this->label.'</option>';
+        return '<option'.$this->attributes().'>'.$this->label."</option>\n";
     }
 }
 

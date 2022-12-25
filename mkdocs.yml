@@ -22,5 +22,3 @@ pages:
                 'Select boxes': advanced/select.md
             -
                 'Groups of checkboxes or radio buttons': advanced/checkboxes.md
-            -
-                'Bitflag fields': advanced/bitflags.md

@@ -4,8 +4,9 @@ namespace Monolyth\Formulaic;
 
 use ArrayObject;
 use DomainException;
+use Stringable;
 
-class Select extends ArrayObject implements Labelable, Testable
+class Select extends ArrayObject implements Labelable, Testable, Bindable, Stringable
 {
     use Attributes;
     use Element\Identify;
@@ -13,14 +14,12 @@ class Select extends ArrayObject implements Labelable, Testable
     use Validate\Test;
     use Validate\Required;
     use Validate\Element;
-    use Select\Tostring;
-    use Bindable;
+    use Transform;
+    use Normalize;
 
     private $userInput = false;
-    protected $attributes = [];
     protected $value;
     protected $name;
-    protected $prefix = [];
     protected $idPrefix;
 
     /**
@@ -60,9 +59,9 @@ class Select extends ArrayObject implements Labelable, Testable
      * Set the prefix for this element.
      *
      * @param string $prefix
-     * @return Monolyth\Formulaic\Select
+     * @return self
      */
-    public function setIdPrefix($prefix) : Select
+    public function setIdPrefix($prefix) : self
     {
         $this->idPrefix = $prefix;
         return $this;
@@ -81,27 +80,41 @@ class Select extends ArrayObject implements Labelable, Testable
     /**
      * Set the value of the element.
      *
-     * @param string|null $value
-     * @return void
+     * @param string|Stringable|array|ArrayObject $value
+     * @return self
+     * @throws DomainException if passed an array without the "multiple"
+     *  attribute being set to true
      */
-    public function setValue(string $value = null) : void
+    public function setValue(string|Stringable|array|ArrayObject $value = null) : self
     {
+        if ((!isset($this->attributes['multiple']) || !$this->attributes['multiple'])
+            && (is_array($value) || $value instanceof ArrayObject)
+        ) {
+            throw new DomainException("Select::setValue only accepts array when the multiple attribute is true");
+        }
         $this->value = $value;
-        foreach ((array)$this as $option) {
-            if ($option->getValue() == $value) {
+        $values = [];
+        if (is_array($value) || $value instanceof ArrayObject) {
+            $values = $value;
+        } else {
+            $values[] = "$value";
+        }
+        foreach ($this as $option) {
+            if (in_array($option->getValue(), $values)) {
                 $option->selected();
             } else {
                 $option->unselected();
             }
         }
+        return $this;
     }
 
     /**
      * This is here to avoid the need to check instanceof Label.
      *
-     * @return Monolyth\Formulaic\Select $this
+     * @return self
      */
-    public function getElement() : Select
+    public function getElement() : self
     {
         return $this;
     }
@@ -111,16 +124,46 @@ class Select extends ArrayObject implements Labelable, Testable
      * Normally, you won't need to call this directly since Formulaic handles
      * data binding transparently.
      *
-     * @param bool|null $status null to get, true or false to set.
+     * @param bool|null $status null (empty) to get, true or false to set
      * @return bool The current status (true for user input, false for
-     *  undefined or bound from a model object).
+     *  undefined or bound from a model object)
      */
     public function valueSuppliedByUser(bool $status = null) : bool
     {
-        if (isset($status)) {
-            $this->userInput = (bool)$status;
+        return $this->userInput = $status ?? $this->userInput;
+    }
+
+    public function bind(object $model) : self
+    {
+        $name = self::normalize($this->name());
+        if ($this->valueSuppliedByUser()) {
+            try {
+                $model->$name = $this->transform($this->getValue());
+            } catch (TypeError $e) {
+                throw new TransformerRequiredException($model, $name, $value);
+            }
+        } else {
+            $this->setValue($this->transform($model->$name ?? null));
         }
-        return $this->userInput;
+        return $this;
+    }
+
+    public function __toString()
+    {
+        $work = clone $this;
+        $work->generateId();
+        $work->generatePrintableName();
+        $out = $work->htmlBefore ?? '';
+        $out .= '<select'.$work->attributes().'>';
+        if (count((array)$work)) {
+            $out .= "\n";
+            foreach ((array)$work as $option) {
+                $out .= "$option";
+            }
+        }
+        $out .= "</select>\n";
+        $out .= $work->htmlAfter ?? '';
+        return $out;
     }
 }
 

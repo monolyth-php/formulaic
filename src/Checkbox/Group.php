@@ -7,34 +7,33 @@ use ArrayObject;
 
 class Group extends Radio\Group
 {
-    use Group\Tostring;
-
     private $value;
 
     /**
-     * @param mixed $value New value or array of key/value pairs.
-     * @return void
+     * @param array $value New hash of key/value pairs.
+     * @return self
      */
-    public function setValue($value) : void
+    public function setValue(mixed $value) : self
     {
-        if (is_scalar($value)) {
-            $value = [$value];
+        if (!is_array($value)) {
+            return $this;
         }
-        foreach ((array)$this as $element) {
-            if (in_array($element->getElement()->getValue(), $value)) {
-                $element->getElement()->check();
+        foreach ($this as $element) {
+            if (!in_array($element->getValue(), $value)) {
+                $element->check(false);
             } else {
-                $element->getElement()->check(false);
+                $element->check();
             }
         }
+        return $this;
     }
     
     /**
-     * Gets all checked values as an `ArrayObject`.
+     * Gets all checked values.
      *
-     * @return ArrayObject
+     * @return array
      */
-    public function getValue() : ArrayObject
+    public function getValue() : array
     {
         $this->value = [];
         foreach ((array)$this as $element) {
@@ -44,7 +43,7 @@ class Group extends Radio\Group
                 $this->value[] = $element->getElement()->getValue();
             }
         }
-        return new ArrayObject($this->value);
+        return $this->value;
     }
 
     /**
@@ -54,12 +53,10 @@ class Group extends Radio\Group
      */
     public function isRequired(int $min = 1, int $max = null) : Radio\Group
     {
-        return $this->addTest('required', function ($value) use ($min, $max) {
+        return $this->addTest('required', function () use ($min, $max) {
             $checked = 0;
-            foreach ($value as $option) {
-                if ($option->getElement() instanceof Radio
-                    && $option->getElement()->checked()
-                ) {
+            foreach ($this as $option) {
+                if ($option->getElement() instanceof Radio && $option->getElement()->checked()) {
                     $checked++;
                 }
             }

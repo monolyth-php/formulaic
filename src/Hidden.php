@@ -4,6 +4,6 @@ namespace Monolyth\Formulaic;
 
 class Hidden extends Element
 {
-    protected $attributes = ['type' => 'hidden'];
+    protected array $attributes = ['type' => 'hidden'];
 }
 

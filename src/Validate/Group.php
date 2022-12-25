@@ -11,9 +11,6 @@ trait Group
      */
     public function valid() : bool
     {
-        if ($this->privateErrors()) {
-            return false;
-        }
         foreach ((array)$this as $element) {
             if (is_string($element)) {
                 continue;
@@ -32,7 +29,7 @@ trait Group
      */
     public function errors() : array
     {
-        $errors = $this->privateErrors();
+        $errors = $this->runTests();
         foreach ((array)$this as $element) {
             if (is_string($element)) {
                 continue;
@@ -50,7 +47,7 @@ trait Group
      *
      * @return array
      */
-    private function privateErrors() : array
+    private function runTests() : array
     {
         $errors = [];
         if (isset($this->tests)) {

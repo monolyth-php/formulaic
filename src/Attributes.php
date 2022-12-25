@@ -4,6 +4,8 @@ namespace Monolyth\Formulaic;
 
 trait Attributes
 {
+    protected array $attributes = [];
+
     /**
      * Formats set attributes as a string ready for insertion into HTML.
      *
@@ -14,17 +16,15 @@ trait Attributes
         $return = [];
         ksort($this->attributes);
         foreach ($this->attributes as $name => $value) {
-            if (is_null($value) || $value === true) {
-                if ($name == 'value') {
-                    continue;
-                }
+            if ($value === true) {
                 $return[] = $name;
             } else {
-                if ($value === false) {
+                if ($value === null || $value === false) {
                     continue;
                 }
                 if ($name == 'name') {
                     $value = preg_replace("@^\[(.*?)\]@", '$1', $value);
+                    $value = preg_replace("@\[(.*?)\[\]\]$@", '[$1][]', $value);
                 }
                 $return[] = sprintf(
                     '%s="%s"',
@@ -41,9 +41,9 @@ trait Attributes
      *
      * @param string $name
      * @param string|null $value
-     * @return object Self.
+     * @return self
      */
-    public function attribute(string $name, string $value = null) : object
+    public function attribute(string $name, string $value = null) : self
     {
         $this->attributes[$name] = $value;
         return $this;
@@ -53,9 +53,9 @@ trait Attributes
      * Unset an attribute.
      *
      * @param string $name
-     * @return object Self.
+     * @return self
      */
-    public function unsetAttribute(string $name) : object
+    public function unsetAttribute(string $name) : self
     {
         unset($this->attributes[$name]);
         return $this;

@@ -2,12 +2,17 @@
 
 namespace Monolyth\Formulaic;
 
-class Label extends Element
-{
-    use Label\Tostring;
+use Stringable;
 
-    protected $label;
-    protected $element;
+class Label implements Bindable, Stringable
+{
+    use Element\Identify {
+        prefix as originalPrefix;
+        name as private;
+        id as private;
+    }
+    use Attributes;
+    use Element\Wrap;
 
     /**
      * Constructor.
@@ -16,26 +21,27 @@ class Label extends Element
      * @param Monolyth\Formulaic\Labelable $element Any labelable element.
      * @return void
      */
-    public function __construct(string $label, Labelable $element)
-    {
-        $this->label = $label;
-        $this->element = $element;
-    }
+    public function __construct(protected string $label, protected Labelable $element) {}
 
     /**
-     * Get the text of the label.
+     * For convenience, forward all non-existing calls to the underlying
+     * Labelable element.
      *
-     * @return string
+     * @param string $fn
+     * @param array $args
+     * @return mixed Either the label if the method returned the underlying
+     *  Labelable (to continue proxying) or whatever (scalar?) value.
      */
-    public function name() : string
+    public function __call(string $fn, array $args) : mixed
     {
-        return $this->label;
+        $return = $this->element->$fn(...$args);
+        return $return instanceof Labelable ? $this : $return;
     }
 
     /**
-     * Get the associated element.
+     * Return the underlying element.
      *
-     * @return Monolyth\Formulaic\Labelable
+     * @return Labelable
      */
     public function getElement() : Labelable
     {
@@ -43,13 +49,16 @@ class Label extends Element
     }
 
     /**
-     * Get the associated element's value.
+     * Set the associated element's value. This is not forwarded since we want
+     * to return the label, not the element.
      *
-     * @return mixed
+     * @param mixed $value
+     * @return self
      */
-    public function getValue()
+    public function setValue(mixed $value = null) : self
     {
-        return $this->element->getValue();
+        $this->element->setValue($value);
+        return $this;
     }
 
     /**
@@ -60,8 +69,41 @@ class Label extends Element
      */
     public function prefix(string $prefix) : void
     {
-        parent::prefix($prefix);
+        $this->originalPrefix($prefix);
         $this->element->prefix($prefix);
+    }
+
+    /**
+     * Proxy to the underlying model (to satisfy interface).
+     */
+    public function bind(object $model) : self
+    {
+        $this->element->bind($model);
+        return $this;
+    }
+
+    /**
+     * Returns the label and its associated element, as a string.
+     *
+     * @return string
+     */
+    public function __toString() : string
+    {
+        if ($id = $this->element->id()) {
+            $this->attributes['for'] = $id;
+        }
+        $out = $this->htmlBefore ?? '';
+        $out .= '<label'.$this->attributes().'>';
+        if ($this->element instanceof Radio) {
+            $element = trim("{$this->element}");
+            $out .= "$element {$this->label}";
+            $out .= "</label>\n";
+        } else {
+            $out .= "{$this->label}</label>\n";
+            $out .= $this->element;
+        }
+        $out .= $this->htmlAfter ?? '';
+        return $out;
     }
 }
 

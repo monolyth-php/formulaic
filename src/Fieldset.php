@@ -5,27 +5,20 @@ namespace Monolyth\Formulaic;
 class Fieldset extends Element\Group
 {
     use Attributes;
-    use Fieldset\Tostring;
     use Element\Identify;
-    use Bindable;
-
-    protected $attributes = [];
-    private $legend;
-    private $prefix = [];
 
     /**
      * Constructor. Pass null for $legend to omit the `<legend>` tag.
      * `$callback` is called with the newly created fieldset as its argument
      * for further processing.
      *
-     * @param string $legend Optional legend to display.
+     * @param string|null $legend Optional legend to display.
      * @param callable $callback
      * @return void
      */
-    public function __construct(string $legend = null, callable $callback)
+    public function __construct(private ?string $legend, callable $callback)
     {
-        $this->legend = $legend;
-        $callback($this);
+        parent::__construct(null, $callback);
     }
 
     /**
@@ -39,14 +32,58 @@ class Fieldset extends Element\Group
     }
 
     /**
-     * Binds the model to this fieldset.
-     *
      * @param object $model
-     * @return object Self
+     * @return self
      */
-    public function bind(object $model) : object
+    public function bind(object $model) : self
     {
-        return $this->bindGroup($model);
+        foreach ($this as $element) {
+            $element->bind($model);
+        }
+        return $this;
+    }
+
+    /**
+     * Set the values of this fieldset. This is an override since fieldset,
+     * although being element groups, do not add an additional prefix; they are
+     * just a grouping for better user interface.
+     *
+     * @param array $value Type hinted as mixed, but must really be an array
+     * @return self
+     */
+    public function setValue(mixed $value) : self
+    {
+        if (!is_array($value)) {
+            return $this;
+        }
+        foreach ($this as $element) {
+            $element->setValue($value[$element->name()] ?? null);
+        }
+        return $this;
+    }
+
+    /**
+     * Returns a rendered version of the fieldset.
+     *
+     * @return string
+     */
+    public function __toString() : string
+    {
+        $out = "<fieldset".$this->attributes().">\n";
+        if (isset($this->legend)) {
+            $out .= "<legend>{$this->legend}</legend>\n";
+        }
+        $fields = (array)$this;
+        if ($fields) {
+            foreach ($fields as $field) {
+                if (isset($this->prefix)) {
+                    $field->prefix(implode('-', $this->prefix));
+                }
+                $out .= "$field";
+            }
+        }
+        $out .= "</fieldset>\n";
+        return $out;
     }
 }
 

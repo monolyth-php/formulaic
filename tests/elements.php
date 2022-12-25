@@ -1,6 +1,7 @@
 <?php
 
 use Monolyth\Formulaic;
+use Gentry\Gentry\Wrapper;
 
 /**
  * Element-specific tests
@@ -8,7 +9,7 @@ use Monolyth\Formulaic;
 return function () : Generator {
     /** Basic elements */
     yield function () : Generator {
-        $input = new Formulaic\Text('test');
+        $input = new Wrapper(new Formulaic\Text('test'));
         /** Elements without conditions are always valid */
         yield function () use ($input) {
             assert($input->valid());
@@ -31,51 +32,49 @@ return function () : Generator {
     yield function () : Generator {
         /** Generic buttons render */
         yield function () {
-            $button = new Formulaic\Button('B');
-            assert("$button" == '<button type="button">B</button>');
+            $button = new Wrapper(new Formulaic\Button('B'));
+            assert(trim("$button") == '<button type="button">B</button>');
         };
 
         /** Reset buttons render */
         yield function () {
-            $button = new Formulaic\Button\Reset('B');
-            assert("$button" == '<button type="reset">B</button>');
+            $button = new Wrapper(new Formulaic\Button\Reset('B'));
+            assert(trim("$button") == '<button type="reset">B</button>');
         };
 
         /** Submit buttons render */
         yield function () {
-            $button = new Formulaic\Button\Submit('B');
-            assert("$button" == '<button type="submit">B</button>');
+            $button = new Wrapper(new Formulaic\Button\Submit('B'));
+            assert(trim("$button") == '<button type="submit">B</button>');
         };
     };
 
     /** Checkboxes */
     yield function () {
-        $input = new Formulaic\Checkbox('test');
-        assert("$input" == '<input id="test-1" name="test" type="checkbox" value="1">');
+        $input = new Wrapper(new Formulaic\Checkbox('test'));
+        assert(trim("$input") == '<input id="test-1" name="test" type="checkbox" value="1">');
     };
 
     /** Checkbox groups */
     yield function () {
         $out = <<<EOT
-<div>
 <label for="test-1"><input id="test-1" name="test[]" type="checkbox" value="1"> Option 1</label>
 <label for="test-2"><input id="test-2" name="test[]" type="checkbox" value="2"> Option 2</label>
-</div>
 EOT;
-        $group = new Formulaic\Checkbox\Group(
+        $group = new Wrapper(new Formulaic\Checkbox\Group(
             'test',
             [
                 1 => 'Option 1',
                 2 => 'Option 2',
             ]
-        );
-        assert("$group" == $out);
+        ));
+        assert(trim("$group") == $out);
     };
 
     /** Dates */
     yield function () {
-        $input = new Formulaic\Date('test');
-        assert("$input" == '<input id="test" name="test" type="date">');
+        $input = new Wrapper(new Formulaic\Date('test'));
+        assert(trim("$input") == '<input id="test" name="test" type="date">');
         $input->setMin('2010-01-01')->setMax('2012-01-01');
         $input->setValue('2009-01-01');
         assert($input->valid() != true);
@@ -89,8 +88,8 @@ EOT;
 
     /** Datetime */
     yield function () {
-        $input = new Formulaic\Datetime('test');
-        assert("$input" == '<input id="test" name="test" type="datetime">');
+        $input = new Wrapper(new Formulaic\Datetime('test'));
+        assert(trim("$input") == '<input id="test" name="test" type="datetime">');
         $input->setMin('2009-01-01 12:00:00')->setMax('2009-01-02 12:00:00');
         $input->setValue('2009-01-01');
         assert($input->valid() != true);
@@ -104,8 +103,8 @@ EOT;
 
     /** Email */
     yield function () {
-        $input = new Formulaic\Email('test');
-        assert("$input" == '<input id="test" name="test" type="email">');
+        $input = new Wrapper(new Formulaic\Email('test'));
+        assert(trim("$input") == '<input id="test" name="test" type="email">');
         $input->setValue('not an email');
         assert($input->valid() != true);
         $input->setValue('foo@bar.com');
@@ -114,21 +113,21 @@ EOT;
 
     /** Files */
     yield function () {
-        $input = new Formulaic\File('test');
-        assert("$input" == '<input id="test" name="test" type="file">');
+        $input = new Wrapper(new Formulaic\File('test'));
+        assert(trim("$input") == '<input id="test" name="test" type="file">');
     };
 
     /** Hidden inputs */
     yield function () {
-        $input = new Formulaic\Hidden('test');
-        assert("$input" == '<input id="test" name="test" type="hidden">');
+        $input = new Wrapper(new Formulaic\Hidden('test'));
+        assert(trim("$input") == '<input id="test" name="test" type="hidden">');
     };
 
     /** Numbers */
     yield function () {
-        $input = new Formulaic\Number('test');
+        $input = new Wrapper(new Formulaic\Number('test'));
         $input->setValue('42');
-        assert("$input" == '<input id="test" name="test" step="1" type="number" value="42">');
+        assert(trim("$input") == '<input id="test" name="test" step="1" type="number" value="42">');
         assert($input->valid());
         $input->setValue('foo');
         assert($input->valid() != true);
@@ -154,27 +153,27 @@ EOT;
 
     /** Passwords */
     yield function () {
-        $input = new Formulaic\Password('test');
+        $input = new Wrapper(new Formulaic\Password('test'));
         $input->setValue('secret');
-        assert("$input" == '<input id="test" name="test" type="password">');
+        assert(trim("$input") == '<input id="test" name="test" type="password">');
     };
 
     /** Radio buttons */
     yield function () {
-        $input = new Formulaic\Radio('test');
-        assert("$input" == '<input id="test-1" name="test" type="radio" value="1">');
+        $input = new Wrapper(new Formulaic\Radio('test'));
+        assert(trim("$input") == '<input id="test-1" name="test" type="radio" value="1">');
     };
 
     /** Search boxes */
     yield function () {
-        $input = new Formulaic\Search('test');
-        assert("$input" == '<input id="test" name="test" type="search">');
+        $input = new Wrapper(new Formulaic\Search('test'));
+        assert(trim("$input") == '<input id="test" name="test" type="search">');
     };
 
     /** Simple select boxes */
     yield function () {
-        $input = new Formulaic\Select('test', [1 => 'foo', 2 => 'bar']);
-        assert("$input" == <<<EOT
+        $input = new Wrapper(new Formulaic\Select('test', [1 => 'foo', 2 => 'bar']));
+        assert(trim("$input") == <<<EOT
 <select id="test" name="test">
 <option value="1">foo</option>
 <option value="2">bar</option>
@@ -185,11 +184,11 @@ EOT
 
     /** Manually built select boxes */
     yield function () {
-        $input = new Formulaic\Select('test', function ($select) {
+        $input = new Wrapper(new Formulaic\Select('test', function ($select) {
             $select[] = new Formulaic\Select\Option(1, 'foo');
             $select[] = new Formulaic\Select\Option(2, 'bar');
-        });
-        assert("$input" == <<<EOT
+        }));
+        assert(trim("$input") == <<<EOT
 <select id="test" name="test">
 <option value="1">foo</option>
 <option value="2">bar</option>
@@ -200,30 +199,32 @@ EOT
     
     /** Telephone numbers */
     yield function () {
-        $input = new Formulaic\Tel('test');
+        $input = new Wrapper(new Formulaic\Tel('test'));
         $input->setValue('612345678');
-        assert("$input" == '<input id="test" name="test" type="tel" value="0612345678">');
+        assert(trim("$input") == '<input id="test" name="test" type="tel" value="0612345678">');
         $input->setValue('foo');
         assert($input->valid() != true);
     };
 
     /** Text elements with HTML encoded values */
     yield function () {
-        $input = new Formulaic\Text('test');
+        $input = new Wrapper(new Formulaic\Text('test'));
         $input->setValue('"');
-        assert("$input" == '<input id="test" name="test" type="text" value="&quot;">');
+        assert(trim("$input") == '<input id="test" name="test" type="text" value="&quot;">');
     };
 
     /** Textareas with HTML encoded values */
     yield function () {
-        $input = new Formulaic\Textarea('test');
+        $input = new Wrapper(new Formulaic\Textarea('test'));
         $input->setValue('"');
-        assert("$input" == '<textarea id="test" name="test">&quot;</textarea>');
+        assert(trim("$input") == '<textarea id="test" name="test">
+&quot;
+</textarea>');
     };
 
     /** Time elements */
     yield function () : Generator {
-        $input = new Formulaic\Time('test');
+        $input = new Wrapper(new Formulaic\Time('test'));
 
         /** A non-valid value gets rejected */
         yield function () use ($input) {
@@ -237,10 +238,10 @@ EOT
         };
         /** We can `__toString` the element */
         yield function () use ($input) {
-            assert("$input" == '<input id="test" name="test" type="time" value="12:00:00">');
+            assert(trim("$input") == '<input id="test" name="test" type="time" value="12:00:00">');
         };
 
-        $input = new Formulaic\Time('test');
+        $input = new Wrapper(new Formulaic\Time('test'));
         /** We can require a time to be in the past */
         yield function () use ($input) : Generator {
             $input->isInPast();
@@ -256,7 +257,7 @@ EOT
             };
         };
 
-        $input = new Formulaic\Time('test');
+        $input = new Wrapper(new Formulaic\Time('test'));
         /** We can require a time to be in the future */
         yield function () use ($input) : Generator {
             $input->isInFuture();
@@ -275,22 +276,20 @@ EOT
 
     /** URLs */
     yield function () : Generator {
-        $input = new Formulaic\Url('test');
+        $input = new Wrapper(new Formulaic\Url('test'));
         /** A non-valid URL gets rejected */
         yield function () use ($input) {
             $input->setValue('not an url');
             assert($input->valid() != true);
         };
-        $input2 = new Formulaic\Url('test');
         /** A valid URL gets accepted */
-        yield function () use ($input2) {
-            $input2->setValue('http://google.com');
-            assert($input2->valid());
+        yield function () use ($input) {
+            $input->setValue('http://google.com');
+            assert($input->valid());
         };
         /** We can `__toString` the element */
-        yield function () use ($input, $input2) {
-            assert("$input\n$input2" == <<<EOT
-<input id="test" name="test" placeholder="http://" type="url" value="http://not an url">
+        yield function () use ($input) {
+            assert(trim("$input") == <<<EOT
 <input id="test" name="test" placeholder="http://" type="url" value="http://google.com">
 EOT
             );

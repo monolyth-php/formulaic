@@ -2,6 +2,8 @@
 
 namespace Monolyth\Formulaic;
 
+use Stringable;
+
 class Datetime extends Text
 {
     /**
@@ -9,7 +11,7 @@ class Datetime extends Text
      *
      * Hash of attributes.
      */
-    protected $attributes = ['type' => 'datetime'];
+    protected array $attributes = ['type' => 'datetime'];
 
     /**
      * @var string
@@ -31,13 +33,13 @@ class Datetime extends Text
     }
 
     /**
-     * @param string $timestamp Timestamp for the new datetime value. This can
+     * @param mixed $timestamp Timestamp for the new datetime value. This should
      *  be any string parsable by PHP's `strtotime`.
-     * @return Monolyth\Formulaic\Element Self
+     * @return self
      */
-    public function setValue(string $timestamp = null) : Element
+    public function setValue(mixed $timestamp = null) : self
     {
-        if ($time = strtotime($timestamp)) {
+        if ($time = strtotime("$timestamp")) {
             $timestamp = date($this->format, $time);
         }
         return parent::setValue($timestamp);
@@ -46,9 +48,9 @@ class Datetime extends Text
     /**
      * Requires the datetime to be in the past.
      *
-     * @return Monolyth\Formulaic\Datetime Self
+     * @return self
      */
-    public function isInPast() : Datetime
+    public function isInPast() : self
     {
         return $this->addTest('inpast', function ($value) {
             return strtotime($value) < time();
@@ -58,9 +60,9 @@ class Datetime extends Text
     /**
      * Requires the datetime to be in the future.
      *
-     * @return Monolyth\Formulaic\Datetime Self
+     * @return self
      */
-    public function isInFuture() : Datetime
+    public function isInFuture() : self
     {
         return $this->addTest('infuture', function ($value) {
             return strtotime($value) > time();
@@ -72,9 +74,9 @@ class Datetime extends Text
      *
      * @param string $min Minimum timestamp. This can be any string parsable by
      *  PHP's `strtotime`.
-     * @return Monolyth\Formulaic\Datetime Self
+     * @return self
      */
-    public function setMin(string $min) : Datetime
+    public function setMin(string|Stringable $min) : self
     {
         $min = date($this->format, strtotime($min));
         $this->attributes['min'] = $min;
@@ -88,9 +90,9 @@ class Datetime extends Text
      *
      * @param string $max Maximum timestamp. This can be any string parsable by
      *  PHP's `strtotime`.
-     * @return Monolyth\Formulaic\Datetime Self
+     * @return self
      */
-    public function setMax(string $max) : Datetime
+    public function setMax(string|Stringable $max) : self
     {
         $max = date($this->format, strtotime($max));
         $this->attributes['max'] = $max;

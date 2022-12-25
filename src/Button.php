@@ -2,24 +2,21 @@
 
 namespace Monolyth\Formulaic;
 
+use Stringable;
+
 /**
  * Generic button (`type="button"`).
  */
-class Button extends Element
+class Button extends Element implements Stringable
 {
     /**
      * @var string
      *
      * The text to show in the button.
      */
-    protected $text;
+    protected string $text;
 
-    /**
-     * @var array
-     *
-     * Hash of attributes.
-     */
-    protected $attributes = ['type' => 'button'];
+    protected array $attributes = ['type' => 'button'];
 
     /**
      * Constructor.
@@ -28,7 +25,7 @@ class Button extends Element
      * @param string $name Optional name for the button.
      * @return void
      */
-    public function __construct(string $text = null, string $name = null)
+    public function __construct(string $text, string $name = null)
     {
         if (isset($name)) {
             $this->attributes['name'] = $name;
@@ -43,7 +40,7 @@ class Button extends Element
      */
     public function __toString() : string
     {
-        return '<button'.$this->attributes().'>'.$this->text.'</button>';
+        return '<button'.$this->attributes().'>'.$this->text."</button>\n";
     }
 }
 

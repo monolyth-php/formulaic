@@ -4,7 +4,7 @@ namespace Monolyth\Formulaic;
 
 class Email extends Text
 {
-    protected $attributes = ['type' => 'email'];
+    protected array $attributes = ['type' => 'email'];
 
     /**
      * Constructor.

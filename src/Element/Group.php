@@ -2,47 +2,48 @@
 
 namespace Monolyth\Formulaic\Element;
 
-use Monolyth\Formulaic\Validate;
+use Monolyth\Formulaic\{ Validate, QueryHelper, Bindable, JsonSerialize, Label, Transform, ContainsFile };
 use ArrayObject;
-use Monolyth\Formulaic\QueryHelper;
-use Monolyth\Formulaic\Bindable;
-use Monolyth\Formulaic\JsonSerialize;
 use JsonSerializable;
+use Stringable;
 
-class Group extends ArrayObject implements JsonSerializable
+class Group extends ArrayObject implements JsonSerializable, Bindable, Stringable
 {
     use Validate\Group;
     use QueryHelper;
-    use Bindable;
     use JsonSerialize;
+    use Transform;
+    use ContainsFile;
 
     const WRAP_GROUP = 1;
     const WRAP_LABEL = 2;
     const WRAP_ELEMENT = 4;
 
-    private $prefix = [];
-    private $name;
-    private $value = [];
-    /** @var string */
-    protected $htmlBefore = '';
-    /** @var string */
-    protected $htmlAfter = '';
-    /** @var int */
-    protected $htmlGroup = 4;
+    private array $prefix = [];
+
+    private mixed $value;
+
+    protected string $htmlBefore;
+
+    protected string $htmlAfter;
+
+    protected int $htmlGroup = 4;
 
     /**
      * Constructor.
      *
-     * @param string $name Name of the group. Note that form elements are also
-     *  prefixed with this name (if you don't want that, don't group them!).
+     * @param string|null $name Name of the group. Note that form elements are
+     *  also prefixed with this name (if you don't want that, don't group
+     *  them!). The exception is for fieldsets.
      * @param callable $callback Will be called with the new group as argument,
      *  so you can populate it.
      */
-    public function __construct(string $name, callable $callback)
+    public function __construct(private ?string $name, callable $callback)
     {
-        $this->name = $name;
         $callback($this);
-        $this->prefix($name);
+        if (isset($name)) {
+            $this->prefix($name);
+        }
     }
 
     /**
@@ -70,7 +71,7 @@ class Group extends ArrayObject implements JsonSerializable
      */
     public function setIdPrefix(string $prefix = null)
     {
-        foreach ((array)$this as $element) {
+        foreach ($this as $element) {
             if (is_object($element)) {
                 $element->setIdPrefix($prefix);
             }
@@ -89,51 +90,38 @@ class Group extends ArrayObject implements JsonSerializable
     }
 
     /**
-     * Set a group of values on elements in this group. Call with a hash or
+     * Set a group of values on elements in this group. Call with a hash of
      * object key/value pairs, where the keys must match element names.
      *
-     * @param iterable $value
+     * @param array $value Type hinted as mixed, but must really be an array
+     * @return Monolyth\Formulaic\Element\Group
      */
-    public function setValue($value)
+    public function setValue(mixed $value) : self
     {
-        if (is_scalar($value) or is_null($value)) {
-            return;
+        if (!is_array($value)) {
+            return $this;
         }
-        foreach ($value as $name => $val) {
-            if ($field = $this[$name]) {
-                $field->getElement()->setValue($val);
+        foreach ($this as $element) {
+            if (isset($value[$element->name()])) {
+                $element->setValue($value[$element->name()]);
             }
-        }
-    }
-
-    /**
-     * Set a group of values on elements in this group as defaults. Call with a
-     * hash or object key/value pairs, where the keys must match element names.
-     * If any element is supplied by the user, it is ignored.
-     *
-     * @param iterable $value
-     * @return self
-     */
-    public function setDefaultValue($value)
-    {
-        if (!$this->valueSuppliedByUser()) {
-            $this->setValue($value);
         }
         return $this;
     }
 
     /**
-     * Returns a hash of key/value pairs for all elements in this group.
+     * Returns a hash of key/value pairs for all elements in this group,
+     * or something else if a transformer was set.
      *
      * @return array
      */
-    public function getValue() : ArrayObject
+    public function getValue() : array
     {
-        $this->value = [];
+        $value = [];
         foreach ((array)$this as $field) {
-            $this->value[$field->getName()] = $field->getElement()->getValue();
+            $value[$field->name()] = $field->getElement()->getValue();
         }
-        return new ArrayObject($this->value);
+        return $value;
     }
 
     /**
@@ -155,22 +143,23 @@ class Group extends ArrayObject implements JsonSerializable
     {
         $out = '';
         if ($this->htmlGroup & self::WRAP_GROUP) {
-            $out .= $this->htmlBefore;
+            $out .= $this->htmlBefore ?? '';
         }
-        foreach ((array)$this as $field) {
+        foreach ($this as $field) {
             if (is_string($field)) {
+                echo $field;
                 continue;
             }
-            if ($this->htmlGroup & self::WRAP_LABEL) {
+            if (isset($this->htmlBefore, $this->htmlAfter) && $this->htmlGroup & self::WRAP_LABEL && $field instanceof Label) {
                 $field->wrap($this->htmlBefore, $this->htmlAfter);
             }
-            if ($this->htmlGroup & self::WRAP_ELEMENT) {
+            if (isset($this->htmlBefore, $this->htmlAfter) && $this->htmlGroup & self::WRAP_ELEMENT) {
                 $field->getElement()->wrap($this->htmlBefore, $this->htmlAfter);
             }
         }
-        $out .= trim(implode("\n", (array)$this));
+        $out .= trim(implode('', (array)$this))."\n";
         if ($this->htmlGroup & self::WRAP_GROUP) {
-            $out .= $this->htmlAfter;
+            $out .= $this->htmlAfter ?? '';
         }
         return $out;
     }
@@ -189,10 +178,7 @@ class Group extends ArrayObject implements JsonSerializable
             if (is_string($field)) {
                 continue;
             }
-            if (isset($status)) {
-                $field->getElement()->valueSuppliedByUser($status);
-            }
-            if ($field->getElement()->valueSuppliedByUser()) {
+            if ($field->getElement()->valueSuppliedByUser($status)) {
                 $is = true;
             }
         }
@@ -211,7 +197,7 @@ class Group extends ArrayObject implements JsonSerializable
      * @return self
      * @see Element::wrap
      */
-    public function wrap(string $before, string $after, int $group = null) : Group
+    public function wrap(string $before, string $after, int $group = null) : self
     {
         if (!isset($group)) {
             $group = self::WRAP_ELEMENT;
@@ -219,6 +205,29 @@ class Group extends ArrayObject implements JsonSerializable
         $this->htmlBefore = $before;
         $this->htmlAfter = $after;
         $this->htmlGroup = $group;
+        return $this;
+    }
+
+    /**
+     * Bind a model to this group.
+     *
+     * @param object $model
+     * @return self
+     */
+    public function bind(object $model) : self
+    {
+        $name = $this->name();
+        $value = $this->getValue();
+        $transformed = $this->transform($value);
+        if ($value !== $transformed && $this->valueSuppliedByUser()) {
+            $model->$name = $transformed;
+        } else {
+            foreach ($this as $element) {
+                if ($element instanceof Bindable && isset($model->$name) && is_object($model->$name)) {
+                    $element->bind($model->$name);
+                }
+            }
+        }
         return $this;
     }
 }

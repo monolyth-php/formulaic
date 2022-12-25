@@ -1,5 +1,6 @@
 <?php
 
+use Gentry\Gentry\Wrapper;
 use Monolyth\Formulaic\Get;
 use Monolyth\Formulaic\Post;
 use Monolyth\Formulaic\Text;
@@ -12,25 +13,28 @@ use Monolyth\Formulaic\Label;
 use Monolyth\Formulaic\Checkbox;
 use Monolyth\Formulaic\Radio;
 
+$_SERVER['REQUEST_METHOD'] = 'POST';
+
 /** Global form tests */
 return function () : Generator {
     /** A basic form without any elements should render just the form tags */
     yield function () {
-        $form = new class extends Get {};
-        assert("$form" == '<form action="" method="get"></form>');
+        $form = new Wrapper(new class extends Get {});
+        assert("$form" == '<form action="" method="get">
+</form>');
     };
 
     /** A basic form with input and button should render correctly */
     yield function () {
         $out = <<<EOT
 <form action="" method="get">
-<div><input id="test" name="test" type="text"></div>
-<div><button type="submit"></button></div>
+<input id="test" name="test" type="text">
+<button type="submit">go</button>
 </form>
 EOT;
-        $form = new class extends Get {};
+        $form = new Wrapper(new class extends Get {});
         $form[] = new Text('test');
-        $form[] = new Submit;
+        $form[] = new Submit('go');
         assert("$form" == $out);
     };
 
@@ -40,38 +44,39 @@ EOT;
 <form action="" method="get">
 <fieldset>
 <legend>Hello world!</legend>
-<div><input id="test" name="test" type="text"></div>
+<input id="test" name="test" type="text">
 </fieldset>
 </form>
 EOT;
-        $form = new class extends Get {};
+        $form = new Wrapper(new class extends Get {});
         $form[] = new Fieldset('Hello world!', function($fieldset) {
             $fieldset[] = new Text('test');
         });
-        assert("$form" == $out);
+        assert("$form" === $out);
     };
 
     /** Fields in a form can be referenced by name */
     yield function () {
-        $form = new class extends Get {};
+        $form = new Wrapper(new class extends Get {});
         $form[] = new Text('mytextfield');
         assert($form['mytextfield'] instanceof Text);
     };
 
     /** Forms can be of type POST */
     yield function () {
-        $form = new class extends Post {};
-        assert("$form" == '<form action="" method="post"></form>');
+        $form = new Wrapper(new class extends Post {});
+        assert("$form" == '<form action="" method="post">
+</form>');
     };
 
     /** Post forms can contain files */
     yield function () {
         $out = <<<EOT
 <form action="" enctype="multipart/form-data" method="post">
-<div><input id="test" name="test" type="file"></div>
+<input id="test" name="test" type="file">
 </form>
 EOT;
-        $form = new class extends Post {};
+        $form = new Wrapper(new class extends Post {});
         $form[] = new File('test');
         assert("$form" == $out);
     };
@@ -80,12 +85,12 @@ EOT;
     yield function () {
         $out = <<<EOT
 <form action="" id="test" method="get">
-<div><input id="test-bla" name="bla" type="text"></div>
+<input id="test-bla" name="bla" type="text">
 </form>
 EOT;
-        $form = new class extends Get {
-            protected $attributes = ['id' => 'test'];
-        };
+        $form = new Wrapper(new class extends Get {
+            protected array $attributes = ['id' => 'test'];
+        });
         $form[] = new Text('bla');
         assert("$form" == $out);
     };
@@ -93,7 +98,7 @@ EOT;
     /** $_GET auto-populates a GET form */
     yield function () {
         $_GET['q'] = 'query';
-        $form = new class Extends Get {};
+        $form = new Wrapper(new class Extends Get {});
         $form[] = new Search('q');
         assert('query' ==  $form['q']->getValue());
     };
@@ -101,7 +106,7 @@ EOT;
     /** $_POST auto-populates a POST form */
     yield function () {
         $_POST['q'] = 'query';
-        $form = new class extends Post {};
+        $form = new Wrapper(new class extends Post {});
         $form[] = new Search('q');
         assert('query' == $form['q']->getValue());
     };
@@ -109,7 +114,7 @@ EOT;
     /** Groups also get auto-populated */
     yield function () {
         $_POST['foo'] = ['bar' => 'baz'];
-        $form = new class extends Post {};
+        $form = new Wrapper(new class extends Post {});
         $form[] = new Group('foo', function($group) {
             $group[] = new Text('bar');
         });
@@ -119,7 +124,7 @@ EOT;
     /** Forms with conditions validate correctly */
     yield function () {
         $_POST = [];
-        $form = new class extends Post {};
+        $form = new Wrapper(new class extends Post {});
         $form[] = (new Text('foo'))->isRequired();
         $form[] = (new Text('bar'))->isRequired();
         assert($form->valid() != true);
@@ -128,7 +133,7 @@ EOT;
             'bar' => ['required'],
         ]);
         $_POST = ['foo' => 1, 'bar' => 2];
-        $form = new class extends Post {};
+        $form = new Wrapper(new class extends Post {});
         $form[] = (new Text('foo'))->isRequired();
         $form[] = (new Text('bar'))->isRequired();
         assert($form->valid());
@@ -139,51 +144,33 @@ EOT;
     /** More complex forms also get filled correctly */
     yield function () {
         $_POST = [];
-        $form = new class extends Post {
-            public function __construct()
-            {
-                $this[] = new Label(
-                    'Test',
-                    (new Text('foo'))->isRequired()
-                );
-                $this[] = new Label(
-                    'Group of radio buttons',
-                    (new Radio\Group('radios', [1 => 'foo', 2 => 'bar']))
-                );
-                $this[] = new Label(
-                    'Group of checkboxes',
-                    (new Checkbox\Group(
-                        'checkboxes',
-                        [1 => 'foo', 2 => 'bar', 3 => 'baz']
-                    ))
-                );
-            }
-        };
-        assert($form->valid() != true);
-        $_POST = ['foo' => 'Foo', 'radios' => 1, 'checkboxes' => [2, 3]];
-        $form = new class extends Post {
-            public function __construct()
-            {
-                $this[] = new Fieldset('Test', function ($fieldset) {
-                    $fieldset[] = new Label(
+        $theform = function () {
+            return new Wrapper(new class extends Post {
+                public function __construct()
+                {
+                    $this[] = new Label(
                         'Test',
                         (new Text('foo'))->isRequired()
                     );
-                    $fieldset[] = new Label(
+                    $this[] = new Label(
                         'Group of radio buttons',
                         (new Radio\Group('radios', [1 => 'foo', 2 => 'bar']))
                     );
-                    $fieldset[] = new Label(
+                    $this[] = new Label(
                         'Group of checkboxes',
                         (new Checkbox\Group(
                             'checkboxes',
                             [1 => 'foo', 2 => 'bar', 3 => 'baz']
                         ))
                     );
-                });
-            }
+                }
+            });
         };
-        assert($form->valid());
+        $form = $theform();
+        assert($form->valid() !== true);
+        $_POST = ['foo' => 'Foo', 'radios' => 1, 'checkboxes' => [2, 3]];
+        $form = $theform();
+        assert($form->valid() === true);
     };
 };
 

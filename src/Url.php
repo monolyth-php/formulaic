@@ -4,7 +4,7 @@ namespace Monolyth\Formulaic;
 
 class Url extends Text
 {
-    protected $attributes = ['type' => 'url'];
+    protected array $attributes = ['type' => 'url'];
 
     /**
      * Constructor.
@@ -23,11 +23,11 @@ class Url extends Text
     /**
      * Set the value.
      *
-     * @param string $value Optional URL, pass `null` for "undefined".
+     * @param mixed $value Optional URL, pass `null` for "undefined".
      */
-    public function setValue(string $value = null) : Element
+    public function setValue(mixed $value = null) : Element
     {
-        if ($value && !preg_match("@^(https?|ftp)://@", $value)) {
+        if ($value && !preg_match("@^(https?|ftp)://@", "$value")) {
             $value = "http://$value";
         }
         return parent::setValue($value);

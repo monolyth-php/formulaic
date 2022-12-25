@@ -9,6 +9,6 @@ class Checkbox extends Radio
      *
      * Hash of attributes.
      */
-    protected $attributes = ['type' => 'checkbox'];
+    protected array $attributes = ['type' => 'checkbox'];
 }
 

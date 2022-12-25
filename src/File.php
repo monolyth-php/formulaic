@@ -4,7 +4,7 @@ namespace Monolyth\Formulaic;
 
 class File extends Element
 {
-    protected $attributes = ['type' => 'file'];
+    protected array $attributes = ['type' => 'file'];
 
     /**
      * A rendered version of this element.
@@ -13,11 +13,19 @@ class File extends Element
      */
     public function __toString() : string
     {
-        $old = $this->value;
-        $this->value = null;
-        $out = parent::__toString();
-        $this->value = $old;
-        return $out;
+        $work = clone $this;
+        $work->value = null;
+        return $work->parentToString();
+    }
+
+    public function setValue(mixed $fileData = null) : self
+    {
+        return parent::setValue($fileData['tmp_name'] ?? null);
+    }
+
+    private function parentToString() : string
+    {
+        return parent::__toString();
     }
 }
 

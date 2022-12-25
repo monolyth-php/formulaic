@@ -2,30 +2,20 @@
 
 namespace Monolyth\Formulaic\Radio;
 
-use Monolyth\Formulaic\Attributes;
-use Monolyth\Formulaic\Validate;
-use Monolyth\Formulaic\Radio;
-use Monolyth\Formulaic\Checkbox;
-use Monolyth\Formulaic\Element;
-use Monolyth\Formulaic\Label;
-use Monolyth\Formulaic\Labelable;
-use Monolyth\Formulaic\Bindable;
-use Monolyth\Formulaic\Testable;
+use Monolyth\Formulaic\{ Attributes, Validate, Radio, Checkbox, Element, Label, Labelable, Testable, Transform, Normalize };
 use ArrayObject;
+use Stringable;
 
-class Group extends Element\Group implements Labelable, Testable
+class Group extends Element\Group implements Labelable, Testable, Stringable
 {
     use Attributes;
     use Validate\Group;
     use Validate\Test;
-    use Group\Tostring;
-    use Bindable;
+    use Transform;
+    use Element\Identify;
+    use Normalize;
     
-    protected $attributes = [];
-    protected $tests = [];
-    protected $source = [];
-    private $prefix = [];
-    private $value = null;
+    private mixed $value = null;
     
     /**
      * Constructor.
@@ -34,7 +24,7 @@ class Group extends Element\Group implements Labelable, Testable
      * @param callable|array $options Either a callback (called with new group
      *  as first parameter) or an array of value/label pairs.
      */
-    public function __construct(string $name, $options)
+    public function __construct(protected string $name, callable|array $options)
     {
         if (is_callable($options)) {
             $options($this);
@@ -69,7 +59,7 @@ class Group extends Element\Group implements Labelable, Testable
      */
     public function name() : string
     {
-        return $this->id();
+        return $this->name;
     }
     
     /**
@@ -86,16 +76,20 @@ class Group extends Element\Group implements Labelable, Testable
      * Sets the element where the value matches to `checked`.
      *
      * @param mixed $value
+     * @return self
      */
-    public function setValue($value)
+    public function setValue(mixed $value) : self
     {
-        foreach ((array)$this as $element) {
-            if ($value == $element->getElement()->getValue()) {
-                $element->getElement()->check();
+        foreach ($this as $element) {
+            if ((string)$element->getValue() !== "$value") {
+                $element->check(false);
             } else {
-                $element->getElement()->check(false);
+                $element->check();
+                // Radio groups can only ever have one option selected
+                break;
             }
         }
+        return $this;
     }
 
     /**
@@ -105,24 +99,19 @@ class Group extends Element\Group implements Labelable, Testable
      *  Element\Group, but obviously radio groups can only ever have one entry
      *  checked at a time).
      */
-    public function getValue() : ArrayObject
+    public function getValue() : array
     {
         foreach ((array)$this as $element) {
             if ($element->getElement() instanceof Radio
                 && $element->getElement()->checked()
             ) {
-                return new class([$element->getElement()->getValue()]) extends ArrayObject {
-                    public function __toString() : string
-                    {
-                        return "{$this[0]}";
-                    }
-                };
+                return [$element->getElement()->getValue()];
             }
         }
         return new class([$this->value]) extends ArrayObject {
             public function __toString() : string
             {
-                return "{$this[0]}";
+                return "0";
             }
         };
     }
@@ -132,24 +121,44 @@ class Group extends Element\Group implements Labelable, Testable
      *
      * @return self
      */
-    public function isRequired() : Group
+    public function isRequired() : self
     {
-        foreach ((array)$this as $el) {
-            if (!is_object($el)) {
-                continue;
-            }
-            $el->getElement()->attribute('required', 1);
+        foreach ($this as $option) {
+            $option->isRequired();
         }
         return $this->addTest('required', function ($value) {
-            foreach ($value as $option) {
-                if ($option->getElement() instanceof Radio
-                    && $option->getElement()->checked()
-                ) {
+            foreach ($this as $option) {
+                if ($option->getElement() instanceof Radio && $option->getElement()->checked()) {
                     return true;
                 }
             }
             return false;
         });
+    }
+
+    /**
+     * Bind to a model.
+     */
+    public function bind(object $model) : self
+    {
+        $name = self::normalize($this->name());
+        if ($this->valueSuppliedByUser()) {
+            $model->$name = $this->transform($this->getValue());
+        } else {
+            $this->setValue($this->transform($model->$name ?? null));
+        }
+        return $this;
+    }
+
+    public function valid() : bool
+    {
+        $errors = $this->runTests();
+        return $errors ? false : true;
+    }
+
+    public function errors() : array
+    {
+        return $this->runTests();
     }
 }
 

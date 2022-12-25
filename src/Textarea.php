@@ -22,15 +22,14 @@ class Textarea extends Element
      */
     public function __toString() : string
     {
-        $old = $this->prepareToString();
-        $out = $this->htmlBefore
-            .'<textarea'.$this->attributes().'>'
-            .htmlentities($this->value, ENT_COMPAT, 'UTF-8')
-            .'</textarea>'
-            .$this->htmlAfter;
-        if (isset($old)) {
-            $this->attributes['name'] = $old;
-        }
+        $work = clone $this;
+        $work->generateId();
+        $work->generatePrintableName();
+        $out = ($work->htmlBefore ?? '')
+            .'<textarea'.$work->attributes().">\n"
+            .htmlentities($work->value ?? '', ENT_COMPAT, 'UTF-8')."\n"
+            ."</textarea>\n"
+            .($work->htmlAfter ?? '');
         return $out;
     }
 

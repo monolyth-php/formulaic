@@ -9,7 +9,7 @@ class Date extends Datetime
      *
      * Hash of attributes.
      */
-    protected $attributes = ['type' => 'date'];
+    protected array $attributes = ['type' => 'date'];
 
     /**
      * @var string

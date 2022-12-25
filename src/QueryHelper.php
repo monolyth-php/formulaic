@@ -10,7 +10,7 @@ trait QueryHelper
      * @param mixed $index
      * @return mixed The found index, or null
      */
-    public function offsetGet($index)
+    public function offsetGet($index) : mixed
     {
         foreach ((array)$this as $i => $element) {
             $i = (string)$i;
@@ -44,7 +44,7 @@ trait QueryHelper
      * @param mixed $newvalue
      * @return void
      */
-    public function offsetSet($index = null, $newvalue) : void
+    public function offsetSet(mixed $index, mixed $newvalue) : void
     {
         if (!isset($index)) {
             $index = count((array)$this);
