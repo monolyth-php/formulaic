@@ -108,12 +108,7 @@ class Group extends Element\Group implements Labelable, Testable, Stringable
                 return [$element->getElement()->getValue()];
             }
         }
-        return new class([$this->value]) extends ArrayObject {
-            public function __toString() : string
-            {
-                return "0";
-            }
-        };
+        return [0];
     }
     
     /**
