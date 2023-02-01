@@ -201,7 +201,7 @@ EOT
     yield function () {
         $input = new Wrapper(new Formulaic\Tel('test'));
         $input->setValue('612345678');
-        assert(trim("$input") == '<input id="test" name="test" type="tel" value="0612345678">');
+        assert(trim("$input") == '<input id="test" name="test" pattern="00?[0-9]+" type="tel" value="0612345678">');
         $input->setValue('foo');
         assert($input->valid() != true);
     };
