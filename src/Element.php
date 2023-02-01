@@ -21,6 +21,8 @@ abstract class Element implements Labelable, Testable, Bindable, Stringable
 
     protected mixed $value = null;
 
+    protected ?object $model = null;
+
     /**
      * Constructor.
      *
