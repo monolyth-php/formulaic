@@ -14,6 +14,8 @@ class Label implements Bindable, Stringable
     use Attributes;
     use Element\Wrap;
 
+    private string $idPrefix;
+
     /**
      * Constructor.
      *
@@ -75,11 +77,27 @@ class Label implements Bindable, Stringable
 
     /**
      * Proxy to the underlying model (to satisfy interface).
+     *
+     * @param object $model
+     * @return self
      */
     public function bind(object $model) : self
     {
         $this->element->bind($model);
         return $this;
+    }
+
+    /**
+     * Set the ID prefix. Needs so the for attribute stays aligned with the
+     * underlying element.
+     *
+     * @param string $id
+     * @return void
+     */
+    public function setIdPrefix(string $id) : void
+    {
+        $this->idPrefix = $id;
+        $this->element->setIdPrefix($id);
     }
 
     /**
@@ -91,6 +109,9 @@ class Label implements Bindable, Stringable
     {
         if ($id = $this->element->id()) {
             $this->attributes['for'] = $id;
+        }
+        if (isset($this->idPrefix)) {
+            $this->attributes['for'] = "{$this->idPrefix}-{$this->attributes['for']}";
         }
         $out = $this->htmlBefore ?? '';
         $out .= '<label'.$this->attributes().'>';
