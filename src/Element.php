@@ -38,8 +38,9 @@ abstract class Element implements Labelable, Testable, Bindable, Stringable
      * Sets the prefix for the ID attribute (for named forms).
      *
      * @param string|null $prefix
+     * @return void
      */
-    public function setIdPrefix(string $prefix = null)
+    public function setIdPrefix(string $prefix = null) : void
     {
         $this->idPrefix = $prefix;
     }
