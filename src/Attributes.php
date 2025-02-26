@@ -43,7 +43,7 @@ trait Attributes
      * @param string|null $value
      * @return self
      */
-    public function attribute(string $name, string $value = null) : self
+    public function attribute(string $name, ?string $value = null) : self
     {
         $this->attributes[$name] = $value;
         return $this;
