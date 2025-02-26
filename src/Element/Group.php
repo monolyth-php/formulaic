@@ -171,7 +171,7 @@ class Group extends ArrayObject implements JsonSerializable, Bindable, Stringabl
      *  current status.
      * @return bool
      */
-    public function valueSuppliedByUser(bool $status = null) : bool
+    public function valueSuppliedByUser(?bool $status = null) : bool
     {
         $is = false;
         foreach ((array)$this as $field) {
