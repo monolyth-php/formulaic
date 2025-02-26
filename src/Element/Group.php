@@ -173,16 +173,15 @@ class Group extends ArrayObject implements JsonSerializable, Bindable, Stringabl
      */
     public function valueSuppliedByUser(?bool $status = null) : bool
     {
-        $is = false;
         foreach ((array)$this as $field) {
             if (is_string($field)) {
                 continue;
             }
             if ($field->getElement()->valueSuppliedByUser($status)) {
-                $is = true;
+                return true;
             }
         }
-        return $is;
+        return false;
     }
 
     /**
