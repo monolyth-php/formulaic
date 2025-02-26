@@ -69,7 +69,7 @@ class Group extends ArrayObject implements JsonSerializable, Bindable, Stringabl
      *
      * @param string $prefix The prefix. Set to `null` to remove.
      */
-    public function setIdPrefix(string $prefix = null)
+    public function setIdPrefix(?string $prefix = null)
     {
         foreach ($this as $element) {
             if (is_object($element)) {
