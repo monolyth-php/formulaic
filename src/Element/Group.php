@@ -191,12 +191,12 @@ class Group extends ArrayObject implements JsonSerializable, Bindable, Stringabl
      * @param string $before HTML to prepend.
      * @param string $after HTML to append.
      * @param int $group Bitflag stating what to wrap. Use any of the
-     *                       Element\Group::WRAP_* constants. Defaults to
-     *                       WRAP_ELEMENT.
+     *  Element\Group::WRAP_* constants. Defaults to WRAP_ELEMENT.
+     *
      * @return self
      * @see Element::wrap
      */
-    public function wrap(string $before, string $after, int $group = null) : self
+    public function wrap(string $before, string $after, ?int $group = null) : self
     {
         if (!isset($group)) {
             $group = self::WRAP_ELEMENT;
