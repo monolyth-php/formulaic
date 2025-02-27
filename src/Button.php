@@ -25,7 +25,7 @@ class Button extends Element implements Stringable
      * @param string $name Optional name for the button.
      * @return void
      */
-    public function __construct(string $text, string $name = null)
+    public function __construct(string $text, ?string $name = null)
     {
         if (isset($name)) {
             $this->attributes['name'] = $name;
