@@ -51,7 +51,7 @@ class Group extends Radio\Group
      * @param int $max Optional maximum number of checked items.
      * @return Monolyth\Formulaic\Radio\Group Self.
      */
-    public function isRequired(int $min = 1, int $max = null) : Radio\Group
+    public function isRequired(int $min = 1, ?int $max = null) : Radio\Group
     {
         return $this->addTest('required', function () use ($min, $max) {
             $checked = 0;
