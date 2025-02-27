@@ -68,7 +68,7 @@ class Radio extends Element
      * @param bool $status
      * @return bool
      */
-    public function inGroup(bool $status = null) : bool
+    public function inGroup(?bool $status = null) : bool
     {
         if (!is_null($status)) {
             $this->inGroup = $status;
