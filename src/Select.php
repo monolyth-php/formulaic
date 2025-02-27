@@ -80,12 +80,12 @@ class Select extends ArrayObject implements Labelable, Testable, Bindable, Strin
     /**
      * Set the value of the element.
      *
-     * @param string|Stringable|array|ArrayObject $value
+     * @param string|Stringable|array|ArrayObject|null $value
      * @return self
      * @throws DomainException if passed an array without the "multiple"
      *  attribute being set to true
      */
-    public function setValue(string|Stringable|array|ArrayObject $value = null) : self
+    public function setValue(string|Stringable|array|ArrayObject|null $value = null) : self
     {
         if ((!isset($this->attributes['multiple']) || !$this->attributes['multiple'])
             && (is_array($value) || $value instanceof ArrayObject)
@@ -128,7 +128,7 @@ class Select extends ArrayObject implements Labelable, Testable, Bindable, Strin
      * @return bool The current status (true for user input, false for
      *  undefined or bound from a model object)
      */
-    public function valueSuppliedByUser(bool $status = null) : bool
+    public function valueSuppliedByUser(?bool $status = null) : bool
     {
         return $this->userInput = $status ?? $this->userInput;
     }
