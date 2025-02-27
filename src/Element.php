@@ -40,7 +40,7 @@ abstract class Element implements Labelable, Testable, Bindable, Stringable
      * @param string|null $prefix
      * @return void
      */
-    public function setIdPrefix(string $prefix = null) : void
+    public function setIdPrefix(?string $prefix = null) : void
     {
         $this->idPrefix = $prefix;
     }
