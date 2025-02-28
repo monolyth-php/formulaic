@@ -70,7 +70,7 @@ abstract class Element implements Labelable, Testable, Bindable, Stringable
      * @return bool The current status (true for user input, false for
      *              undefined or bound from a model object).
      */
-    public function valueSuppliedByUser(bool $status = null) : bool
+    public function valueSuppliedByUser(?bool $status = null) : bool
     {
         if (isset($status)) {
             $this->userInput = (bool)$status;
